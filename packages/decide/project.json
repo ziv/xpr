@@ -1,0 +1,33 @@
+{
+  "root": "packages/decide",
+  "sourceRoot": "packages/decide/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/decide",
+        "main": "packages/decide/src/index.ts",
+        "tsConfig": "packages/decide/tsconfig.lib.json",
+        "assets": ["packages/decide/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/decide/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/decide"],
+      "options": {
+        "jestConfig": "packages/decide/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

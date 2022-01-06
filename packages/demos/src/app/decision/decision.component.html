@@ -1,0 +1,5 @@
+<h2>Decision</h2>
+<button *ngIf='!tree?.first' (click)='tree?.back()'>back</button>
+<section *ngFor='let item of items$ | async'>
+  <button (click)='tree?.selectId(item.id)'>{{ item.item | json}}</button>
+</section>

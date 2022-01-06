@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "packages/decision",
+  "sourceRoot": "packages/decision/src",
+  "prefix": "xpr",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "outputs": ["dist/packages/decision"],
+      "options": {
+        "project": "packages/decision/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/decision/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "packages/decision/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/decision"],
+      "options": {
+        "jestConfig": "packages/decision/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "packages/decision/src/**/*.ts",
+          "packages/decision/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
