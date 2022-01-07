@@ -1,1 +1,2 @@
-export * from './lib/decide';
+export * from './interfaces';
+export * from './decide';

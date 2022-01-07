@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { getTreeData } from './data';
-import { Decision } from '@xpr/decision';
-import { Observable } from 'rxjs';
+import { Decide } from '@xpr/decide';
+import { getTreeData, MyAnswer, MyStep } from './data';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'xpr-decision',
@@ -9,12 +10,17 @@ import { Observable } from 'rxjs';
   styleUrls: ['./decision.component.scss']
 })
 export class DecisionComponent implements OnInit {
-  tree?: Decision<string, string>;
-  items$?: Observable<any[]>;
+  service?: Decide<MyStep, MyAnswer>;
 
+  constructor(public readonly router: Router) {
+  }
   ngOnInit(): void {
-    this.tree = new Decision<string, string>(getTreeData());
-    this.items$ = this.tree.run();
+    this.service = new Decide<MyStep, MyAnswer>(getTreeData());
+    this.service.state$.asObservable().pipe(
+      tap(state => console.log(state)),
+      tap(state => this.router.navigate([], {fragment: state.current.id}))
+    ).subscribe();
+    // this.router.navigate([], {fragment: ''})
   }
 
 }

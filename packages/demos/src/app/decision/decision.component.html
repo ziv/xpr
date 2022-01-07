@@ -1,5 +1,8 @@
 <h2>Decision</h2>
-<button *ngIf='!tree?.first' (click)='tree?.back()'>back</button>
-<section *ngFor='let item of items$ | async'>
-  <button (click)='tree?.selectId(item.id)'>{{ item.item | json}}</button>
-</section>
+<ng-container *ngIf='service'>
+  <button *ngIf='!(service.first$ | async)' (click)='service?.back()'>back</button>
+  <section *ngFor='let e of service.items$ | async; let c = count'>
+    <button *ngIf='c!==1' [style.color]='e.item.color' (click)='service.next(e)'>{{ e.item.label}}</button>
+    <div *ngIf='c===1' [style.color]='e.item.color'>{{ e.item.label}}</div>
+  </section>
+</ng-container>

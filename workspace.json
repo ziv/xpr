@@ -2,8 +2,6 @@
   "version": 2,
   "projects": {
     "decide": "packages/decide",
-    "decision": "packages/decision",
-    "demos": "packages/demos",
-    "demos-e2e": "packages/demos-e2e"
+    "demos": "packages/demos"
   }
 }

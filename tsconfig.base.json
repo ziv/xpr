@@ -15,8 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@xpr/decide": ["packages/decide/src/index.ts"],
-      "@xpr/decision": ["packages/decision/src/index.ts"]
+      "@xpr/decide": ["packages/decide/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
