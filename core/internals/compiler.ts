@@ -1,20 +1,13 @@
-import type { FactoryProvider, ModularDefinition, Target } from "./types.ts";
+import type { FactoryProvider, ModularDefinition, Target, Compiler, CompilerOptions } from "./types.ts";
 import TypesInfo from "./types-info.ts";
 import Modular from "./modular.ts";
 import Registrar from "./registrar.ts";
 import { isFactoryProvider, normalizeProvider } from "./utils.ts";
-import { Subject } from "./deps.ts";
 
-export interface CompilerOptions {
-  strict: boolean;
-  emitter?: Subject;
-}
-
-export type Compiler = (target: Target) => Promise<Modular>;
 
 export default function compiler(
   registry: WeakMap<Target, Modular>,
-  options: Partial<CompilerOptions> = {},
+  options: Partial<CompilerOptions> = {}
 ): Compiler {
   return async function compile(target: Target): Promise<Modular> {
     // todo add more checks here
@@ -57,7 +50,7 @@ export default function compiler(
       } else if (isFactoryProvider(ex as FactoryProvider)) {
         // it is provider! take its internal provider
         external.register(
-          internal.get((ex as FactoryProvider).token) as FactoryProvider,
+          internal.get((ex as FactoryProvider).token) as FactoryProvider
         );
       } else {
         throw new Error(`unable to export ${ex}`);

@@ -1,7 +1,8 @@
+import TypesInfo from "./types-info.ts";
 import Modular from "./modular.ts";
 import compiler from "./compiler.ts";
-import { Target } from "./types.ts";
+import { Target, Token, ModularDefinition } from "./types.ts";
 
-export { compiler, Modular };
+export { Modular, compiler, TypesInfo };
 
-export type { Target };
+export type { Target, Token, ModularDefinition };

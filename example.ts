@@ -1,6 +1,6 @@
 import "core/reflection/mod.ts";
-import Context from "common/context/mod.ts";
-import { Inject, Injectable, Module } from "core/mod.ts";
+import { Context } from "core/mod.ts";
+import { Inject, Injectable, Module } from "common/mod.ts";
 
 @Injectable()
 class SizeService {
@@ -13,9 +13,9 @@ const SizeToken = { token: "size", factory: () => 10 };
 @Module({
   providers: [
     SizeToken,
-    SizeService,
+    SizeService
   ],
-  exports: [SizeToken, SizeService],
+  exports: [SizeToken, SizeService]
 })
 class SizeModule {
 }
@@ -25,13 +25,13 @@ const ConfiguredSizeToken = { token: "size", factory: () => 20 };
 @Module({
   imports: [SizeModule],
   providers: [ConfiguredSizeToken],
-  exports: [SizeModule],
+  exports: [SizeModule]
 })
 class ConfiguredServiceModule {
 }
 
 @Module({
-  imports: [ConfiguredServiceModule],
+  imports: [ConfiguredServiceModule]
 })
 class App {
 }

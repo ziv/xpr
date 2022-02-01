@@ -8,30 +8,25 @@ export interface ModularOptions {
   imported?: Modular[];
 }
 
-export default class Modular implements Resolver, ModularOptions {
-  internals: Registrar[];
-  externals: Registrar[];
-  imported?: Modular[];
-
+export default class Modular implements Resolver {
+  readonly id: string;
   constructor(
     private readonly module: Target,
-    { internals, externals, imported }: ModularOptions,
+    private readonly options: ModularOptions,
   ) {
-    this.internals = internals;
-    this.externals = externals;
-    this.imported = imported;
+    this.id = `${(module as { name: string }).name}-${crypto.randomUUID()}`;
   }
 
-  get id() {
-    return (this.module as { name: string }).name ?? "module";
-  }
+  // get id() {
+  //   return (this.module as { name: string }).name ?? "module";
+  // }
 
   get exports() {
-    return this.externals;
+    return this.options.externals;
   }
 
   async resolve<T = unknown>(token: Token, defaultValue?: T): Promise<T> {
-    for (const register of this.internals) {
+    for (const register of this.options.internals) {
       if (register.has(token)) {
         const provider = register.get(token) as ResolvedProvider;
         if (!provider.data) {
@@ -44,10 +39,10 @@ export default class Modular implements Resolver, ModularOptions {
         return provider.data as T;
       }
     }
-    if (this.imported) {
+    if (this.options.imported) {
       // deep mode (strict mode disabled)
       const df = Symbol("defaultValue") as never as T;
-      for (const imported of this.imported) {
+      for (const imported of this.options.imported) {
         const data = await imported.resolve<T>(token, df);
         if (df !== data) {
           return data as T;

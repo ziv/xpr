@@ -1,4 +1,6 @@
 import type { Target } from "../reflection/mod.ts";
+import type Emitter from "../emitter/mod.ts";
+import type Modular from "./modular.ts";
 
 // deno-lint-ignore ban-types
 export type Func<TFunction = Function> = TFunction;
@@ -30,3 +32,11 @@ export interface InjectableDefinition {
 
   [key: number]: Token;
 }
+
+
+export interface CompilerOptions {
+  strict: boolean;
+  emitter?: Emitter;
+}
+
+export type Compiler = (target: Target) => Promise<Modular>;
