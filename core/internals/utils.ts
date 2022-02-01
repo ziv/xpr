@@ -4,22 +4,9 @@ import type {
   InjectableDefinition,
   Resolver,
   Target,
-  Token,
 } from "./types.ts";
 import TypesInfo from "./types-info.ts";
 import { ResolverError } from "./errors.ts";
-
-export const searchFactory = (imported: Resolver[]) => {
-  return async (token: Token) => {
-    const df = Symbol("defaultValue");
-    for (const im of imported) {
-      const data = await im.resolve(token, df);
-      if (df !== data) {
-        return data;
-      }
-    }
-  };
-};
 
 export const resolverFactory = (p: Target) => {
   if (!TypesInfo.has(p)) {

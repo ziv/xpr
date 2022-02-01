@@ -1,4 +1,5 @@
 /**
+ * Ported from `abraham/reflection`
  * @see https://github.com/abraham/reflection#readme
  */
 
@@ -10,7 +11,8 @@ export type MemberDecorator = <T>(
 ) => TypedPropertyDescriptor<T> | void;
 export type MetadataKey = string | symbol;
 export type PropertyKey = string | symbol;
-export type Target = object | Function;
+// deno-lint-ignore ban-types
+export type Target = Function | object;
 
 const Metadata = new WeakMap();
 
@@ -28,7 +30,9 @@ function decorateProperty(
 
 function decorateConstructor(
   decorators: ClassDecorator[],
+  // deno-lint-ignore ban-types
   target: Function,
+  // deno-lint-ignore ban-types
 ): Function {
   decorators.reverse().forEach((decorator: ClassDecorator) => {
     const decorated = decorator(target);
@@ -41,10 +45,13 @@ function decorateConstructor(
 
 export function decorate(
   decorators: ClassDecorator[],
+  // deno-lint-ignore ban-types
   target: Function,
+  // deno-lint-ignore ban-types
 ): Function;
 export function decorate(
   decorators: MemberDecorator[],
+  // deno-lint-ignore ban-types
   target: object,
   propertyKey?: PropertyKey,
   attributes?: PropertyDescriptor,
@@ -54,6 +61,7 @@ export function decorate(
   target: Target,
   propertyKey?: PropertyKey,
   attributes?: PropertyDescriptor,
+  // deno-lint-ignore ban-types
 ): Function | PropertyDescriptor | undefined {
   if (!Array.isArray(decorators) || decorators.length === 0) {
     throw new TypeError();
@@ -209,7 +217,6 @@ export const Reflection = {
 };
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Reflect {
     let decorate: typeof Reflection.decorate;
     let defineMetadata: typeof Reflection.defineMetadata;

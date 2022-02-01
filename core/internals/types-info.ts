@@ -1,4 +1,4 @@
-import type { Target } from "./reflection.ts";
+import type { Target } from "../reflection/index.ts";
 import type { Obj } from "./types.ts";
 
 export default class TypesInfo {

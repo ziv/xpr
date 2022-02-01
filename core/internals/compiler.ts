@@ -1,4 +1,4 @@
-import type { Target } from "./reflection.ts";
+import type { Target } from "../reflection/index.ts";
 import type { FactoryProvider, ModularDefinition } from "./types.ts";
 import TypesInfo from "./types-info.ts";
 import Modular from "./modular.ts";
@@ -47,8 +47,6 @@ export default function compiler(
         externals.push(...(registry.get(ex) as Modular).exports);
       } else if (TypesInfo.has(ex) && internal.has(ex)) {
         // it is injectable! take its internal provider
-        // todo... should have access to creator provider?!
-        console.log(internal.get(ex));
         external.register(internal.get(ex) as FactoryProvider);
       } else if (isFactoryProvider(ex as FactoryProvider)) {
         // it is provider! take its internal provider

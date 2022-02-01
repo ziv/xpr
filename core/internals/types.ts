@@ -1,6 +1,8 @@
-import type { Target } from "./reflection.ts";
+import type { Target } from "../reflection/index.ts";
 
+// deno-lint-ignore ban-types
 export type Func<TFunction = Function> = TFunction;
+// deno-lint-ignore ban-types
 export type Obj<TObject = object> = TObject;
 
 export type { Target };
