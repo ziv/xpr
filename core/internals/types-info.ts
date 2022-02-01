@@ -1,5 +1,4 @@
-import type { Target } from "../reflection/index.ts";
-import type { Obj } from "./types.ts";
+import type { Obj, Target } from "./types.ts";
 
 export default class TypesInfo {
   private static types = new WeakMap();

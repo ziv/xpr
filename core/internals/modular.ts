@@ -2,13 +2,24 @@ import type Registrar from "./registrar.ts";
 import type { ResolvedProvider, Resolver, Target, Token } from "./types.ts";
 import { FactoryError, TokenNotFound } from "./errors.ts";
 
-export default class Modular implements Resolver {
+export interface ModularOptions {
+  internals: Registrar[];
+  externals: Registrar[];
+  imported?: Modular[];
+}
+
+export default class Modular implements Resolver, ModularOptions {
+  internals: Registrar[];
+  externals: Registrar[];
+  imported?: Modular[];
+
   constructor(
     private readonly module: Target,
-    private readonly internals: Registrar[],
-    private readonly externals: Registrar[],
-    private readonly imported?: Modular[] | undefined,
+    { internals, externals, imported }: ModularOptions,
   ) {
+    this.internals = internals;
+    this.externals = externals;
+    this.imported = imported;
   }
 
   get id() {

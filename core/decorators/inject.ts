@@ -6,4 +6,3 @@ export default function Inject(token?: Token): ParameterDecorator {
     TypesInfo.merge(target, { [parameterIndex]: token ?? target });
   };
 }
-

@@ -1,28 +1,34 @@
-import type { Target } from "../reflection/index.ts";
-import type { FactoryProvider, ModularDefinition } from "./types.ts";
+import type { FactoryProvider, ModularDefinition, Target } from "./types.ts";
 import TypesInfo from "./types-info.ts";
 import Modular from "./modular.ts";
 import Registrar from "./registrar.ts";
 import { isFactoryProvider, normalizeProvider } from "./utils.ts";
+import { Subject } from "./deps.ts";
 
 export interface CompilerOptions {
   strict: boolean;
+  emitter?: Subject;
 }
+
+export type Compiler = (target: Target) => Promise<Modular>;
 
 export default function compiler(
   registry: WeakMap<Target, Modular>,
   options: Partial<CompilerOptions> = {},
-) {
+): Compiler {
   return async function compile(target: Target): Promise<Modular> {
     // todo add more checks here
     if (!TypesInfo.has(target)) {
       const name = (target as { name: string }).name ?? target;
-      throw new Error(`${name} is not a module`);
+      throw new Error(`${name} is not a module (no type)`);
+    }
+    const info = TypesInfo.get<ModularDefinition>(target);
+    if (!info.exports || !info.imports || !info.providers) {
+      const name = (target as { name: string }).name ?? target;
+      throw new Error(`${name} is not a module (no definitions)`);
     }
 
-    const { imports, providers, exports } = TypesInfo.get<ModularDefinition>(
-      target,
-    );
+    const { imports, providers, exports } = info;
 
     const internal = new Registrar(target);
     const external = new Registrar(target);
@@ -62,12 +68,7 @@ export default function compiler(
       ? undefined
       : imports.map((i) => registry.get(i) as Modular);
 
-    const modular = new Modular(
-      target,
-      internals,
-      externals,
-      imported,
-    );
+    const modular = new Modular(target, { internals, externals, imported });
     registry.set(target, modular);
     return modular;
   };
