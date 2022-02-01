@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "lib": [
+      "ES6",
+      "ES2015",
+      "ES2017",
+      "ES2020"
+    ],
+    "target": "ES2019",
+    "types": [
+      "reflect-metadata",
+      "node"
+    ],
+    "paths": {
+      "tsyringe": [
+        "./packages/tsyringe"
+      ]
+    }
+  }
+}

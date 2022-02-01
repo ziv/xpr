@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "projects": {
-    "decide": "packages/decide",
-    "demos": "packages/demos"
-  }
-}

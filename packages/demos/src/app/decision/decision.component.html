@@ -1,8 +1,0 @@
-<h2>Decision</h2>
-<ng-container *ngIf='service'>
-  <button *ngIf='!(service.first$ | async)' (click)='service?.back()'>back</button>
-  <section *ngFor='let e of service.items$ | async; let c = count'>
-    <button *ngIf='c!==1' [style.color]='e.item.color' (click)='service.next(e)'>{{ e.item.label}}</button>
-    <div *ngIf='c===1' [style.color]='e.item.color'>{{ e.item.label}}</div>
-  </section>
-</ng-container>
