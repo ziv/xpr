@@ -1,5 +1,5 @@
-import type { Target } from "core/reflection/mod.ts";
-import { TypesInfo } from "core/internals/mod.ts";
+import type { Target } from "../reflection/mod.ts";
+import { TypesInfo } from "../internals/mod.ts";
 
 export default function Injectable(): ClassDecorator {
   return (target: Target) => {

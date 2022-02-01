@@ -1,5 +1,5 @@
-import type { ModularDefinition, Target } from "core/internals/mod.ts";
-import { TypesInfo } from "core/internals/mod.ts";
+import type { ModularDefinition, Target } from "../internals/mod.ts";
+import { TypesInfo } from "../internals/mod.ts";
 
 const defaultModularDefinition = { imports: [], providers: [], exports: [] };
 
