@@ -1,10 +1,10 @@
-import "./internals/reflection.ts";
-import Module from "./decorators/module.ts";
-import compiler from "./internals/compiler.ts";
-import Injectable from "./decorators/injectable.ts";
-import Modular from "./internals/modular.ts";
-import Inject from "./decorators/inject.ts";
-import { Target } from "./internals/reflection.ts";
+import "../internals/reflection.ts";
+import Module from "../decorators/module.ts";
+import compiler from "../internals/compiler.ts";
+import Injectable from "../decorators/injectable.ts";
+import Modular from "../internals/modular.ts";
+import Inject from "../decorators/inject.ts";
+import { Target } from "../internals/reflection.ts";
 
 @Injectable()
 class SizeService {
