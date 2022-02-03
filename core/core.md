@@ -4,6 +4,8 @@
 
 reflection [tbd].
 
+## Dependencies
+
 ## Dependency Injection
 
 ### Module
@@ -17,8 +19,7 @@ reflection [tbd].
 
 - Provide list of module context resolvers.
 - Provider can be `Injectable` type or `FactoryProvider`.
-- Both `FactoryProvider` & `Injectable` dependencies, should be accessed within
-  module context.
+- Both `FactoryProvider` & `Injectable` dependencies, should be accessed within module context.
 
 #### Exports
 
@@ -28,8 +29,7 @@ reflection [tbd].
 
 ### Resolving
 
-- `strict mode` All exported `Injectable` of `FactoryProvider` dependencies
-  should be exported too.
+- `strict mode` All exported `Injectable` of `FactoryProvider` dependencies should be exported too.
 - `loose mode` Missing dependencies searched in imported modules.
 
 # Compiler

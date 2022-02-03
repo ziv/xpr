@@ -1,10 +1,10 @@
-import type Registrar from "./registrar.ts";
+import type Registry from "./registry.ts";
 import type { ResolvedProvider, Resolver, Target, Token } from "./types.ts";
 import { FactoryError, TokenNotFound } from "./errors.ts";
 
 export interface ModularOptions {
-  internals: Registrar[];
-  externals: Registrar[];
+  internals: Registry[];
+  externals: Registry[];
   imported?: Modular[];
 }
 
@@ -26,13 +26,22 @@ export default class Modular implements Resolver {
   }
 
   async resolve<T = unknown>(token: Token, defaultValue?: T): Promise<T> {
+    console.log(`resolve ${String(token)} from ${this.id}`);
     for (const register of this.options.internals) {
+      console.log(`search registry of ${(register.module as Function).name}`);
       if (register.has(token)) {
-        const provider = register.get(token) as ResolvedProvider;
+        console.log(`found in registry of ${(register.module as Function).name}`);
+        const provider: ResolvedProvider = register.get(
+          token,
+        ) as unknown as ResolvedProvider;
         if (!provider.data) {
           try {
+            console.log("provider", provider);
+            // @ts-ignore
             provider.data = await provider.factory(this);
           } catch (e) {
+            console.log(e);
+            Deno.exit(1);
             throw new FactoryError(token, e);
           }
         }

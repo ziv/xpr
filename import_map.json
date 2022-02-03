@@ -1,4 +1,6 @@
 {
   "imports": {
+    "core/": "./core/",
+    "common/": "./common/"
   }
 }
