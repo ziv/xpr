@@ -4,4 +4,4 @@ where (e)dreams comes to die.
 
 
 ## Core
-![Core Dependencies](core/dependencygraph.svg | width=100)
+![Core Dependencies](core/dependencygraph.svg|width=100px)
