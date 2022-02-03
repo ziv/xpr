@@ -1,16 +1,16 @@
-import { Observable } from '../Observable.ts';
-import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableInputTuple } from '../types.ts';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { from } from './from.ts';
-import { identity } from '../util/identity.ts';
-import { Subscription } from '../Subscription.ts';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.ts';
-import { popResultSelector, popScheduler } from '../util/args.ts';
-import { createObject } from '../util/createObject.ts';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber.ts';
-import { AnyCatcher } from '../AnyCatcher.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInput, ObservableInputTuple, ObservedValueOf, SchedulerLike } from "../types.ts";
+import { argsArgArrayOrObject } from "../util/argsArgArrayOrObject.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { from } from "./from.ts";
+import { identity } from "../util/identity.ts";
+import { Subscription } from "../Subscription.ts";
+import { mapOneOrManyArgs } from "../util/mapOneOrManyArgs.ts";
+import { popResultSelector, popScheduler } from "../util/args.ts";
+import { createObject } from "../util/createObject.ts";
+import { OperatorSubscriber } from "../operators/OperatorSubscriber.ts";
+import { AnyCatcher } from "../AnyCatcher.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 // combineLatest(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -27,21 +27,23 @@ export function combineLatest<T extends AnyCatcher>(arg: T): Observable<unknown>
 
 // combineLatest([a, b, c])
 export function combineLatest(sources: []): Observable<never>;
-export function combineLatest<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
+export function combineLatest<A extends readonly unknown[]>(
+  sources: readonly [...ObservableInputTuple<A>],
+): Observable<A>;
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
   resultSelector: (...values: A) => R,
-  scheduler: SchedulerLike
+  scheduler: SchedulerLike,
 ): Observable<R>;
 export function combineLatest<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
-  resultSelector: (...values: A) => R
+  resultSelector: (...values: A) => R,
 ): Observable<R>;
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `combineLatestAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function combineLatest<A extends readonly unknown[]>(
   sources: readonly [...ObservableInputTuple<A>],
-  scheduler: SchedulerLike
+  scheduler: SchedulerLike,
 ): Observable<A>;
 
 // combineLatest(a, b, c)
@@ -63,7 +65,7 @@ export function combineLatest<A extends readonly unknown[]>(
 // combineLatest({a, b, c})
 export function combineLatest(sourcesObject: { [K in any]: never }): Observable<never>;
 export function combineLatest<T extends Record<string, ObservableInput<any>>>(
-  sourcesObject: T
+  sourcesObject: T,
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
@@ -198,7 +200,9 @@ export function combineLatest<T extends Record<string, ObservableInput<any>>>(
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  */
-export function combineLatest<O extends ObservableInput<any>, R>(...args: any[]): Observable<R> | Observable<ObservedValueOf<O>[]> {
+export function combineLatest<O extends ObservableInput<any>, R>(
+  ...args: any[]
+): Observable<R> | Observable<ObservedValueOf<O>[]> {
   const scheduler = popScheduler(args);
   const resultSelector = popResultSelector(args);
 
@@ -219,8 +223,8 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
         ? // A handler for scrubbing the array of args into a dictionary.
           (values) => createObject(keys, values)
         : // A passthrough to just return the array
-          identity
-    )
+          identity,
+    ),
   );
 
   return resultSelector ? (result.pipe(mapOneOrManyArgs(resultSelector)) as Observable<R>) : result;
@@ -229,7 +233,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(...args: any[])
 export function combineLatestInit(
   observables: ObservableInput<any>[],
   scheduler?: SchedulerLike,
-  valueTransform: (values: any[]) => any = identity
+  valueTransform: (values: any[]) => any = identity,
 ) {
   return (subscriber: Subscriber<any>) => {
     // The outer subscription. We're capturing this in a function
@@ -278,15 +282,15 @@ export function combineLatestInit(
                       // inner observables.
                       subscriber.complete();
                     }
-                  }
-                )
+                  },
+                ),
               );
             },
-            subscriber
+            subscriber,
           );
         }
       },
-      subscriber
+      subscriber,
     );
   };
 }

@@ -1,10 +1,10 @@
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { Subscription } from '../Subscription.ts';
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { Subscription } from "../Subscription.ts";
 
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -78,15 +78,14 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
                 // call hasn't even returned yet. We've arrived here synchronously.
                 // So we flag that we want to resub, such that we can ensure teardown
                 // happens before we resubscribe.
-                innerSub ? subscribeForRetryWhen() : (syncResub = true)
-              )
+                innerSub ? subscribeForRetryWhen() : (syncResub = true)),
             );
           }
           if (errors$) {
             // We have set up the notifier without error.
             errors$.next(err);
           }
-        })
+        }),
       );
 
       if (syncResub) {

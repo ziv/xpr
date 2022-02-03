@@ -12,8 +12,8 @@
  */
 export function getXHRResponse(xhr: XMLHttpRequest) {
   switch (xhr.responseType) {
-    case 'json': {
-      if ('response' in xhr) {
+    case "json": {
+      if ("response" in xhr) {
         return xhr.response;
       } else {
         // IE
@@ -21,11 +21,11 @@ export function getXHRResponse(xhr: XMLHttpRequest) {
         return JSON.parse(ieXHR.responseText);
       }
     }
-    case 'document':
+    case "document":
       return xhr.responseXML;
-    case 'text':
+    case "text":
     default: {
-      if ('response' in xhr) {
+      if ("response" in xhr) {
         return xhr.response;
       } else {
         // IE

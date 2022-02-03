@@ -1,5 +1,5 @@
-import { AsyncAction } from './AsyncAction.ts';
-import { AsyncScheduler } from './AsyncScheduler.ts';
+import { AsyncAction } from "./AsyncAction.ts";
+import { AsyncScheduler } from "./AsyncScheduler.ts";
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {

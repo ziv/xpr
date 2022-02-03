@@ -1,8 +1,8 @@
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { noop } from '../util/noop.ts';
+import { MonoTypeOperatorFunction, ObservableInput } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { noop } from "../util/noop.ts";
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`

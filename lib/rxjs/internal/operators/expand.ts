@@ -1,12 +1,12 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SchedulerLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { mergeInternals } from './mergeInternals.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { mergeInternals } from "./mergeInternals.ts";
 
 /* tslint:disable:max-line-length */
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
   concurrent?: number,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /**
  * @deprecated The `scheduler` parameter will be removed in v8. If you need to schedule the inner subscription,
@@ -16,7 +16,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
   concurrent: number | undefined,
-  scheduler: SchedulerLike
+  scheduler: SchedulerLike,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /* tslint:enable:max-line-length */
 
@@ -74,7 +74,7 @@ export function expand<T, O extends ObservableInput<unknown>>(
 export function expand<T, O extends ObservableInput<unknown>>(
   project: (value: T, index: number) => O,
   concurrent = Infinity,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, ObservedValueOf<O>> {
   concurrent = (concurrent || 0) < 1 ? Infinity : concurrent;
   return operate((source, subscriber) =>
@@ -84,13 +84,11 @@ export function expand<T, O extends ObservableInput<unknown>>(
       subscriber,
       project,
       concurrent,
-
       // onBeforeNext
       undefined,
-
       // Expand-specific
       true, // Use expand path
-      scheduler // Inner subscription scheduler
+      scheduler, // Inner subscription scheduler
     )
   );
 }

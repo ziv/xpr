@@ -1,6 +1,6 @@
-import { ObservableInput, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { mergeInternals } from './mergeInternals.ts';
+import { ObservableInput, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { mergeInternals } from "./mergeInternals.ts";
 
 /**
  * Applies an accumulator function over the source Observable where the
@@ -71,7 +71,7 @@ import { mergeInternals } from './mergeInternals.ts';
 export function mergeScan<T, R>(
   accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
   seed: R,
-  concurrent = Infinity
+  concurrent = Infinity,
 ): OperatorFunction<T, R> {
   return operate((source, subscriber) => {
     // The accumulated state.
@@ -87,7 +87,7 @@ export function mergeScan<T, R>(
       },
       false,
       undefined,
-      () => (state = null!)
+      () => (state = null!),
     );
   });
 }

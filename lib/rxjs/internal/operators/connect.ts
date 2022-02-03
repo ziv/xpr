@@ -1,9 +1,9 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf, SubjectLike } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { from } from '../observable/from.ts';
-import { operate } from '../util/lift.ts';
-import { fromSubscribable } from '../observable/fromSubscribable.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction, SubjectLike } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { from } from "../observable/from.ts";
+import { operate } from "../util/lift.ts";
+import { fromSubscribable } from "../observable/fromSubscribable.ts";
 
 /**
  * An object used to configure {@link connect} operator.
@@ -98,7 +98,7 @@ const DEFAULT_CONFIG: ConnectConfig<unknown> = {
  */
 export function connect<T, O extends ObservableInput<unknown>>(
   selector: (shared: Observable<T>) => O,
-  config: ConnectConfig<T> = DEFAULT_CONFIG
+  config: ConnectConfig<T> = DEFAULT_CONFIG,
 ): OperatorFunction<T, ObservedValueOf<O>> {
   const { connector } = config;
   return operate((source, subscriber) => {

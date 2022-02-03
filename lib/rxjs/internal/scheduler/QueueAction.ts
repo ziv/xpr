@@ -1,12 +1,10 @@
-import { AsyncAction } from './AsyncAction.ts';
-import { Subscription } from '../Subscription.ts';
-import { QueueScheduler } from './QueueScheduler.ts';
-import { SchedulerAction } from '../types.ts';
+import { AsyncAction } from "./AsyncAction.ts";
+import { Subscription } from "../Subscription.ts";
+import { QueueScheduler } from "./QueueScheduler.ts";
+import { SchedulerAction } from "../types.ts";
 
 export class QueueAction<T> extends AsyncAction<T> {
-
-  constructor(protected scheduler: QueueScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+  constructor(protected scheduler: QueueScheduler, protected work: (this: SchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
@@ -21,9 +19,7 @@ export class QueueAction<T> extends AsyncAction<T> {
   }
 
   public execute(state: T, delay: number): any {
-    return (delay > 0 || this.closed) ?
-      super.execute(state, delay) :
-      this._execute(state, delay) ;
+    return (delay > 0 || this.closed) ? super.execute(state, delay) : this._execute(state, delay);
   }
 
   protected requestAsyncId(scheduler: QueueScheduler, id?: any, delay: number = 0): any {

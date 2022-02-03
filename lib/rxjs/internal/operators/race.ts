@@ -1,11 +1,15 @@
-import { ObservableInputTuple, OperatorFunction } from '../types.ts';
-import { argsOrArgArray } from '../util/argsOrArgArray.ts';
-import { raceWith } from './raceWith.ts';
+import { ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { argsOrArgArray } from "../util/argsOrArgArray.ts";
+import { raceWith } from "./raceWith.ts";
 
 /** @deprecated Replaced with {@link raceWith}. Will be removed in v8. */
-export function race<T, A extends readonly unknown[]>(otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export function race<T, A extends readonly unknown[]>(
+  otherSources: [...ObservableInputTuple<A>],
+): OperatorFunction<T, T | A[number]>;
 /** @deprecated Replaced with {@link raceWith}. Will be removed in v8. */
-export function race<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>;
+export function race<T, A extends readonly unknown[]>(
+  ...otherSources: [...ObservableInputTuple<A>]
+): OperatorFunction<T, T | A[number]>;
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit a next,

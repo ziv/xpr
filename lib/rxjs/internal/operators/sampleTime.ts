@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { sample } from './sample.ts';
-import { interval } from '../observable/interval.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { sample } from "./sample.ts";
+import { interval } from "../observable/interval.ts";
 
 /**
  * Emits the most recently emitted value from the source Observable within

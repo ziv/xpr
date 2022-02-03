@@ -1,9 +1,15 @@
-import { PartialObserver, ObservableNotification, CompleteNotification, NextNotification, ErrorNotification } from './types.ts';
-import { Observable } from './Observable.ts';
-import { EMPTY } from './observable/empty.ts';
-import { of } from './observable/of.ts';
-import { throwError } from './observable/throwError.ts';
-import { isFunction } from './util/isFunction.ts';
+import {
+  CompleteNotification,
+  ErrorNotification,
+  NextNotification,
+  ObservableNotification,
+  PartialObserver,
+} from "./types.ts";
+import { Observable } from "./Observable.ts";
+import { EMPTY } from "./observable/empty.ts";
+import { of } from "./observable/of.ts";
+import { throwError } from "./observable/throwError.ts";
+import { isFunction } from "./util/isFunction.ts";
 
 // TODO: When this enum is removed, replace it with a type alias. See #4556.
 /**
@@ -11,9 +17,9 @@ import { isFunction } from './util/isFunction.ts';
  * It will not be replaced with a const enum as those are not compatible with isolated modules.
  */
 export enum NotificationKind {
-  NEXT = 'N',
-  ERROR = 'E',
-  COMPLETE = 'C',
+  NEXT = "N",
+  ERROR = "E",
+  COMPLETE = "C",
 }
 
 /**
@@ -46,7 +52,7 @@ export class Notification<T> {
    * @param value The value to notify with if observed.
    * @deprecated Internal implementation detail. Use {@link Notification#createNext createNext} instead.
    */
-  constructor(kind: 'N', value?: T);
+  constructor(kind: "N", value?: T);
   /**
    * Creates an "Error" notification object.
    * @param kind Always `'E'`
@@ -54,15 +60,15 @@ export class Notification<T> {
    * @param error The error to notify with if observed.
    * @deprecated Internal implementation detail. Use {@link Notification#createError createError} instead.
    */
-  constructor(kind: 'E', value: undefined, error: any);
+  constructor(kind: "E", value: undefined, error: any);
   /**
    * Creates a "completion" notification object.
    * @param kind Always `'C'`
    * @deprecated Internal implementation detail. Use {@link Notification#createComplete createComplete} instead.
    */
-  constructor(kind: 'C');
-  constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: any) {
-    this.hasValue = kind === 'N';
+  constructor(kind: "C");
+  constructor(public readonly kind: "N" | "E" | "C", public readonly value?: T, public readonly error?: any) {
+    this.hasValue = kind === "N";
   }
 
   /**
@@ -103,7 +109,7 @@ export class Notification<T> {
   do(next: (value: T) => void): void;
   do(nextHandler: (value: T) => void, errorHandler?: (err: any) => void, completeHandler?: () => void): void {
     const { kind, value, error } = this;
-    return kind === 'N' ? nextHandler?.(value!) : kind === 'E' ? errorHandler?.(error) : completeHandler?.();
+    return kind === "N" ? nextHandler?.(value!) : kind === "E" ? errorHandler?.(error) : completeHandler?.();
   }
 
   /**
@@ -157,20 +163,19 @@ export class Notification<T> {
   toObservable(): Observable<T> {
     const { kind, value, error } = this;
     // Select the observable to return by `kind`
-    const result =
-      kind === 'N'
-        ? // Next kind. Return an observable of that value.
-          of(value!)
-        : //
-        kind === 'E'
+    const result = kind === "N"
+      ? // Next kind. Return an observable of that value.
+        of(value!)
+      : //
+        kind === "E"
         ? // Error kind. Return an observable that emits the error.
           throwError(() => error)
         : //
-        kind === 'C'
-        ? // Completion kind. Kind is "C", return an observable that just completes.
-          EMPTY
-        : // Unknown kind, return falsy, so we error below.
-          0;
+          kind === "C"
+          ? // Completion kind. Kind is "C", return an observable that just completes.
+            EMPTY
+          : // Unknown kind, return falsy, so we error below.
+            0;
     if (!result) {
       // TODO: consider removing this check. The only way to cause this would be to
       // use the Notification constructor directly in a way that is not type-safe.
@@ -180,7 +185,7 @@ export class Notification<T> {
     return result;
   }
 
-  private static completeNotification = new Notification('C') as Notification<never> & CompleteNotification;
+  private static completeNotification = new Notification("C") as Notification<never> & CompleteNotification;
   /**
    * A shortcut to create a Notification instance of the type `next` from a
    * given value.
@@ -194,7 +199,7 @@ export class Notification<T> {
    * Will be removed in v8.
    */
   static createNext<T>(value: T) {
-    return new Notification('N', value) as Notification<T> & NextNotification<T>;
+    return new Notification("N", value) as Notification<T> & NextNotification<T>;
   }
 
   /**
@@ -210,7 +215,7 @@ export class Notification<T> {
    * Will be removed in v8.
    */
   static createError(err?: any) {
-    return new Notification('E', undefined, err) as Notification<never> & ErrorNotification;
+    return new Notification("E", undefined, err) as Notification<never> & ErrorNotification;
   }
 
   /**
@@ -236,8 +241,8 @@ export class Notification<T> {
  */
 export function observeNotification<T>(notification: ObservableNotification<T>, observer: PartialObserver<T>) {
   const { kind, value, error } = notification as any;
-  if (typeof kind !== 'string') {
+  if (typeof kind !== "string") {
     throw new TypeError('Invalid notification, missing "kind"');
   }
-  kind === 'N' ? observer.next?.(value!) : kind === 'E' ? observer.error?.(error) : observer.complete?.();
+  kind === "N" ? observer.next?.(value!) : kind === "E" ? observer.error?.(error) : observer.complete?.();
 }

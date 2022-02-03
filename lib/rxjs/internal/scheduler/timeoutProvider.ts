@@ -6,9 +6,9 @@ interface TimeoutProvider {
   clearTimeout: ClearTimeoutFunction;
   delegate:
     | {
-        setTimeout: SetTimeoutFunction;
-        clearTimeout: ClearTimeoutFunction;
-      }
+      setTimeout: SetTimeoutFunction;
+      clearTimeout: ClearTimeoutFunction;
+    }
     | undefined;
 }
 

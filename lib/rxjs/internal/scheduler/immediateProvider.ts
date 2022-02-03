@@ -1,4 +1,4 @@
-import { Immediate } from '../util/Immediate.ts';
+import { Immediate } from "../util/Immediate.ts";
 const { setImmediate, clearImmediate } = Immediate;
 
 type SetImmediateFunction = (handler: () => void, ...args: any[]) => number;
@@ -9,9 +9,9 @@ interface ImmediateProvider {
   clearImmediate: ClearImmediateFunction;
   delegate:
     | {
-        setImmediate: SetImmediateFunction;
-        clearImmediate: ClearImmediateFunction;
-      }
+      setImmediate: SetImmediateFunction;
+      clearImmediate: ClearImmediateFunction;
+    }
     | undefined;
 }
 

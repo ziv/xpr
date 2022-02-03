@@ -1,9 +1,9 @@
-import { Subscription } from '../Subscription.ts';
+import { Subscription } from "../Subscription.ts";
 
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
+import { MonoTypeOperatorFunction, ObservableInput } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
 
 export interface ThrottleConfig {
   leading?: boolean;
@@ -63,7 +63,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  */
 export function throttle<T>(
   durationSelector: (value: T) => ObservableInput<any>,
-  config: ThrottleConfig = defaultThrottleConfig
+  config: ThrottleConfig = defaultThrottleConfig,
 ): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     const { leading, trailing } = config;
@@ -86,8 +86,11 @@ export function throttle<T>(
       isComplete && subscriber.complete();
     };
 
-    const startThrottle = (value: T) =>
-      (throttled = innerFrom(durationSelector(value)).subscribe(new OperatorSubscriber(subscriber, endThrottling, cleanupThrottling)));
+    const startThrottle = (
+      value: T,
+    ) => (throttled = innerFrom(durationSelector(value)).subscribe(
+      new OperatorSubscriber(subscriber, endThrottling, cleanupThrottling),
+    ));
 
     const send = () => {
       if (hasValue) {
@@ -119,8 +122,8 @@ export function throttle<T>(
         () => {
           isComplete = true;
           !(trailing && hasValue && throttled && !throttled.closed) && subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

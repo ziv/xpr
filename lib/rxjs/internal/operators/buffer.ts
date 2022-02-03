@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { noop } from '../util/noop.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { noop } from "../util/noop.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -54,8 +54,8 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
         () => {
           subscriber.next(currentBuffer);
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
 
     // Subscribe to the closing notifier.
@@ -68,8 +68,8 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
           currentBuffer = [];
           subscriber.next(b);
         },
-        noop
-      )
+        noop,
+      ),
     );
 
     return () => {

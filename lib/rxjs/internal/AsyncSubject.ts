@@ -1,5 +1,5 @@
-import { Subject } from './Subject.ts';
-import { Subscriber } from './Subscriber.ts';
+import { Subject } from "./Subject.ts";
+import { Subscriber } from "./Subscriber.ts";
 
 /**
  * A variant of Subject that only emits a value when it completes. It will emit

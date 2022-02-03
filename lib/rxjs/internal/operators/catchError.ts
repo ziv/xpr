@@ -1,14 +1,14 @@
-import { Observable } from '../Observable.ts';
+import { Observable } from "../Observable.ts";
 
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.ts';
-import { Subscription } from '../Subscription.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { operate } from '../util/lift.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { Subscription } from "../Subscription.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { operate } from "../util/lift.ts";
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(
-  selector: (err: any, caught: Observable<T>) => O
+  selector: (err: any, caught: Observable<T>) => O,
 ): OperatorFunction<T, T | ObservedValueOf<O>>;
 /* tslint:enable:max-line-length */
 
@@ -105,7 +105,7 @@ export function catchError<T, O extends ObservableInput<any>>(
  * the source or the Observable returned by the `selector` function.
  */
 export function catchError<T, O extends ObservableInput<any>>(
-  selector: (err: any, caught: Observable<T>) => O
+  selector: (err: any, caught: Observable<T>) => O,
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
   return operate((source, subscriber) => {
     let innerSub: Subscription | null = null;
@@ -124,7 +124,7 @@ export function catchError<T, O extends ObservableInput<any>>(
           // because the subscribe call hasn't returned yet.
           syncUnsub = true;
         }
-      })
+      }),
     );
 
     if (syncUnsub) {

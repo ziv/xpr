@@ -1,9 +1,9 @@
-import { Subscriber } from '../Subscriber.ts';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.ts';
+import { Subscriber } from "../Subscriber.ts";
+import { MonoTypeOperatorFunction, ObservableInput } from "../types.ts";
 
-import { operate } from '../util/lift.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { operate } from "../util/lift.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -82,15 +82,15 @@ export function audit<T>(durationSelector: (value: T) => ObservableInput<any>): 
           lastValue = value;
           if (!durationSubscriber) {
             innerFrom(durationSelector(value)).subscribe(
-              (durationSubscriber = new OperatorSubscriber(subscriber, endDuration, cleanupDuration))
+              durationSubscriber = new OperatorSubscriber(subscriber, endDuration, cleanupDuration),
             );
           }
         },
         () => {
           isComplete = true;
           (!hasValue || !durationSubscriber || durationSubscriber.closed) && subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

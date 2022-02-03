@@ -5,7 +5,7 @@ import type {
   ResolvedProvider,
   ResolverResponse,
   Target,
-  Token
+  Token,
 } from "core/types/mod.ts";
 import { ModuleScope, NoScope } from "core/metadata/mod.ts";
 
@@ -14,7 +14,7 @@ export default class Host implements ModuleHost {
     public readonly module: Target,
     public readonly internals: ModuleRegistry[],
     public readonly externals: ModuleRegistry[],
-    public readonly imported: ModuleHost[]
+    public readonly imported: ModuleHost[],
   ) {
   }
 

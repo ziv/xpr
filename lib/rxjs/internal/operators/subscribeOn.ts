@@ -1,5 +1,5 @@
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.

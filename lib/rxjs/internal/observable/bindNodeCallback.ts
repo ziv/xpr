@@ -1,18 +1,18 @@
 /* @prettier */
-import { Observable } from '../Observable.ts';
-import { SchedulerLike } from '../types.ts';
-import { bindCallbackInternals } from './bindCallbackInternals.ts';
+import { Observable } from "../Observable.ts";
+import { SchedulerLike } from "../types.ts";
+import { bindCallbackInternals } from "./bindCallbackInternals.ts";
 
 export function bindNodeCallback(
   callbackFunc: (...args: any[]) => void,
   resultSelector: (...args: any[]) => any,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): (...args: any[]) => Observable<any>;
 
 // args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
 export function bindNodeCallback<A extends readonly unknown[], R extends readonly unknown[]>(
   callbackFunc: (...args: [...A, (err: any, ...res: R) => void]) => void,
-  schedulerLike?: SchedulerLike
+  schedulerLike?: SchedulerLike,
 ): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
 /**
@@ -122,7 +122,7 @@ export function bindNodeCallback<A extends readonly unknown[], R extends readonl
 export function bindNodeCallback(
   callbackFunc: (...args: [...any[], (err: any, ...res: any) => void]) => void,
   resultSelector?: ((...args: any[]) => any) | SchedulerLike,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): (...args: any[]) => Observable<any> {
   return bindCallbackInternals(true, callbackFunc, resultSelector, scheduler);
 }

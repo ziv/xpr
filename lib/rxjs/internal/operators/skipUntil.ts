@@ -1,9 +1,9 @@
-import { Observable } from '../Observable.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { noop } from '../util/noop.ts';
+import { Observable } from "../Observable.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { noop } from "../util/noop.ts";
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -57,7 +57,7 @@ export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunctio
         skipSubscriber?.unsubscribe();
         taking = true;
       },
-      noop
+      noop,
     );
 
     innerFrom(notifier).subscribe(skipSubscriber);

@@ -1,7 +1,7 @@
-import { EmptyError } from '../util/EmptyError.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { EmptyError } from "../util/EmptyError.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * If the source observable completes without emitting a value, it will emit
@@ -49,8 +49,8 @@ export function throwIfEmpty<T>(errorFactory: () => any = defaultErrorFactory): 
           hasValue = true;
           subscriber.next(value);
         },
-        () => (hasValue ? subscriber.complete() : subscriber.error(errorFactory()))
-      )
+        () => (hasValue ? subscriber.complete() : subscriber.error(errorFactory())),
+      ),
     );
   });
 }

@@ -1,5 +1,5 @@
-import { ObservableInputTuple, OperatorFunction, Cons } from '../types.ts';
-import { zip } from './zip.ts';
+import { Cons, ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { zip } from "./zip.ts";
 
 /**
  * Subscribes to the source, and the observable inputs provided as arguments, and combines their values, by index, into arrays.
@@ -24,6 +24,8 @@ import { zip } from './zip.ts';
  * combined from the source Observable and provided Observables, in form of an
  * array.
  */
-export function zipWith<T, A extends readonly unknown[]>(...otherInputs: [...ObservableInputTuple<A>]): OperatorFunction<T, Cons<T, A>> {
+export function zipWith<T, A extends readonly unknown[]>(
+  ...otherInputs: [...ObservableInputTuple<A>]
+): OperatorFunction<T, Cons<T, A>> {
   return zip(...otherInputs);
 }

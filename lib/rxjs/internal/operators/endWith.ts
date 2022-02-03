@@ -1,8 +1,8 @@
 /** prettier */
-import { Observable } from '../Observable.ts';
-import { concat } from '../observable/concat.ts';
-import { of } from '../observable/of.ts';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ValueFromArray } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { concat } from "../observable/concat.ts";
+import { of } from "../observable/of.ts";
+import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike, ValueFromArray } from "../types.ts";
 
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `concatAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;

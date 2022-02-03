@@ -1,5 +1,5 @@
-import { ObservableInputTuple, OperatorFunction } from '../types.ts';
-import { merge } from './merge.ts';
+import { ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { merge } from "./merge.ts";
 
 /**
  * Merge the values from all observables to a single observable result.

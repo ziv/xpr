@@ -1,7 +1,7 @@
-import { SchedulerLike, ValueFromArray } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { popScheduler } from '../util/args.ts';
-import { from } from './from.ts';
+import { SchedulerLike, ValueFromArray } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { popScheduler } from "../util/args.ts";
+import { from } from "./from.ts";
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
@@ -14,7 +14,9 @@ export function of(value: undefined): Observable<undefined>;
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function of(scheduler: SchedulerLike): Observable<never>;
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled`. Details: https://rxjs.dev/deprecations/scheduler-argument */
-export function of<A extends readonly unknown[]>(...valuesAndScheduler: [...A, SchedulerLike]): Observable<ValueFromArray<A>>;
+export function of<A extends readonly unknown[]>(
+  ...valuesAndScheduler: [...A, SchedulerLike]
+): Observable<ValueFromArray<A>>;
 
 export function of(): Observable<never>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */

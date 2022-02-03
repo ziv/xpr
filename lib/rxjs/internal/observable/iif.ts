@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.ts';
-import { defer } from './defer.ts';
-import { ObservableInput } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { defer } from "./defer.ts";
+import { ObservableInput } from "../types.ts";
 
 /**
  * Checks a boolean at subscription time, and chooses between one of two observable sources
@@ -80,6 +80,10 @@ import { ObservableInput } from '../types.ts';
  * @param falseResult An Observable that will be subscribed if condition is false.
  * @return An observable that proxies to `trueResult` or `falseResult`, depending on the result of the `condition` function.
  */
-export function iif<T, F>(condition: () => boolean, trueResult: ObservableInput<T>, falseResult: ObservableInput<F>): Observable<T | F> {
+export function iif<T, F>(
+  condition: () => boolean,
+  trueResult: ObservableInput<T>,
+  falseResult: ObservableInput<F>,
+): Observable<T | F> {
   return defer(() => (condition() ? trueResult : falseResult));
 }

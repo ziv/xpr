@@ -1,16 +1,16 @@
-import { isArrayLike } from '../util/isArrayLike.ts';
-import { isPromise } from '../util/isPromise.ts';
-import { Observable } from '../Observable.ts';
-import { ObservableInput, ReadableStreamLike } from '../types.ts';
-import { isInteropObservable } from '../util/isInteropObservable.ts';
-import { isAsyncIterable } from '../util/isAsyncIterable.ts';
-import { createInvalidObservableTypeError } from '../util/throwUnobservableError.ts';
-import { isIterable } from '../util/isIterable.ts';
-import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from '../util/isReadableStreamLike.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { reportUnhandledError } from '../util/reportUnhandledError.ts';
-import { observable as Symbol_observable } from '../symbol/observable.ts';
+import { isArrayLike } from "../util/isArrayLike.ts";
+import { isPromise } from "../util/isPromise.ts";
+import { Observable } from "../Observable.ts";
+import { ObservableInput, ReadableStreamLike } from "../types.ts";
+import { isInteropObservable } from "../util/isInteropObservable.ts";
+import { isAsyncIterable } from "../util/isAsyncIterable.ts";
+import { createInvalidObservableTypeError } from "../util/throwUnobservableError.ts";
+import { isIterable } from "../util/isIterable.ts";
+import { isReadableStreamLike, readableStreamLikeToAsyncGenerator } from "../util/isReadableStreamLike.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { reportUnhandledError } from "../util/reportUnhandledError.ts";
+import { observable as Symbol_observable } from "../symbol/observable.ts";
 
 export function innerFrom<T>(input: ObservableInput<T>): Observable<T> {
   if (input instanceof Observable) {
@@ -51,7 +51,7 @@ export function fromInteropObservable<T>(obj: any) {
       return obs.subscribe(subscriber);
     }
     // Should be caught by observable subscribe function error handling.
-    throw new TypeError('Provided object does not correctly implement Symbol.observable');
+    throw new TypeError("Provided object does not correctly implement Symbol.observable");
   });
 }
 
@@ -90,7 +90,7 @@ export function fromPromise<T>(promise: PromiseLike<T>) {
             subscriber.complete();
           }
         },
-        (err: any) => subscriber.error(err)
+        (err: any) => subscriber.error(err),
       )
       .then(null, reportUnhandledError);
   });

@@ -1,5 +1,5 @@
-import { OperatorFunction } from '../types.ts';
-import { reduce } from './reduce.ts';
+import { OperatorFunction } from "../types.ts";
+import { reduce } from "./reduce.ts";
 
 /**
  * Counts the number of emissions on the source and emits that number when the

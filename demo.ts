@@ -1,8 +1,7 @@
 import "core/reflection/reflection.ts";
 import { Emitter, Inject, Injectable, Module, ModuleScope } from "core/mod.ts";
 
-
-@Injectable({scope: ModuleScope})
+@Injectable({ scope: ModuleScope })
 class SizeService {
   constructor(@Inject("size") public i: number) {
   }
@@ -46,8 +45,7 @@ class CModule1 {
 class App {
 }
 
-
-const e = new Emitter('a');
+const e = new Emitter("a");
 console.log(e);
 
 // const [ctx, registry] = await context(App);

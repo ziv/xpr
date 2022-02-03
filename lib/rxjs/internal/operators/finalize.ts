@@ -1,5 +1,5 @@
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when

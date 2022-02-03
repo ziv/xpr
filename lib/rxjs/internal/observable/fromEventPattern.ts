@@ -1,17 +1,17 @@
-import { Observable } from '../Observable.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { NodeEventHandler } from './fromEvent.ts';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.ts';
+import { Observable } from "../Observable.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { NodeEventHandler } from "./fromEvent.ts";
+import { mapOneOrManyArgs } from "../util/mapOneOrManyArgs.ts";
 
 /* tslint:disable:max-line-length */
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
-  removeHandler?: (handler: NodeEventHandler, signal?: any) => void
+  removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
 ): Observable<T>;
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
-  resultSelector?: (...args: any[]) => T
+  resultSelector?: (...args: any[]) => T,
 ): Observable<T>;
 /* tslint:enable:max-line-length */
 
@@ -141,7 +141,7 @@ export function fromEventPattern<T>(
 export function fromEventPattern<T>(
   addHandler: (handler: NodeEventHandler) => any,
   removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
-  resultSelector?: (...args: any[]) => T
+  resultSelector?: (...args: any[]) => T,
 ): Observable<T | T[]> {
   if (resultSelector) {
     return fromEventPattern<T>(addHandler, removeHandler).pipe(mapOneOrManyArgs(resultSelector));

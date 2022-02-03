@@ -1,5 +1,5 @@
-import { Observable } from '../Observable.ts';
-import { SchedulerLike } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { SchedulerLike } from "../types.ts";
 
 /**
  * A simple Observable that emits no items to the Observer and immediately

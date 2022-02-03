@@ -1,12 +1,14 @@
-import { OperatorFunction, ObservableInputTuple } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { identity } from '../util/identity.ts';
-import { noop } from '../util/noop.ts';
-import { popResultSelector } from '../util/args.ts';
+import { ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { identity } from "../util/identity.ts";
+import { noop } from "../util/noop.ts";
+import { popResultSelector } from "../util/args.ts";
 
-export function withLatestFrom<T, O extends unknown[]>(...inputs: [...ObservableInputTuple<O>]): OperatorFunction<T, [T, ...O]>;
+export function withLatestFrom<T, O extends unknown[]>(
+  ...inputs: [...ObservableInputTuple<O>]
+): OperatorFunction<T, [T, ...O]>;
 
 export function withLatestFrom<T, O extends unknown[], R>(
   ...inputs: [...ObservableInputTuple<O>, (...value: [T, ...O]) => R]
@@ -91,8 +93,8 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
           },
           // Completing one of the other sources has
           // no bearing on the completion of our result.
-          noop
-        )
+          noop,
+        ),
       );
     }
 
@@ -104,7 +106,7 @@ export function withLatestFrom<T, R>(...inputs: any[]): OperatorFunction<T, R | 
           const values = [value, ...otherValues];
           subscriber.next(project ? project(...values) : values);
         }
-      })
+      }),
     );
   });
 }

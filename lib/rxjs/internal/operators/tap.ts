@@ -1,8 +1,8 @@
-import { MonoTypeOperatorFunction, Observer } from '../types.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { identity } from '../util/identity.ts';
+import { MonoTypeOperatorFunction, Observer } from "../types.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { identity } from "../util/identity.ts";
 
 export interface TapObserver<T> extends Observer<T> {
   subscribe: () => void;
@@ -16,7 +16,7 @@ export function tap<T>(next: (value: T) => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(
   next?: ((value: T) => void) | null,
   error?: ((error: any) => void) | null,
-  complete?: (() => void) | null
+  complete?: (() => void) | null,
 ): MonoTypeOperatorFunction<T>;
 
 /**
@@ -107,49 +107,50 @@ export function tap<T>(
 export function tap<T>(
   observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null,
   error?: ((e: any) => void) | null,
-  complete?: (() => void) | null
+  complete?: (() => void) | null,
 ): MonoTypeOperatorFunction<T> {
   // We have to check to see not only if next is a function,
   // but if error or complete were passed. This is because someone
   // could technically call tap like `tap(null, fn)` or `tap(null, null, fn)`.
-  const tapObserver =
-    isFunction(observerOrNext) || error || complete
-      ? // tslint:disable-next-line: no-object-literal-type-assertion
-        ({ next: observerOrNext as Exclude<typeof observerOrNext, Partial<TapObserver<T>>>, error, complete } as Partial<TapObserver<T>>)
-      : observerOrNext;
+  const tapObserver = isFunction(observerOrNext) || error || complete
+    ? // tslint:disable-next-line: no-object-literal-type-assertion
+      ({ next: observerOrNext as Exclude<typeof observerOrNext, Partial<TapObserver<T>>>, error, complete } as Partial<
+        TapObserver<T>
+      >)
+    : observerOrNext;
 
   return tapObserver
     ? operate((source, subscriber) => {
-        tapObserver.subscribe?.();
-        let isUnsub = true;
-        source.subscribe(
-          new OperatorSubscriber(
-            subscriber,
-            (value) => {
-              tapObserver.next?.(value);
-              subscriber.next(value);
-            },
-            () => {
-              isUnsub = false;
-              tapObserver.complete?.();
-              subscriber.complete();
-            },
-            (err) => {
-              isUnsub = false;
-              tapObserver.error?.(err);
-              subscriber.error(err);
-            },
-            () => {
-              if (isUnsub) {
-                tapObserver.unsubscribe?.();
-              }
-              tapObserver.finalize?.();
+      tapObserver.subscribe?.();
+      let isUnsub = true;
+      source.subscribe(
+        new OperatorSubscriber(
+          subscriber,
+          (value) => {
+            tapObserver.next?.(value);
+            subscriber.next(value);
+          },
+          () => {
+            isUnsub = false;
+            tapObserver.complete?.();
+            subscriber.complete();
+          },
+          (err) => {
+            isUnsub = false;
+            tapObserver.error?.(err);
+            subscriber.error(err);
+          },
+          () => {
+            if (isUnsub) {
+              tapObserver.unsubscribe?.();
             }
-          )
-        );
-      })
+            tapObserver.finalize?.();
+          },
+        ),
+      );
+    })
     : // Tap was called with no valid tap observer or handler
-      // (e.g. `tap(null, null, null)` or `tap(null)` or `tap()`)
-      // so we're going to just mirror the source.
+    // (e.g. `tap(null, null, null)` or `tap(null)` or `tap()`)
+    // so we're going to just mirror the source.
       identity;
 }

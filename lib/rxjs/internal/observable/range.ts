@@ -1,6 +1,6 @@
-import { SchedulerLike } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { EMPTY } from './empty.ts';
+import { SchedulerLike } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { EMPTY } from "./empty.ts";
 
 export function range(start: number, count?: number): Observable<number>;
 
@@ -89,6 +89,6 @@ export function range(start: number, count?: number, scheduler?: SchedulerLike):
             subscriber.next(n++);
           }
           subscriber.complete();
-        }
+        },
   );
 }

@@ -1,6 +1,6 @@
-import { SchedulerLike } from '../types.ts';
-import { isFunction } from './isFunction.ts';
-import { isScheduler } from './isScheduler.ts';
+import { SchedulerLike } from "../types.ts";
+import { isFunction } from "./isFunction.ts";
+import { isScheduler } from "./isScheduler.ts";
 
 function last<T>(arr: T[]): T | undefined {
   return arr[arr.length - 1];
@@ -15,5 +15,5 @@ export function popScheduler(args: any[]): SchedulerLike | undefined {
 }
 
 export function popNumber(args: any[], defaultValue: number): number {
-  return typeof last(args) === 'number' ? args.pop()! : defaultValue;
+  return typeof last(args) === "number" ? args.pop()! : defaultValue;
 }

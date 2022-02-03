@@ -1,5 +1,5 @@
-import { ObservableInputTuple, OperatorFunction, Cons } from '../types.ts';
-import { combineLatest } from './combineLatest.ts';
+import { Cons, ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { combineLatest } from "./combineLatest.ts";
 
 /**
  * Create an observable that combines the latest values from all passed observables and the source

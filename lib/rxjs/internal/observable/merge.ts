@@ -1,13 +1,15 @@
-import { Observable } from '../Observable.ts';
-import { ObservableInput, ObservableInputTuple, SchedulerLike } from '../types.ts';
-import { mergeAll } from '../operators/mergeAll.ts';
-import { innerFrom } from './innerFrom.ts';
-import { EMPTY } from './empty.ts';
-import { popNumber, popScheduler } from '../util/args.ts';
-import { from } from './from.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInput, ObservableInputTuple, SchedulerLike } from "../types.ts";
+import { mergeAll } from "../operators/mergeAll.ts";
+import { innerFrom } from "./innerFrom.ts";
+import { EMPTY } from "./empty.ts";
+import { popNumber, popScheduler } from "../util/args.ts";
+import { from } from "./from.ts";
 
 export function merge<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
-export function merge<A extends readonly unknown[]>(...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]): Observable<A[number]>;
+export function merge<A extends readonly unknown[]>(
+  ...sourcesAndConcurrency: [...ObservableInputTuple<A>, number?]
+): Observable<A[number]>;
 /** @deprecated The `scheduler` parameter will be removed in v8. Use `scheduled` and `mergeAll`. Details: https://rxjs.dev/deprecations/scheduler-argument */
 export function merge<A extends readonly unknown[]>(
   ...sourcesAndScheduler: [...ObservableInputTuple<A>, SchedulerLike?]

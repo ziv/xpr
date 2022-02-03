@@ -1,7 +1,7 @@
-import { AsyncAction } from './AsyncAction.ts';
-import { Subscription } from '../Subscription.ts';
-import { AsyncScheduler } from './AsyncScheduler.ts';
-import { SchedulerAction } from '../types.ts';
+import { AsyncAction } from "./AsyncAction.ts";
+import { Subscription } from "../Subscription.ts";
+import { AsyncScheduler } from "./AsyncScheduler.ts";
+import { SchedulerAction } from "../types.ts";
 
 export class VirtualTimeScheduler extends AsyncScheduler {
   /** @deprecated Not used in VirtualTimeScheduler directly. Will be removed in v8. */
@@ -66,7 +66,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
   constructor(
     protected scheduler: VirtualTimeScheduler,
     protected work: (this: SchedulerAction<T>, state?: T) => void,
-    protected index: number = (scheduler.index += 1)
+    protected index: number = (scheduler.index += 1),
   ) {
     super(scheduler, work);
     this.index = scheduler.index = index;

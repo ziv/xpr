@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { delayWhen } from './delayWhen.ts';
-import { timer } from '../observable/timer.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { delayWhen } from "./delayWhen.ts";
+import { timer } from "../observable/timer.ts";
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or

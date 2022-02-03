@@ -1,12 +1,12 @@
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { Subscription } from '../Subscription.ts';
-import { ObservableInput, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { noop } from '../util/noop.ts';
-import { arrRemove } from '../util/arrRemove.ts';
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { Subscription } from "../Subscription.ts";
+import { ObservableInput, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { noop } from "../util/noop.ts";
+import { arrRemove } from "../util/arrRemove.ts";
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -57,7 +57,7 @@ import { arrRemove } from '../util/arrRemove.ts';
  */
 export function windowToggle<T, O>(
   openings: ObservableInput<O>,
-  closingSelector: (openValue: O) => ObservableInput<any>
+  closingSelector: (openValue: O) => ObservableInput<any>,
 ): OperatorFunction<T, Observable<T>> {
   return operate((source, subscriber) => {
     const windows: Subject<T>[] = [];
@@ -92,10 +92,12 @@ export function windowToggle<T, O>(
 
           subscriber.next(window.asObservable());
 
-          closingSubscription.add(closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, noop, handleError)));
+          closingSubscription.add(
+            closingNotifier.subscribe(new OperatorSubscriber(subscriber, closeWindow, noop, handleError)),
+          );
         },
-        noop
-      )
+        noop,
+      ),
     );
 
     // Subcribe to the source to get things started.
@@ -127,8 +129,8 @@ export function windowToggle<T, O>(
           while (0 < windows.length) {
             windows.shift()!.unsubscribe();
           }
-        }
-      )
+        },
+      ),
     );
   });
 }

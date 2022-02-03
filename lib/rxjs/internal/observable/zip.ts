@@ -1,15 +1,15 @@
-import { Observable } from '../Observable.ts';
-import { ObservableInputTuple } from '../types.ts';
-import { innerFrom } from './innerFrom.ts';
-import { argsOrArgArray } from '../util/argsOrArgArray.ts';
-import { EMPTY } from './empty.ts';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber.ts';
-import { popResultSelector } from '../util/args.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInputTuple } from "../types.ts";
+import { innerFrom } from "./innerFrom.ts";
+import { argsOrArgArray } from "../util/argsOrArgArray.ts";
+import { EMPTY } from "./empty.ts";
+import { OperatorSubscriber } from "../operators/OperatorSubscriber.ts";
+import { popResultSelector } from "../util/args.ts";
 
 export function zip<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A>;
 export function zip<A extends readonly unknown[], R>(
   sources: [...ObservableInputTuple<A>],
-  resultSelector: (...values: A) => R
+  resultSelector: (...values: A) => R,
 ): Observable<R>;
 export function zip<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A>;
 export function zip<A extends readonly unknown[], R>(
@@ -55,61 +55,61 @@ export function zip(...args: unknown[]): Observable<unknown> {
 
   return sources.length
     ? new Observable<unknown[]>((subscriber) => {
-        // A collection of buffers of values from each source.
-        // Keyed by the same index with which the sources were passed in.
-        let buffers: unknown[][] = sources.map(() => []);
+      // A collection of buffers of values from each source.
+      // Keyed by the same index with which the sources were passed in.
+      let buffers: unknown[][] = sources.map(() => []);
 
-        // An array of flags of whether or not the sources have completed.
-        // This is used to check to see if we should complete the result.
-        // Keyed by the same index with which the sources were passed in.
-        let completed = sources.map(() => false);
+      // An array of flags of whether or not the sources have completed.
+      // This is used to check to see if we should complete the result.
+      // Keyed by the same index with which the sources were passed in.
+      let completed = sources.map(() => false);
 
-        // When everything is done, release the arrays above.
-        subscriber.add(() => {
-          buffers = completed = null!;
-        });
+      // When everything is done, release the arrays above.
+      subscriber.add(() => {
+        buffers = completed = null!;
+      });
 
-        // Loop over our sources and subscribe to each one. The index `i` is
-        // especially important here, because we use it in closures below to
-        // access the related buffers and completion properties
-        for (let sourceIndex = 0; !subscriber.closed && sourceIndex < sources.length; sourceIndex++) {
-          innerFrom(sources[sourceIndex]).subscribe(
-            new OperatorSubscriber(
-              subscriber,
-              (value) => {
-                buffers[sourceIndex].push(value);
-                // if every buffer has at least one value in it, then we
-                // can shift out the oldest value from each buffer and emit
-                // them as an array.
-                if (buffers.every((buffer) => buffer.length)) {
-                  const result: any = buffers.map((buffer) => buffer.shift()!);
-                  // Emit the array. If theres' a result selector, use that.
-                  subscriber.next(resultSelector ? resultSelector(...result) : result);
-                  // If any one of the sources is both complete and has an empty buffer
-                  // then we complete the result. This is because we cannot possibly have
-                  // any more values to zip together.
-                  if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
-                    subscriber.complete();
-                  }
+      // Loop over our sources and subscribe to each one. The index `i` is
+      // especially important here, because we use it in closures below to
+      // access the related buffers and completion properties
+      for (let sourceIndex = 0; !subscriber.closed && sourceIndex < sources.length; sourceIndex++) {
+        innerFrom(sources[sourceIndex]).subscribe(
+          new OperatorSubscriber(
+            subscriber,
+            (value) => {
+              buffers[sourceIndex].push(value);
+              // if every buffer has at least one value in it, then we
+              // can shift out the oldest value from each buffer and emit
+              // them as an array.
+              if (buffers.every((buffer) => buffer.length)) {
+                const result: any = buffers.map((buffer) => buffer.shift()!);
+                // Emit the array. If theres' a result selector, use that.
+                subscriber.next(resultSelector ? resultSelector(...result) : result);
+                // If any one of the sources is both complete and has an empty buffer
+                // then we complete the result. This is because we cannot possibly have
+                // any more values to zip together.
+                if (buffers.some((buffer, i) => !buffer.length && completed[i])) {
+                  subscriber.complete();
                 }
-              },
-              () => {
-                // This source completed. Mark it as complete so we can check it later
-                // if we have to.
-                completed[sourceIndex] = true;
-                // But, if this complete source has nothing in its buffer, then we
-                // can complete the result, because we can't possibly have any more
-                // values from this to zip together with the other values.
-                !buffers[sourceIndex].length && subscriber.complete();
               }
-            )
-          );
-        }
+            },
+            () => {
+              // This source completed. Mark it as complete so we can check it later
+              // if we have to.
+              completed[sourceIndex] = true;
+              // But, if this complete source has nothing in its buffer, then we
+              // can complete the result, because we can't possibly have any more
+              // values from this to zip together with the other values.
+              !buffers[sourceIndex].length && subscriber.complete();
+            },
+          ),
+        );
+      }
 
-        // When everything is done, release the arrays above.
-        return () => {
-          buffers = completed = null!;
-        };
-      })
+      // When everything is done, release the arrays above.
+      return () => {
+        buffers = completed = null!;
+      };
+    })
     : EMPTY;
 }

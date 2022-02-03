@@ -1,8 +1,8 @@
-import { Subscription } from '../Subscription.ts';
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Subscription } from "../Subscription.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -61,15 +61,15 @@ export function exhaustAll<O extends ObservableInput<any>>(): OperatorFunction<O
               new OperatorSubscriber(subscriber, undefined, () => {
                 innerSub = null;
                 isComplete && subscriber.complete();
-              })
+              }),
             );
           }
         },
         () => {
           isComplete = true;
           !innerSub && subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

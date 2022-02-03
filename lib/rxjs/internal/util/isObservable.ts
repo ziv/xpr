@@ -1,6 +1,6 @@
 /** prettier */
-import { Observable } from '../Observable.ts';
-import { isFunction } from './isFunction.ts';
+import { Observable } from "../Observable.ts";
+import { isFunction } from "./isFunction.ts";
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}

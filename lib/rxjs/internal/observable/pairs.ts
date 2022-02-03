@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.ts';
-import { SchedulerLike } from '../types.ts';
-import { from } from './from.ts';
+import { Observable } from "../Observable.ts";
+import { SchedulerLike } from "../types.ts";
+import { from } from "./from.ts";
 
 /**
  * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
@@ -9,7 +9,10 @@ export function pairs<T>(arr: readonly T[], scheduler?: SchedulerLike): Observab
 /**
  * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
-export function pairs<O extends Record<string, unknown>>(obj: O, scheduler?: SchedulerLike): Observable<[keyof O, O[keyof O]]>;
+export function pairs<O extends Record<string, unknown>>(
+  obj: O,
+  scheduler?: SchedulerLike,
+): Observable<[keyof O, O[keyof O]]>;
 /**
  * @deprecated Use `from(Object.entries(obj))` instead. Will be removed in v8.
  */
@@ -19,7 +22,7 @@ export function pairs<T>(iterable: Iterable<T>, scheduler?: SchedulerLike): Obse
  */
 export function pairs(
   n: number | bigint | boolean | ((...args: any[]) => any) | symbol,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): Observable<[never, never]>;
 
 /**

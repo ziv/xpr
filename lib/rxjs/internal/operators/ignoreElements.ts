@@ -1,7 +1,7 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { noop } from '../util/noop.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { noop } from "../util/noop.ts";
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.

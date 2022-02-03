@@ -1,6 +1,6 @@
-import { Scheduler } from '../Scheduler.ts';
-import { Subscription } from '../Subscription.ts';
-import { SchedulerAction } from '../types.ts';
+import { Scheduler } from "../Scheduler.ts";
+import { Subscription } from "../Subscription.ts";
+import { SchedulerAction } from "../types.ts";
 
 /**
  * A unit of work to be executed in a `scheduler`. An action is typically

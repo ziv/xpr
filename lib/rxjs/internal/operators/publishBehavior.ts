@@ -1,7 +1,7 @@
-import { Observable } from '../Observable.ts';
-import { BehaviorSubject } from '../BehaviorSubject.ts';
-import { ConnectableObservable } from '../observable/ConnectableObservable.ts';
-import { UnaryFunction } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { BehaviorSubject } from "../BehaviorSubject.ts";
+import { ConnectableObservable } from "../observable/ConnectableObservable.ts";
+import { UnaryFunction } from "../types.ts";
 
 /**
  * Creates a {@link ConnectableObservable} that utilizes a {@link BehaviorSubject}.

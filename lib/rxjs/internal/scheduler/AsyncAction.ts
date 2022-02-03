@@ -1,9 +1,9 @@
-import { Action } from './Action.ts';
-import { SchedulerAction } from '../types.ts';
-import { Subscription } from '../Subscription.ts';
-import { AsyncScheduler } from './AsyncScheduler.ts';
-import { intervalProvider } from './intervalProvider.ts';
-import { arrRemove } from '../util/arrRemove.ts';
+import { Action } from "./Action.ts";
+import { SchedulerAction } from "../types.ts";
+import { Subscription } from "../Subscription.ts";
+import { AsyncScheduler } from "./AsyncScheduler.ts";
+import { intervalProvider } from "./intervalProvider.ts";
+import { arrRemove } from "../util/arrRemove.ts";
 
 export class AsyncAction<T> extends Action<T> {
   public id: any;
@@ -84,7 +84,7 @@ export class AsyncAction<T> extends Action<T> {
    */
   public execute(state: T, delay: number): any {
     if (this.closed) {
-      return new Error('executing a cancelled action');
+      return new Error("executing a cancelled action");
     }
 
     this.pending = false;
@@ -119,7 +119,7 @@ export class AsyncAction<T> extends Action<T> {
       // HACK: Since code elsewhere is relying on the "truthiness" of the
       // return here, we can't have it return "" or 0 or false.
       // TODO: Clean this up when we refactor schedulers mid-version-8 or so.
-      errorValue = e ? e : new Error('Scheduled action threw falsy error');
+      errorValue = e ? e : new Error("Scheduled action threw falsy error");
     }
     if (errored) {
       this.unsubscribe();

@@ -1,7 +1,7 @@
-import { not } from '../util/not.ts';
-import { filter } from './filter.ts';
-import { Observable } from '../Observable.ts';
-import { UnaryFunction } from '../types.ts';
+import { not } from "../util/not.ts";
+import { filter } from "./filter.ts";
+import { Observable } from "../Observable.ts";
+import { UnaryFunction } from "../types.ts";
 
 /**
  * Splits the source Observable into two, one with values that satisfy a
@@ -56,7 +56,7 @@ import { UnaryFunction } from '../types.ts';
  */
 export function partition<T>(
   predicate: (value: T, index: number) => boolean,
-  thisArg?: any
+  thisArg?: any,
 ): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
   return (source: Observable<T>) =>
     [filter(predicate, thisArg)(source), filter(not(predicate, thisArg))(source)] as [Observable<T>, Observable<T>];

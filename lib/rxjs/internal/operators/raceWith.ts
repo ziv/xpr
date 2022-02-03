@@ -1,7 +1,7 @@
-import { OperatorFunction, ObservableInputTuple } from '../types.ts';
-import { raceInit } from '../observable/race.ts';
-import { operate } from '../util/lift.ts';
-import { identity } from '../util/identity.ts';
+import { ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { raceInit } from "../observable/race.ts";
+import { operate } from "../util/lift.ts";
+import { identity } from "../util/identity.ts";
 
 /**
  * Creates an Observable that mirrors the first source Observable to emit a next,
@@ -32,9 +32,7 @@ import { identity } from '../util/identity.ts';
 export function raceWith<T, A extends readonly unknown[]>(
   ...otherSources: [...ObservableInputTuple<A>]
 ): OperatorFunction<T, T | A[number]> {
-  return !otherSources.length
-    ? identity
-    : operate((source, subscriber) => {
-        raceInit<T | A[number]>([source, ...otherSources])(subscriber);
-      });
+  return !otherSources.length ? identity : operate((source, subscriber) => {
+    raceInit<T | A[number]>([source, ...otherSources])(subscriber);
+  });
 }

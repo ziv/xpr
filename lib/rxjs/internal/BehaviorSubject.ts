@@ -1,6 +1,6 @@
-import { Subject } from './Subject.ts';
-import { Subscriber } from './Subscriber.ts';
-import { Subscription } from './Subscription.ts';
+import { Subject } from "./Subject.ts";
+import { Subscriber } from "./Subscriber.ts";
+import { Subscription } from "./Subscription.ts";
 
 /**
  * A variant of Subject that requires an initial value and emits its current
@@ -34,6 +34,6 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    super.next((this._value = value));
+    super.next(this._value = value);
   }
 }

@@ -1,16 +1,16 @@
-import { SchedulerLike } from '../types.ts';
-import { isScheduler } from '../util/isScheduler.ts';
-import { Observable } from '../Observable.ts';
-import { subscribeOn } from '../operators/subscribeOn.ts';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.ts';
-import { observeOn } from '../operators/observeOn.ts';
-import { AsyncSubject } from '../AsyncSubject.ts';
+import { SchedulerLike } from "../types.ts";
+import { isScheduler } from "../util/isScheduler.ts";
+import { Observable } from "../Observable.ts";
+import { subscribeOn } from "../operators/subscribeOn.ts";
+import { mapOneOrManyArgs } from "../util/mapOneOrManyArgs.ts";
+import { observeOn } from "../operators/observeOn.ts";
+import { AsyncSubject } from "../AsyncSubject.ts";
 
 export function bindCallbackInternals(
   isNodeStyle: boolean,
   callbackFunc: any,
   resultSelector?: any,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): (...args: any[]) => Observable<unknown> {
   if (resultSelector) {
     if (isScheduler(resultSelector)) {
@@ -98,7 +98,7 @@ export function bindCallbackInternals(
                 subject.complete();
               }
             },
-          ]
+          ],
         );
         // If we flipped `isComplete` during the call, we resolved synchronously,
         // notify complete, because we skipped it in the callback to wait

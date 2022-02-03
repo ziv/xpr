@@ -1,8 +1,14 @@
-import { Observable } from '../Observable.ts';
-import { ReplaySubject } from '../ReplaySubject.ts';
-import { multicast } from './multicast.ts';
-import { MonoTypeOperatorFunction, OperatorFunction, TimestampProvider, ObservableInput, ObservedValueOf } from '../types.ts';
-import { isFunction } from '../util/isFunction.ts';
+import { Observable } from "../Observable.ts";
+import { ReplaySubject } from "../ReplaySubject.ts";
+import { multicast } from "./multicast.ts";
+import {
+  MonoTypeOperatorFunction,
+  ObservableInput,
+  ObservedValueOf,
+  OperatorFunction,
+  TimestampProvider,
+} from "../types.ts";
+import { isFunction } from "../util/isFunction.ts";
 
 /**
  * Creates a {@link ConnectableObservable} that uses a {@link ReplaySubject}
@@ -23,7 +29,7 @@ import { isFunction } from '../util/isFunction.ts';
 export function publishReplay<T>(
   bufferSize?: number,
   windowTime?: number,
-  timestampProvider?: TimestampProvider
+  timestampProvider?: TimestampProvider,
 ): MonoTypeOperatorFunction<T>;
 
 /**
@@ -47,7 +53,7 @@ export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,
   windowTime: number | undefined,
   selector: (shared: Observable<T>) => O,
-  timestampProvider?: TimestampProvider
+  timestampProvider?: TimestampProvider,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
@@ -71,7 +77,7 @@ export function publishReplay<T, O extends ObservableInput<any>>(
   bufferSize: number | undefined,
   windowTime: number | undefined,
   selector: undefined,
-  timestampProvider: TimestampProvider
+  timestampProvider: TimestampProvider,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
@@ -84,7 +90,7 @@ export function publishReplay<T, R>(
   bufferSize?: number,
   windowTime?: number,
   selectorOrScheduler?: TimestampProvider | OperatorFunction<T, R>,
-  timestampProvider?: TimestampProvider
+  timestampProvider?: TimestampProvider,
 ) {
   if (selectorOrScheduler && !isFunction(selectorOrScheduler)) {
     timestampProvider = selectorOrScheduler;
@@ -92,5 +98,6 @@ export function publishReplay<T, R>(
   const selector = isFunction(selectorOrScheduler) ? selectorOrScheduler : undefined;
   // Note, we're passing `selector!` here, because at runtime, `undefined` is an acceptable argument
   // but it makes our TypeScript signature for `multicast` unhappy (as it should, because it's gross).
-  return (source: Observable<T>) => multicast(new ReplaySubject<T>(bufferSize, windowTime, timestampProvider), selector!)(source);
+  return (source: Observable<T>) =>
+    multicast(new ReplaySubject<T>(bufferSize, windowTime, timestampProvider), selector!)(source);
 }

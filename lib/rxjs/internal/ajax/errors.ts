@@ -1,6 +1,6 @@
-import { AjaxRequest } from './types.ts';
-import { getXHRResponse } from './getXHRResponse.ts';
-import { createErrorClass } from '../util/createErrorClass.ts';
+import { AjaxRequest } from "./types.ts";
+import { getXHRResponse } from "./getXHRResponse.ts";
+import { createErrorClass } from "../util/createErrorClass.ts";
 
 /**
  * A normalized AJAX error.
@@ -58,7 +58,7 @@ export const AjaxError: AjaxErrorCtor = createErrorClass(
   (_super) =>
     function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
       this.message = message;
-      this.name = 'AjaxError';
+      this.name = "AjaxError";
       this.xhr = xhr;
       this.request = request;
       this.status = xhr.status;
@@ -72,7 +72,7 @@ export const AjaxError: AjaxErrorCtor = createErrorClass(
         response = xhr.responseText;
       }
       this.response = response;
-    }
+    },
 );
 
 export interface AjaxTimeoutError extends AjaxError {}
@@ -97,8 +97,8 @@ export interface AjaxTimeoutErrorCtor {
  */
 export const AjaxTimeoutError: AjaxTimeoutErrorCtor = (() => {
   function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
-    AjaxError.call(this, 'ajax timeout', xhr, request);
-    this.name = 'AjaxTimeoutError';
+    AjaxError.call(this, "ajax timeout", xhr, request);
+    this.name = "AjaxTimeoutError";
     return this;
   }
   AjaxTimeoutErrorImpl.prototype = Object.create(AjaxError.prototype);

@@ -1,13 +1,19 @@
-import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function filter<T, S extends T, A>(predicate: (this: A, value: T, index: number) => value is S, thisArg: A): OperatorFunction<T, S>;
+export function filter<T, S extends T, A>(
+  predicate: (this: A, value: T, index: number) => value is S,
+  thisArg: A,
+): OperatorFunction<T, S>;
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function filter<T, A>(predicate: (this: A, value: T, index: number) => boolean, thisArg: A): MonoTypeOperatorFunction<T>;
+export function filter<T, A>(
+  predicate: (this: A, value: T, index: number) => boolean,
+  thisArg: A,
+): MonoTypeOperatorFunction<T>;
 export function filter<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
 /**
@@ -69,7 +75,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean, thisA
       // Call the predicate with the appropriate `this` context,
       // if the predicate returns `true`, then send the value
       // to the consumer.
-      new OperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value))
+      new OperatorSubscriber(subscriber, (value) => predicate.call(thisArg, value, index++) && subscriber.next(value)),
     );
   });
 }

@@ -1,7 +1,7 @@
-import { Observable } from '../Observable.ts';
-import { Unsubscribable, ObservableInput, ObservedValueOf } from '../types.ts';
-import { innerFrom } from './innerFrom.ts';
-import { EMPTY } from './empty.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInput, ObservedValueOf, Unsubscribable } from "../types.ts";
+import { innerFrom } from "./innerFrom.ts";
+import { EMPTY } from "./empty.ts";
 
 /**
  * Creates an Observable that uses a resource which will be disposed at the same time as the Observable.
@@ -33,7 +33,7 @@ import { EMPTY } from './empty.ts';
  */
 export function using<T extends ObservableInput<any>>(
   resourceFactory: () => Unsubscribable | void,
-  observableFactory: (resource: Unsubscribable | void) => T | void
+  observableFactory: (resource: Unsubscribable | void) => T | void,
 ): Observable<ObservedValueOf<T>> {
   return new Observable<ObservedValueOf<T>>((subscriber) => {
     const resource = resourceFactory();

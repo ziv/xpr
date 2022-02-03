@@ -1,10 +1,10 @@
-import { Subscription } from '../Subscription.ts';
-import { OperatorFunction, ObservableInput } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { noop } from '../util/noop.ts';
-import { arrRemove } from '../util/arrRemove.ts';
+import { Subscription } from "../Subscription.ts";
+import { ObservableInput, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { noop } from "../util/noop.ts";
+import { arrRemove } from "../util/arrRemove.ts";
 
 /**
  * Buffers the source Observable values starting from an emission from
@@ -51,7 +51,7 @@ import { arrRemove } from '../util/arrRemove.ts';
  */
 export function bufferToggle<T, O>(
   openings: ObservableInput<O>,
-  closingSelector: (value: O) => ObservableInput<any>
+  closingSelector: (value: O) => ObservableInput<any>,
 ): OperatorFunction<T, T[]> {
   return operate((source, subscriber) => {
     const buffers: T[][] = [];
@@ -74,10 +74,12 @@ export function bufferToggle<T, O>(
           };
 
           // The line below will add the subscription to the parent subscriber *and* the closing subscription.
-          closingSubscription.add(innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, noop)));
+          closingSubscription.add(
+            innerFrom(closingSelector(openValue)).subscribe(new OperatorSubscriber(subscriber, emitBuffer, noop)),
+          );
         },
-        noop
-      )
+        noop,
+      ),
     );
 
     source.subscribe(
@@ -95,8 +97,8 @@ export function bufferToggle<T, O>(
             subscriber.next(buffers.shift()!);
           }
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

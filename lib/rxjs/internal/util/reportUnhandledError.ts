@@ -1,5 +1,5 @@
-import { config } from '../config.ts';
-import { timeoutProvider } from '../scheduler/timeoutProvider.ts';
+import { config } from "../config.ts";
+import { timeoutProvider } from "../scheduler/timeoutProvider.ts";
 
 /**
  * Handles an error on another job either with the user-configured {@link onUnhandledError},

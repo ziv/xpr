@@ -1,9 +1,9 @@
-import { Observable } from '../Observable.ts';
-import { identity } from '../util/identity.ts';
-import { ObservableInput, SchedulerLike } from '../types.ts';
-import { isScheduler } from '../util/isScheduler.ts';
-import { defer } from './defer.ts';
-import { scheduleIterable } from '../scheduled/scheduleIterable.ts';
+import { Observable } from "../Observable.ts";
+import { identity } from "../util/identity.ts";
+import { ObservableInput, SchedulerLike } from "../types.ts";
+import { isScheduler } from "../util/isScheduler.ts";
+import { defer } from "./defer.ts";
+import { scheduleIterable } from "../scheduled/scheduleIterable.ts";
 
 type ConditionFunc<S> = (state: S) => boolean;
 type IterateFunc<S> = (state: S) => S;
@@ -93,7 +93,7 @@ export function generate<T, S>(
   condition: ConditionFunc<S>,
   iterate: IterateFunc<S>,
   resultSelector: ResultFunc<S, T>,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): Observable<T>;
 
 /**
@@ -138,7 +138,6 @@ export function generate<T, S>(
  * by the Observable. For example, to ensure that each value is pushed to the Observer
  * on a separate task in the event loop, you could use the `async` scheduler. Note that
  * by default (when no scheduler is passed) values are simply emitted synchronously.
- *
  *
  * ## Examples
  *
@@ -242,7 +241,7 @@ export function generate<S>(
   initialState: S,
   condition: ConditionFunc<S>,
   iterate: IterateFunc<S>,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): Observable<S>;
 
 /**
@@ -335,7 +334,7 @@ export function generate<T, S>(
   condition?: ConditionFunc<S>,
   iterate?: IterateFunc<S>,
   resultSelectorOrScheduler?: ResultFunc<S, T> | SchedulerLike,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): Observable<T> {
   let resultSelector: ResultFunc<S, T>;
   let initialState: S;
@@ -375,10 +374,10 @@ export function generate<T, S>(
   return defer(
     (scheduler
       ? // If a scheduler was provided, use `scheduleIterable` to ensure that iteration/generation
-        // happens on the scheduler.
+      // happens on the scheduler.
         () => scheduleIterable(gen(), scheduler!)
       : // Otherwise, if there's no scheduler, we can just use the generator function directly in
-        // `defer` and executing it will return the generator (which is iterable).
-        gen) as () => ObservableInput<T>
+      // `defer` and executing it will return the generator (which is iterable).
+        gen) as () => ObservableInput<T>,
   );
 }

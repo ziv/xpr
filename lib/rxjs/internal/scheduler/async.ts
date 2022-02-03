@@ -1,8 +1,7 @@
-import { AsyncAction } from './AsyncAction.ts';
-import { AsyncScheduler } from './AsyncScheduler.ts';
+import { AsyncAction } from "./AsyncAction.ts";
+import { AsyncScheduler } from "./AsyncScheduler.ts";
 
 /**
- *
  * Async Scheduler
  *
  * <span class="informal">Schedule task as if you used setTimeout(task, duration)</span>

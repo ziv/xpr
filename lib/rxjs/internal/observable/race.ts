@@ -1,10 +1,10 @@
-import { Observable } from '../Observable.ts';
-import { innerFrom } from './innerFrom.ts';
-import { Subscription } from '../Subscription.ts';
-import { ObservableInput, ObservableInputTuple } from '../types.ts';
-import { argsOrArgArray } from '../util/argsOrArgArray.ts';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber.ts';
-import { Subscriber } from '../Subscriber.ts';
+import { Observable } from "../Observable.ts";
+import { innerFrom } from "./innerFrom.ts";
+import { Subscription } from "../Subscription.ts";
+import { ObservableInput, ObservableInputTuple } from "../types.ts";
+import { argsOrArgArray } from "../util/argsOrArgArray.ts";
+import { OperatorSubscriber } from "../operators/OperatorSubscriber.ts";
+import { Subscriber } from "../Subscriber.ts";
 
 export function race<T extends readonly unknown[]>(inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export function race<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
@@ -51,7 +51,9 @@ export function race<T extends readonly unknown[]>(...inputs: [...ObservableInpu
 export function race<T>(...sources: (ObservableInput<T> | ObservableInput<T>[])[]): Observable<any> {
   sources = argsOrArgArray(sources);
   // If only one source was passed, just return it. Otherwise return the race.
-  return sources.length === 1 ? innerFrom(sources[0] as ObservableInput<T>) : new Observable<T>(raceInit(sources as ObservableInput<T>[]));
+  return sources.length === 1
+    ? innerFrom(sources[0] as ObservableInput<T>)
+    : new Observable<T>(raceInit(sources as ObservableInput<T>[]));
 }
 
 /**
@@ -80,8 +82,8 @@ export function raceInit<T>(sources: ObservableInput<T>[]) {
               subscriptions = null!;
             }
             subscriber.next(value);
-          })
-        )
+          }),
+        ),
       );
     }
   };

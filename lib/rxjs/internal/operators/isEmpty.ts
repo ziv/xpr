@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits `false` if the input Observable emits any values, or emits `true` if the
@@ -75,8 +75,8 @@ export function isEmpty<T>(): OperatorFunction<T, boolean> {
         () => {
           subscriber.next(true);
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

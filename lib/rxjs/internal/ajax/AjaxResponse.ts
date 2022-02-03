@@ -1,5 +1,5 @@
-import { AjaxRequest, AjaxResponseType } from './types.ts';
-import { getXHRResponse } from './getXHRResponse.ts';
+import { AjaxRequest, AjaxResponseType } from "./types.ts";
+import { getXHRResponse } from "./getXHRResponse.ts";
 
 /**
  * A normalized response from an AJAX request. To get the data from the response,
@@ -90,11 +90,11 @@ export class AjaxResponse<T> {
      * `download_load` is the type of event when download has finished and the
      * response is available.
      */
-    public readonly type: AjaxResponseType = 'download_load'
+    public readonly type: AjaxResponseType = "download_load",
   ) {
     const { status, responseType } = xhr;
     this.status = status ?? 0;
-    this.responseType = responseType ?? '';
+    this.responseType = responseType ?? "";
 
     // Parse the response headers in advance for the user. There's really
     // not a great way to get all of them. So we need to parse the header string
@@ -106,11 +106,11 @@ export class AjaxResponse<T> {
     const allHeaders = xhr.getAllResponseHeaders();
     this.responseHeaders = allHeaders
       ? // Split the header text into lines
-        allHeaders.split('\n').reduce((headers: Record<string, string>, line) => {
+        allHeaders.split("\n").reduce((headers: Record<string, string>, line) => {
           // Split the lines on the first ": " as
           // "key: value". Note that the value could
           // technically have a ": " in it.
-          const index = line.indexOf(': ');
+          const index = line.indexOf(": ");
           headers[line.slice(0, index)] = line.slice(index + 2);
           return headers;
         }, {})

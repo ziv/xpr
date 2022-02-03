@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { SchedulerLike, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { OperatorFunction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits an object containing the current value, and the time that has
@@ -51,7 +51,7 @@ export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): Oper
         const interval = now - last;
         last = now;
         subscriber.next(new TimeInterval(value, interval));
-      })
+      }),
     );
   });
 }

@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
+import { Observable } from "../Observable.ts";
 
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -61,7 +61,7 @@ import { OperatorSubscriber } from './OperatorSubscriber.ts';
  */
 export function sequenceEqual<T>(
   compareTo: Observable<T>,
-  comparator: (a: T, b: T) => boolean = (a, b) => a === b
+  comparator: (a: T, b: T) => boolean = (a, b) => a === b,
 ): OperatorFunction<T, boolean> {
   return operate((source, subscriber) => {
     // The state for the source observable
@@ -111,7 +111,7 @@ export function sequenceEqual<T>(
           complete && emit(buffer.length === 0);
           // Be sure to clean up our stream as soon as possible if we can.
           sequenceEqualSubscriber?.unsubscribe();
-        }
+        },
       );
 
       return sequenceEqualSubscriber;

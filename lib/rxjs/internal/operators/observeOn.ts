@@ -1,8 +1,8 @@
 /** @prettier */
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Re-emits all notifications from source Observable with specified scheduler.
@@ -63,8 +63,8 @@ export function observeOn<T>(scheduler: SchedulerLike, delay = 0): MonoTypeOpera
         subscriber,
         (value) => executeSchedule(subscriber, scheduler, () => subscriber.next(value), delay),
         () => executeSchedule(subscriber, scheduler, () => subscriber.complete(), delay),
-        (err) => executeSchedule(subscriber, scheduler, () => subscriber.error(err), delay)
-      )
+        (err) => executeSchedule(subscriber, scheduler, () => subscriber.error(err), delay),
+      ),
     );
   });
 }

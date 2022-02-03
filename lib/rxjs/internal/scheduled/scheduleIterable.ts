@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { SchedulerLike } from '../types.ts';
-import { iterator as Symbol_iterator } from '../symbol/iterator.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { Observable } from "../Observable.ts";
+import { SchedulerLike } from "../types.ts";
+import { iterator as Symbol_iterator } from "../symbol/iterator.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 /**
  * Used in {@link scheduled} to create an observable from an Iterable.
@@ -47,7 +47,7 @@ export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike
           }
         },
         0,
-        true
+        true,
       );
     });
 

@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * A basic scan operation. This is used for `scan` and `reduce`.
@@ -16,7 +16,7 @@ export function scanInternals<V, A, S>(
   seed: S,
   hasSeed: boolean,
   emitOnNext: boolean,
-  emitBeforeComplete?: undefined | true
+  emitBeforeComplete?: undefined | true,
 ) {
   return (source: Observable<V>, subscriber: Subscriber<any>) => {
     // Whether or not we have state yet. This will only be
@@ -43,7 +43,7 @@ export function scanInternals<V, A, S>(
               accumulator(state, value, i)
             : // We didn't have state yet, a seed value was not provided, so
 
-              // we set the state to the first value, and mark that we have state now
+            // we set the state to the first value, and mark that we have state now
               ((hasState = true), value);
 
           // Maybe send it to the consumer.
@@ -55,8 +55,8 @@ export function scanInternals<V, A, S>(
           (() => {
             hasState && subscriber.next(state);
             subscriber.complete();
-          })
-      )
+          }),
+      ),
     );
   };
 }

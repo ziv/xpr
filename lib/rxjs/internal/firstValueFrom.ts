@@ -1,6 +1,6 @@
-import { Observable } from './Observable.ts';
-import { EmptyError } from './util/EmptyError.ts';
-import { SafeSubscriber } from './Subscriber.ts';
+import { Observable } from "./Observable.ts";
+import { EmptyError } from "./util/EmptyError.ts";
+import { SafeSubscriber } from "./Subscriber.ts";
 
 export interface FirstValueFromConfig<T> {
   defaultValue: T;
@@ -54,7 +54,7 @@ export function firstValueFrom<T>(source: Observable<T>): Promise<T>;
  * @param config a configuration object to define the `defaultValue` to use if the source completes without emitting a value
  */
 export function firstValueFrom<T, D>(source: Observable<T>, config?: FirstValueFromConfig<D>): Promise<T | D> {
-  const hasConfig = typeof config === 'object';
+  const hasConfig = typeof config === "object";
   return new Promise<T | D>((resolve, reject) => {
     const subscriber = new SafeSubscriber<T>({
       next: (value) => {

@@ -1,14 +1,14 @@
-import { innerFrom } from '../observable/innerFrom.ts';
-import { Observable } from '../Observable.ts';
-import { mergeMap } from '../operators/mergeMap.ts';
-import { isArrayLike } from '../util/isArrayLike.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.ts';
+import { innerFrom } from "../observable/innerFrom.ts";
+import { Observable } from "../Observable.ts";
+import { mergeMap } from "../operators/mergeMap.ts";
+import { isArrayLike } from "../util/isArrayLike.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { mapOneOrManyArgs } from "../util/mapOneOrManyArgs.ts";
 
 // These constants are used to create handler registry functions using array mapping below.
-const nodeEventEmitterMethods = ['addListener', 'removeListener'] as const;
-const eventTargetMethods = ['addEventListener', 'removeEventListener'] as const;
-const jqueryMethods = ['on', 'off'] as const;
+const nodeEventEmitterMethods = ["addListener", "removeListener"] as const;
+const eventTargetMethods = ["addEventListener", "removeEventListener"] as const;
+const jqueryMethods = ["on", "off"] as const;
 
 export interface NodeStyleEventEmitter {
   addListener(eventName: string | symbol, handler: NodeEventHandler): this;
@@ -40,12 +40,12 @@ export interface HasEventTargetAddRemove<E> {
   addEventListener(
     type: string,
     listener: ((evt: E) => void) | EventListenerObject<E> | null,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   removeEventListener(
     type: string,
     listener: ((evt: E) => void) | EventListenerObject<E> | null,
-    options?: EventListenerOptions | boolean
+    options?: EventListenerOptions | boolean,
   ): void;
 }
 
@@ -60,53 +60,65 @@ export interface AddEventListenerOptions extends EventListenerOptions {
   passive?: boolean;
 }
 
-export function fromEvent<T>(target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>, eventName: string): Observable<T>;
+export function fromEvent<T>(
+  target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
+  eventName: string,
+): Observable<T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
-  resultSelector: (event: T) => R
+  resultSelector: (event: T) => R,
 ): Observable<R>;
 export function fromEvent<T>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
-  options: EventListenerOptions
+  options: EventListenerOptions,
 ): Observable<T>;
 export function fromEvent<T, R>(
   target: HasEventTargetAddRemove<T> | ArrayLike<HasEventTargetAddRemove<T>>,
   eventName: string,
   options: EventListenerOptions,
-  resultSelector: (event: T) => R
+  resultSelector: (event: T) => R,
 ): Observable<R>;
 
-export function fromEvent(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<unknown>;
+export function fromEvent(
+  target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
+  eventName: string,
+): Observable<unknown>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
-export function fromEvent<T>(target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>, eventName: string): Observable<T>;
+export function fromEvent<T>(
+  target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
+  eventName: string,
+): Observable<T>;
 export function fromEvent<R>(
   target: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter>,
   eventName: string,
-  resultSelector: (...args: any[]) => R
+  resultSelector: (...args: any[]) => R,
 ): Observable<R>;
 
 export function fromEvent(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
-  eventName: string
+  eventName: string,
 ): Observable<unknown>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */
-export function fromEvent<T>(target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>, eventName: string): Observable<T>;
+export function fromEvent<T>(
+  target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
+  eventName: string,
+): Observable<T>;
 export function fromEvent<R>(
   target: NodeCompatibleEventEmitter | ArrayLike<NodeCompatibleEventEmitter>,
   eventName: string,
-  resultSelector: (...args: any[]) => R
+  resultSelector: (...args: any[]) => R,
 ): Observable<R>;
 
 export function fromEvent<T>(
   target: JQueryStyleEventEmitter<any, T> | ArrayLike<JQueryStyleEventEmitter<any, T>>,
-  eventName: string
+  eventName: string,
 ): Observable<T>;
 export function fromEvent<T, R>(
   target: JQueryStyleEventEmitter<any, T> | ArrayLike<JQueryStyleEventEmitter<any, T>>,
   eventName: string,
-  resultSelector: (value: T, ...args: any[]) => R
+  resultSelector: (value: T, ...args: any[]) => R,
 ): Observable<R>;
 
 /**
@@ -183,7 +195,6 @@ export function fromEvent<T, R>(
  * Just as in case of NodeList it is a collection of DOM nodes. Here as well event handler function is
  * installed and removed in each of elements.
  *
- *
  * ## Examples
  *
  * Emit clicks happening on the DOM document
@@ -234,7 +245,7 @@ export function fromEvent<T>(
   target: any,
   eventName: string,
   options?: EventListenerOptions | ((...args: any[]) => T),
-  resultSelector?: (...args: any[]) => T
+  resultSelector?: (...args: any[]) => T,
 ): Observable<T> {
   if (isFunction(options)) {
     resultSelector = options;
@@ -254,13 +265,15 @@ export function fromEvent<T>(
   const [add, remove] =
     // If it is an EventTarget, we need to use a slightly different method than the other two patterns.
     isEventTarget(target)
-      ? eventTargetMethods.map((methodName) => (handler: any) => target[methodName](eventName, handler, options as EventListenerOptions))
+      ? eventTargetMethods.map((methodName) =>
+        (handler: any) => target[methodName](eventName, handler, options as EventListenerOptions)
+      )
       : // In all other cases, the call pattern is identical with the exception of the method names.
-      isNodeStyleEventEmitter(target)
-      ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName))
-      : isJQueryStyleEventEmitter(target)
-      ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName))
-      : [];
+        isNodeStyleEventEmitter(target)
+        ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName))
+        : isJQueryStyleEventEmitter(target)
+        ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName))
+        : [];
 
   // If add is falsy, it's because we didn't match a pattern above.
   // Check to see if it is an ArrayLike, because if it is, we want to
@@ -270,7 +283,7 @@ export function fromEvent<T>(
   if (!add) {
     if (isArrayLike(target)) {
       return mergeMap((subTarget: any) => fromEvent(subTarget, eventName, options as EventListenerOptions))(
-        innerFrom(target)
+        innerFrom(target),
       ) as Observable<T>;
     }
   }
@@ -278,7 +291,7 @@ export function fromEvent<T>(
   // If add is falsy and we made it here, it's because we didn't
   // match any valid target objects above.
   if (!add) {
-    throw new TypeError('Invalid event target');
+    throw new TypeError("Invalid event target");
   }
 
   return new Observable<T>((subscriber) => {

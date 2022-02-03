@@ -1,17 +1,22 @@
-import { Observable } from '../Observable.ts';
-import { Falsy, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { createFind } from './find.ts';
+import { Observable } from "../Observable.ts";
+import { Falsy, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { createFind } from "./find.ts";
 
 export function findIndex<T>(predicate: BooleanConstructor): OperatorFunction<T, T extends Falsy ? -1 : number>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
-export function findIndex<T>(predicate: BooleanConstructor, thisArg: any): OperatorFunction<T, T extends Falsy ? -1 : number>;
+export function findIndex<T>(
+  predicate: BooleanConstructor,
+  thisArg: any,
+): OperatorFunction<T, T extends Falsy ? -1 : number>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function findIndex<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
+  thisArg: A,
 ): OperatorFunction<T, number>;
-export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number>;
+export function findIndex<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+): OperatorFunction<T, number>;
 
 /**
  * Emits only the index of the first value emitted by the source Observable that
@@ -58,7 +63,7 @@ export function findIndex<T>(predicate: (value: T, index: number, source: Observ
  */
 export function findIndex<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
+  thisArg?: any,
 ): OperatorFunction<T, number> {
-  return operate(createFind(predicate, thisArg, 'index'));
+  return operate(createFind(predicate, thisArg, "index"));
 }

@@ -1,11 +1,11 @@
-import { Observable } from '../Observable.ts';
-import { from } from '../observable/from.ts';
-import { take } from '../operators/take.ts';
-import { Subject } from '../Subject.ts';
-import { SafeSubscriber } from '../Subscriber.ts';
-import { Subscription } from '../Subscription.ts';
-import { MonoTypeOperatorFunction, SubjectLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
+import { Observable } from "../Observable.ts";
+import { from } from "../observable/from.ts";
+import { take } from "../operators/take.ts";
+import { Subject } from "../Subject.ts";
+import { SafeSubscriber } from "../Subscriber.ts";
+import { Subscription } from "../Subscription.ts";
+import { MonoTypeOperatorFunction, SubjectLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
 
 export interface ShareConfig<T> {
   /**
@@ -142,7 +142,12 @@ export function share<T>(options: ShareConfig<T>): MonoTypeOperatorFunction<T>;
  * @return A function that returns an Observable that mirrors the source.
  */
 export function share<T>(options: ShareConfig<T> = {}): MonoTypeOperatorFunction<T> {
-  const { connector = () => new Subject<T>(), resetOnError = true, resetOnComplete = true, resetOnRefCountZero = true } = options;
+  const {
+    connector = () => new Subject<T>(),
+    resetOnError = true,
+    resetOnComplete = true,
+    resetOnRefCountZero = true,
+  } = options;
   // It's necessary to use a wrapper here, as the _operator_ must be
   // referentially transparent. Otherwise, it cannot be used in calls to the
   // static `pipe` function - to create a partial pipeline.

@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass.ts';
+import { createErrorClass } from "./createErrorClass.ts";
 
 export interface NotFoundError extends Error {}
 
@@ -22,7 +22,7 @@ export const NotFoundError: NotFoundErrorCtor = createErrorClass(
   (_super) =>
     function NotFoundErrorImpl(this: any, message: string) {
       _super(this);
-      this.name = 'NotFoundError';
+      this.name = "NotFoundError";
       this.message = message;
-    }
+    },
 );

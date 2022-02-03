@@ -1,26 +1,26 @@
-import { Observable } from '../Observable.ts';
-import { EmptyError } from '../util/EmptyError.ts';
-import { OperatorFunction, TruthyTypesOf } from '../types.ts';
-import { filter } from './filter.ts';
-import { take } from './take.ts';
-import { defaultIfEmpty } from './defaultIfEmpty.ts';
-import { throwIfEmpty } from './throwIfEmpty.ts';
-import { identity } from '../util/identity.ts';
+import { Observable } from "../Observable.ts";
+import { EmptyError } from "../util/EmptyError.ts";
+import { OperatorFunction, TruthyTypesOf } from "../types.ts";
+import { filter } from "./filter.ts";
+import { take } from "./take.ts";
+import { defaultIfEmpty } from "./defaultIfEmpty.ts";
+import { throwIfEmpty } from "./throwIfEmpty.ts";
+import { identity } from "../util/identity.ts";
 
 export function first<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
 export function first<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function first<T, D>(predicate: BooleanConstructor, defaultValue: D): OperatorFunction<T, TruthyTypesOf<T> | D>;
 export function first<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue?: S
+  defaultValue?: S,
 ): OperatorFunction<T, S>;
 export function first<T, S extends T, D>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue: D
+  defaultValue: D,
 ): OperatorFunction<T, S | D>;
 export function first<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  defaultValue?: D
+  defaultValue?: D,
 ): OperatorFunction<T, T | D>;
 
 /**
@@ -80,13 +80,13 @@ export function first<T, D = T>(
  */
 export function first<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
-  defaultValue?: D
+  defaultValue?: D,
 ): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) =>
     source.pipe(
       predicate ? filter((v, i) => predicate(v, i, source)) : identity,
       take(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new EmptyError())
+      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new EmptyError()),
     );
 }

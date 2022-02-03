@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass.ts';
+import { createErrorClass } from "./createErrorClass.ts";
 
 export interface EmptyError extends Error {}
 
@@ -22,8 +22,10 @@ export interface EmptyErrorCtor {
  *
  * @class EmptyError
  */
-export const EmptyError: EmptyErrorCtor = createErrorClass((_super) => function EmptyErrorImpl(this: any) {
-  _super(this);
-  this.name = 'EmptyError';
-  this.message = 'no elements in sequence';
-});
+export const EmptyError: EmptyErrorCtor = createErrorClass((_super) =>
+  function EmptyErrorImpl(this: any) {
+    _super(this);
+    this.name = "EmptyError";
+    this.message = "no elements in sequence";
+  }
+);

@@ -1,5 +1,5 @@
-import { ReadableStreamLike } from '../types.ts';
-import { isFunction } from './isFunction.ts';
+import { ReadableStreamLike } from "../types.ts";
+import { isFunction } from "./isFunction.ts";
 
 export async function* readableStreamLikeToAsyncGenerator<T>(readableStream: ReadableStreamLike<T>): AsyncGenerator<T> {
   const reader = readableStream.getReader();

@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { noop } from '../util/noop.ts';
+import { Observable } from "../Observable.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { noop } from "../util/noop.ts";
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -71,7 +71,7 @@ export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observab
           distinctKeys.add(key);
           subscriber.next(value);
         }
-      })
+      }),
     );
 
     flushes?.subscribe(new OperatorSubscriber(subscriber, () => distinctKeys.clear(), noop));

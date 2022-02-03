@@ -1,5 +1,5 @@
-import { ObservableInputTuple, OperatorFunction } from '../types.ts';
-import { concat } from './concat.ts';
+import { ObservableInputTuple, OperatorFunction } from "../types.ts";
+import { concat } from "./concat.ts";
 
 /**
  * Emits all of the values from the source observable, then, once it completes, subscribes

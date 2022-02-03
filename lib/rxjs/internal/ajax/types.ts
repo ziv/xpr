@@ -1,13 +1,13 @@
-import { PartialObserver } from '../types.ts';
+import { PartialObserver } from "../types.ts";
 
 /**
  * Valid Ajax direction types. Prefixes the event `type` in the
  * {@link AjaxResponse} object with "upload_" for events related
  * to uploading and "download_" for events related to downloading.
  */
-export type AjaxDirection = 'upload' | 'download';
+export type AjaxDirection = "upload" | "download";
 
-export type ProgressEventType = 'loadstart' | 'progress' | 'load';
+export type ProgressEventType = "loadstart" | "progress" | "load";
 
 export type AjaxResponseType = `${AjaxDirection}_${ProgressEventType}`;
 

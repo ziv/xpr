@@ -1,19 +1,19 @@
-import { Subscription } from '../Subscription.ts';
-import { SchedulerAction, SchedulerLike } from '../types.ts';
+import { Subscription } from "../Subscription.ts";
+import { SchedulerAction, SchedulerLike } from "../types.ts";
 
 export function executeSchedule(
   parentSubscription: Subscription,
   scheduler: SchedulerLike,
   work: () => void,
   delay: number,
-  repeat: true
+  repeat: true,
 ): void;
 export function executeSchedule(
   parentSubscription: Subscription,
   scheduler: SchedulerLike,
   work: () => void,
   delay?: number,
-  repeat?: false
+  repeat?: false,
 ): Subscription;
 
 export function executeSchedule(
@@ -21,7 +21,7 @@ export function executeSchedule(
   scheduler: SchedulerLike,
   work: () => void,
   delay = 0,
-  repeat = false
+  repeat = false,
 ): Subscription | void {
   const scheduleSubscription = scheduler.schedule(function (this: SchedulerAction<any>) {
     work();

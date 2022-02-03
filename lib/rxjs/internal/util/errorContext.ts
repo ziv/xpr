@@ -1,4 +1,4 @@
-import { config } from '../config.ts';
+import { config } from "../config.ts";
 
 let context: { errorThrown: boolean; error: any } | null = null;
 

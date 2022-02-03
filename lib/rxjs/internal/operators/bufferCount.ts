@@ -1,7 +1,7 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { arrRemove } from '../util/arrRemove.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { arrRemove } from "../util/arrRemove.ts";
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -113,8 +113,8 @@ export function bufferCount<T>(bufferSize: number, startBufferEvery: number | nu
         () => {
           // Clean up our memory when we teardown
           buffers = null!;
-        }
-      )
+        },
+      ),
     );
   });
 }

@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { identity } from '../util/identity.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { identity } from "../util/identity.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Returns a result {@link Observable} that emits all values pushed by the source observable if they
@@ -135,12 +135,12 @@ export function distinctUntilChanged<T>(comparator?: (previous: T, current: T) =
  */
 export function distinctUntilChanged<T, K>(
   comparator: (previous: K, current: K) => boolean,
-  keySelector: (value: T) => K
+  keySelector: (value: T) => K,
 ): MonoTypeOperatorFunction<T>;
 
 export function distinctUntilChanged<T, K>(
   comparator?: (previous: K, current: K) => boolean,
-  keySelector: (value: T) => K = identity as (value: T) => K
+  keySelector: (value: T) => K = identity as (value: T) => K,
 ): MonoTypeOperatorFunction<T> {
   // We've been allowing `null` do be passed as the `compare`, so we can't do
   // a default value for the parameter, because that will only work
@@ -174,7 +174,7 @@ export function distinctUntilChanged<T, K>(
           // Emit the value!
           subscriber.next(value);
         }
-      })
+      }),
     );
   });
 }

@@ -1,12 +1,12 @@
-import { Observable } from '../Observable.ts';
-import { Subscription } from '../Subscription.ts';
-import { Scheduler } from '../Scheduler.ts';
-import { TestMessage } from './TestMessage.ts';
-import { SubscriptionLog } from './SubscriptionLog.ts';
-import { SubscriptionLoggable } from './SubscriptionLoggable.ts';
-import { applyMixins } from '../util/applyMixins.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { observeNotification } from '../Notification.ts';
+import { Observable } from "../Observable.ts";
+import { Subscription } from "../Subscription.ts";
+import { Scheduler } from "../Scheduler.ts";
+import { TestMessage } from "./TestMessage.ts";
+import { SubscriptionLog } from "./SubscriptionLog.ts";
+import { SubscriptionLoggable } from "./SubscriptionLoggable.ts";
+import { applyMixins } from "../util/applyMixins.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { observeNotification } from "../Notification.ts";
 
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
@@ -24,7 +24,7 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
       subscription.add(
         new Subscription(() => {
           observable.logUnsubscribedFrame(index);
-        })
+        }),
       );
       observable.scheduleMessages(subscriber);
       return subscription;
@@ -43,8 +43,8 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
             observeNotification(notification, destination);
           },
           message.frame,
-          { message, subscriber }
-        )
+          { message, subscriber },
+        ),
       );
     }
   }

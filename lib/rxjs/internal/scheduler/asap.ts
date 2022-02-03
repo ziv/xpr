@@ -1,8 +1,7 @@
-import { AsapAction } from './AsapAction.ts';
-import { AsapScheduler } from './AsapScheduler.ts';
+import { AsapAction } from "./AsapAction.ts";
+import { AsapScheduler } from "./AsapScheduler.ts";
 
 /**
- *
  * Asap Scheduler
  *
  * <span class="informal">Perform task as fast as it can be performed asynchronously</span>

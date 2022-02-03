@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { SchedulerLike } from '../types.ts';
-import { async as asyncScheduler } from '../scheduler/async.ts';
-import { isScheduler } from '../util/isScheduler.ts';
-import { isValidDate } from '../util/isDate.ts';
+import { Observable } from "../Observable.ts";
+import { SchedulerLike } from "../types.ts";
+import { async as asyncScheduler } from "../scheduler/async.ts";
+import { isScheduler } from "../util/isScheduler.ts";
+import { isValidDate } from "../util/isDate.ts";
 
 /**
  * Creates an observable that will wait for a specified time period, or exact date, before
@@ -133,7 +133,7 @@ export function timer(dueTime: number | Date, unused: undefined, scheduler?: Sch
 export function timer(
   dueTime: number | Date = 0,
   intervalOrScheduler?: number | SchedulerLike,
-  scheduler: SchedulerLike = asyncScheduler
+  scheduler: SchedulerLike = asyncScheduler,
 ): Observable<number> {
   // Since negative intervalDuration is treated as though no
   // interval was specified at all, we start with a negative number.

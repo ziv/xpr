@@ -1,6 +1,6 @@
-import { OperatorFunction, TimestampProvider, Timestamp } from '../types.ts';
-import { dateTimestampProvider } from '../scheduler/dateTimestampProvider.ts';
-import { map } from './map.ts';
+import { OperatorFunction, Timestamp, TimestampProvider } from "../types.ts";
+import { dateTimestampProvider } from "../scheduler/dateTimestampProvider.ts";
+import { map } from "./map.ts";
 
 /**
  * Attaches a timestamp to each item emitted by an observable indicating when it was emitted
@@ -34,6 +34,8 @@ import { map } from './map.ts';
  * @return A function that returns an Observable that attaches a timestamp to
  * each item emitted by the source Observable indicating when it was emitted.
  */
-export function timestamp<T>(timestampProvider: TimestampProvider = dateTimestampProvider): OperatorFunction<T, Timestamp<T>> {
+export function timestamp<T>(
+  timestampProvider: TimestampProvider = dateTimestampProvider,
+): OperatorFunction<T, Timestamp<T>> {
   return map((value: T) => ({ value, timestamp: timestampProvider.now() }));
 }

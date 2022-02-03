@@ -1,6 +1,6 @@
-import { Observable } from '../Observable.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { Subscribable } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { Subscribable } from "../types.ts";
 
 /**
  * Used to convert a subscribable to an observable.

@@ -1,8 +1,10 @@
-import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Falsy, MonoTypeOperatorFunction, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
-export function skipWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
+export function skipWhile<T>(
+  predicate: BooleanConstructor,
+): OperatorFunction<T, Extract<T, Falsy> extends never ? never : T>;
 export function skipWhile<T>(predicate: (value: T, index: number) => true): OperatorFunction<T, never>;
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
 
@@ -54,7 +56,10 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
     let taking = false;
     let index = 0;
     source.subscribe(
-      new OperatorSubscriber(subscriber, (value) => (taking || (taking = !predicate(value, index++))) && subscriber.next(value))
+      new OperatorSubscriber(
+        subscriber,
+        (value) => (taking || (taking = !predicate(value, index++))) && subscriber.next(value),
+      ),
     );
   });
 }

@@ -1,10 +1,10 @@
-import { Subscriber } from '../Subscriber.ts';
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { ObservableInput, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
+import { Subscriber } from "../Subscriber.ts";
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { ObservableInput, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
 
 /**
  * Branch out the source Observable values as a nested Observable using a
@@ -95,7 +95,9 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       // to capture the subscriber (aka Subscription)
       // so we can clean it up when we close the window
       // and open a new one.
-      closingNotifier.subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openWindow, openWindow, handleError)));
+      closingNotifier.subscribe(
+        closingSubscriber = new OperatorSubscriber(subscriber, openWindow, openWindow, handleError),
+      );
     };
 
     // Start the first window.
@@ -117,8 +119,8 @@ export function windowWhen<T>(closingSelector: () => ObservableInput<any>): Oper
           // when this tears down.
           closingSubscriber?.unsubscribe();
           window = null!;
-        }
-      )
+        },
+      ),
     );
   });
 }

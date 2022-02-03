@@ -1,6 +1,6 @@
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.ts';
-import { switchMap } from './switchMap.ts';
-import { identity } from '../util/identity.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { switchMap } from "./switchMap.ts";
+import { identity } from "../util/identity.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable

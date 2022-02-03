@@ -1,9 +1,9 @@
-import { Observable } from '../Observable.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { Subject } from '../Subject.ts';
-import { ObservableInput, Observer, OperatorFunction, SubjectLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { Subject } from "../Subject.ts";
+import { ObservableInput, Observer, OperatorFunction, SubjectLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 export interface BasicGroupByOptions<K, T> {
   element?: undefined;
@@ -17,15 +17,18 @@ export interface GroupByOptionsWithElement<K, E, T> {
   connector?: () => SubjectLike<E>;
 }
 
-export function groupBy<T, K>(key: (value: T) => K, options: BasicGroupByOptions<K, T>): OperatorFunction<T, GroupedObservable<K, T>>;
+export function groupBy<T, K>(
+  key: (value: T) => K,
+  options: BasicGroupByOptions<K, T>,
+): OperatorFunction<T, GroupedObservable<K, T>>;
 
 export function groupBy<T, K, E>(
   key: (value: T) => K,
-  options: GroupByOptionsWithElement<K, E, T>
+  options: GroupByOptionsWithElement<K, E, T>,
 ): OperatorFunction<T, GroupedObservable<K, E>>;
 
 export function groupBy<T, K extends T>(
-  key: (value: T) => value is K
+  key: (value: T) => value is K,
 ): OperatorFunction<T, GroupedObservable<true, K> | GroupedObservable<false, Exclude<T, K>>>;
 
 export function groupBy<T, K>(key: (value: T) => K): OperatorFunction<T, GroupedObservable<K, T>>;
@@ -36,7 +39,7 @@ export function groupBy<T, K>(key: (value: T) => K): OperatorFunction<T, Grouped
 export function groupBy<T, K>(
   key: (value: T) => K,
   element: void,
-  duration: (grouped: GroupedObservable<K, T>) => Observable<any>
+  duration: (grouped: GroupedObservable<K, T>) => Observable<any>,
 ): OperatorFunction<T, GroupedObservable<K, T>>;
 
 /**
@@ -45,7 +48,7 @@ export function groupBy<T, K>(
 export function groupBy<T, K, R>(
   key: (value: T) => K,
   element?: (value: T) => R,
-  duration?: (grouped: GroupedObservable<K, R>) => Observable<any>
+  duration?: (grouped: GroupedObservable<K, R>) => Observable<any>,
 ): OperatorFunction<T, GroupedObservable<K, R>>;
 
 /**
@@ -134,7 +137,7 @@ export function groupBy<T, K, R>(
   key: (value: T) => K,
   element?: (value: T) => R,
   duration?: (grouped: GroupedObservable<K, R>) => Observable<any>,
-  connector?: () => Subject<R>
+  connector?: () => Subject<R>,
 ): OperatorFunction<T, GroupedObservable<K, R>>;
 
 // Impl
@@ -142,11 +145,11 @@ export function groupBy<T, K, R>(
   keySelector: (value: T) => K,
   elementOrOptions?: ((value: any) => any) | void | BasicGroupByOptions<K, T> | GroupByOptionsWithElement<K, R, T>,
   duration?: (grouped: GroupedObservable<any, any>) => ObservableInput<any>,
-  connector?: () => SubjectLike<any>
+  connector?: () => SubjectLike<any>,
 ): OperatorFunction<T, GroupedObservable<K, R>> {
   return operate((source, subscriber) => {
     let element: ((value: any) => any) | void;
-    if (!elementOrOptions || typeof elementOrOptions === 'function') {
+    if (!elementOrOptions || typeof elementOrOptions === "function") {
       element = elementOrOptions;
     } else {
       ({ duration, element, connector } = elementOrOptions);
@@ -184,7 +187,7 @@ export function groupBy<T, K, R>(
           let group = groups.get(key);
           if (!group) {
             // Create our group subject
-            groups.set(key, (group = connector ? connector() : new Subject<any>()));
+            groups.set(key, group = connector ? connector() : new Subject<any>());
 
             // Emit the grouped observable. Note that we can't do a simple `asObservable()` here,
             // because the grouped observable has special semantics around reference counting
@@ -212,7 +215,7 @@ export function groupBy<T, K, R>(
                 // but only the group. They are not sent to the main subscription.
                 undefined,
                 // Teardown: Remove this group from our map.
-                () => groups.delete(key)
+                () => groups.delete(key),
               );
 
               // Start our duration notifier.
@@ -234,7 +237,7 @@ export function groupBy<T, K, R>(
       // When the source subscription is _finally_ torn down, release the subjects and keys
       // in our groups Map, they may be quite large and we don't want to keep them around if we
       // don't have to.
-      () => groups.clear()
+      () => groups.clear(),
     );
 
     // Subscribe to the source

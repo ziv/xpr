@@ -3,5 +3,5 @@
  * @param value The value to check
  */
 export function isFunction(value: any): value is (...args: any[]) => any {
-  return typeof value === 'function';
+  return typeof value === "function";
 }

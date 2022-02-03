@@ -1,10 +1,10 @@
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError.ts';
-import { Observable } from '../Observable.ts';
-import { OperatorFunction } from '../types.ts';
-import { filter } from './filter.ts';
-import { throwIfEmpty } from './throwIfEmpty.ts';
-import { defaultIfEmpty } from './defaultIfEmpty.ts';
-import { take } from './take.ts';
+import { ArgumentOutOfRangeError } from "../util/ArgumentOutOfRangeError.ts";
+import { Observable } from "../Observable.ts";
+import { OperatorFunction } from "../types.ts";
+import { filter } from "./filter.ts";
+import { throwIfEmpty } from "./throwIfEmpty.ts";
+import { defaultIfEmpty } from "./defaultIfEmpty.ts";
+import { take } from "./take.ts";
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
@@ -63,6 +63,6 @@ export function elementAt<T, D = T>(index: number, defaultValue?: D): OperatorFu
     source.pipe(
       filter((v, i) => i === index),
       take(1),
-      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new ArgumentOutOfRangeError())
+      hasDefaultValue ? defaultIfEmpty(defaultValue!) : throwIfEmpty(() => new ArgumentOutOfRangeError()),
     );
 }

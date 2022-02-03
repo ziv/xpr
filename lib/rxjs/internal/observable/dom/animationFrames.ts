@@ -1,8 +1,8 @@
-import { Observable } from '../../Observable.ts';
-import { Subscription } from '../../Subscription.ts';
-import { TimestampProvider } from '../../types.ts';
-import { performanceTimestampProvider } from '../../scheduler/performanceTimestampProvider.ts';
-import { animationFrameProvider } from '../../scheduler/animationFrameProvider.ts';
+import { Observable } from "../../Observable.ts";
+import { Subscription } from "../../Subscription.ts";
+import { TimestampProvider } from "../../types.ts";
+import { performanceTimestampProvider } from "../../scheduler/performanceTimestampProvider.ts";
+import { animationFrameProvider } from "../../scheduler/animationFrameProvider.ts";
 
 /**
  * An observable of animation frames

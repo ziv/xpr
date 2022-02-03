@@ -1,27 +1,30 @@
-import { not } from '../util/not.ts';
-import { filter } from '../operators/filter.ts';
-import { ObservableInput } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { innerFrom } from './innerFrom.ts';
+import { not } from "../util/not.ts";
+import { filter } from "../operators/filter.ts";
+import { ObservableInput } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { innerFrom } from "./innerFrom.ts";
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, U extends T, A>(
   source: ObservableInput<T>,
   predicate: (this: A, value: T, index: number) => value is U,
-  thisArg: A
+  thisArg: A,
 ): [Observable<U>, Observable<Exclude<T, U>>];
 export function partition<T, U extends T>(
   source: ObservableInput<T>,
-  predicate: (value: T, index: number) => value is U
+  predicate: (value: T, index: number) => value is U,
 ): [Observable<U>, Observable<Exclude<T, U>>];
 
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function partition<T, A>(
   source: ObservableInput<T>,
   predicate: (this: A, value: T, index: number) => boolean,
-  thisArg: A
+  thisArg: A,
 ): [Observable<T>, Observable<T>];
-export function partition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
+export function partition<T>(
+  source: ObservableInput<T>,
+  predicate: (value: T, index: number) => boolean,
+): [Observable<T>, Observable<T>];
 
 /**
  * Splits the source Observable into two, one with values that satisfy a
@@ -79,10 +82,10 @@ export function partition<T>(source: ObservableInput<T>, predicate: (value: T, i
 export function partition<T>(
   source: ObservableInput<T>,
   predicate: (this: any, value: T, index: number) => boolean,
-  thisArg?: any
+  thisArg?: any,
 ): [Observable<T>, Observable<T>] {
   return [filter(predicate, thisArg)(innerFrom(source)), filter(not(predicate, thisArg))(innerFrom(source))] as [
     Observable<T>,
-    Observable<T>
+    Observable<T>,
   ];
 }

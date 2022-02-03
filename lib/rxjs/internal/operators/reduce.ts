@@ -1,10 +1,13 @@
-import { scanInternals } from './scanInternals.ts';
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
+import { scanInternals } from "./scanInternals.ts";
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
 
 export function reduce<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function reduce<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
-export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: number) => A, seed: S): OperatorFunction<V, A>;
+export function reduce<V, A, S = A>(
+  accumulator: (acc: A | S, value: V, index: number) => A,
+  seed: S,
+): OperatorFunction<V, A>;
 
 /**
  * Applies an accumulator function over the source Observable, and returns the
@@ -57,6 +60,9 @@ export function reduce<V, A, S = A>(accumulator: (acc: A | S, value: V, index: n
  * @return A function that returns an Observable that emits a single value that
  * is the result of accumulating the values emitted by the source Observable.
  */
-export function reduce<V, A>(accumulator: (acc: V | A, value: V, index: number) => A, seed?: any): OperatorFunction<V, V | A> {
+export function reduce<V, A>(
+  accumulator: (acc: V | A, value: V, index: number) => A,
+  seed?: any,
+): OperatorFunction<V, V | A> {
   return operate(scanInternals(accumulator, seed, arguments.length >= 2, false, true));
 }

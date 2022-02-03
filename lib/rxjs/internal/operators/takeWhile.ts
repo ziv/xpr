@@ -1,13 +1,19 @@
-import { OperatorFunction, MonoTypeOperatorFunction, TruthyTypesOf } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: true): MonoTypeOperatorFunction<T>;
 export function takeWhile<T>(predicate: BooleanConstructor, inclusive: false): OperatorFunction<T, TruthyTypesOf<T>>;
 export function takeWhile<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
 export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
-export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;
+export function takeWhile<T, S extends T>(
+  predicate: (value: T, index: number) => value is S,
+  inclusive: false,
+): OperatorFunction<T, S>;
+export function takeWhile<T>(
+  predicate: (value: T, index: number) => boolean,
+  inclusive?: boolean,
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Emits values emitted by the source Observable so long as each value satisfies
@@ -52,7 +58,10 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
  * source Observable so long as each value satisfies the condition defined by
  * the `predicate`, then completes.
  */
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive = false): MonoTypeOperatorFunction<T> {
+export function takeWhile<T>(
+  predicate: (value: T, index: number) => boolean,
+  inclusive = false,
+): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let index = 0;
     source.subscribe(
@@ -60,7 +69,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean, in
         const result = predicate(value, index++);
         (result || inclusive) && subscriber.next(value);
         !result && subscriber.complete();
-      })
+      }),
     );
   });
 }

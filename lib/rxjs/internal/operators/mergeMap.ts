@@ -1,26 +1,26 @@
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.ts';
-import { map } from './map.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { operate } from '../util/lift.ts';
-import { mergeInternals } from './mergeInternals.ts';
-import { isFunction } from '../util/isFunction.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { map } from "./map.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { operate } from "../util/lift.ts";
+import { mergeInternals } from "./mergeInternals.ts";
+import { isFunction } from "../util/isFunction.ts";
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  concurrent?: number
+  concurrent?: number,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function mergeMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector: undefined,
-  concurrent?: number
+  concurrent?: number,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
-  concurrent?: number
+  concurrent?: number,
 ): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
@@ -82,13 +82,18 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(
  */
 export function mergeMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
-  concurrent: number = Infinity
+  resultSelector?:
+    | ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R)
+    | number,
+  concurrent: number = Infinity,
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
   if (isFunction(resultSelector)) {
     // DEPRECATED PATH
-    return mergeMap((a, i) => map((b: any, ii: number) => resultSelector(a, b, i, ii))(innerFrom(project(a, i))), concurrent);
-  } else if (typeof resultSelector === 'number') {
+    return mergeMap(
+      (a, i) => map((b: any, ii: number) => resultSelector(a, b, i, ii))(innerFrom(project(a, i))),
+      concurrent,
+    );
+  } else if (typeof resultSelector === "number") {
     concurrent = resultSelector;
   }
 

@@ -1,14 +1,16 @@
-import { Observable } from '../Observable.ts';
-import { EmptyError } from '../util/EmptyError.ts';
+import { Observable } from "../Observable.ts";
+import { EmptyError } from "../util/EmptyError.ts";
 
-import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '../types.ts';
-import { SequenceError } from '../util/SequenceError.ts';
-import { NotFoundError } from '../util/NotFoundError.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from "../types.ts";
+import { SequenceError } from "../util/SequenceError.ts";
+import { NotFoundError } from "../util/NotFoundError.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 export function single<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
-export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
+export function single<T>(
+  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Returns an observable that asserts that only one value is
@@ -45,7 +47,6 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *   .subscribe(x => console.log(x));
  * // Emits 'Ben'
  *
- *
  * const source2 = of(
  *  { name: 'Ben' },
  *  { name: 'Tracy' },
@@ -57,7 +58,6 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  *   .pipe(single(x => x.name.startsWith('B')))
  *   .subscribe({ error: err => console.error(err) });
  * // Error emitted: SequenceError('Too many values match')
- *
  *
  * const source3 = of(
  *  { name: 'Laney' },
@@ -86,7 +86,9 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
  * @return A function that returns an Observable that emits the single item
  * emitted by the source Observable that matches the predicate.
  */
-export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
+export function single<T>(
+  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let hasValue = false;
     let singleValue: T;
@@ -98,7 +100,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
         (value) => {
           seenValue = true;
           if (!predicate || predicate(value, index++, source)) {
-            hasValue && subscriber.error(new SequenceError('Too many matching values'));
+            hasValue && subscriber.error(new SequenceError("Too many matching values"));
             hasValue = true;
             singleValue = value;
           }
@@ -108,10 +110,10 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
             subscriber.next(singleValue);
             subscriber.complete();
           } else {
-            subscriber.error(seenValue ? new NotFoundError('No matching values') : new EmptyError());
+            subscriber.error(seenValue ? new NotFoundError("No matching values") : new EmptyError());
           }
-        }
-      )
+        },
+      ),
     );
   });
 }

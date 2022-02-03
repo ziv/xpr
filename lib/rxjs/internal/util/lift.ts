@@ -1,12 +1,12 @@
-import { Observable } from '../Observable.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { OperatorFunction } from '../types.ts';
-import { isFunction } from './isFunction.ts';
+import { Observable } from "../Observable.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { OperatorFunction } from "../types.ts";
+import { isFunction } from "./isFunction.ts";
 
 /**
  * Used to determine if an object is an Observable with a lift function.
  */
-export function hasLift(source: any): source is { lift: InstanceType<typeof Observable>['lift'] } {
+export function hasLift(source: any): source is { lift: InstanceType<typeof Observable>["lift"] } {
   return isFunction(source?.lift);
 }
 
@@ -15,7 +15,7 @@ export function hasLift(source: any): source is { lift: InstanceType<typeof Obse
  * @param init The logic to connect the liftedSource to the subscriber at the moment of subscription.
  */
 export function operate<T, R>(
-  init: (liftedSource: Observable<T>, subscriber: Subscriber<R>) => (() => void) | void
+  init: (liftedSource: Observable<T>, subscriber: Subscriber<R>) => (() => void) | void,
 ): OperatorFunction<T, R> {
   return (source: Observable<T>) => {
     if (hasLift(source)) {
@@ -27,6 +27,6 @@ export function operate<T, R>(
         }
       });
     }
-    throw new TypeError('Unable to lift unknown Observable type');
+    throw new TypeError("Unable to lift unknown Observable type");
   };
 }

@@ -8,6 +8,6 @@ export default async function context(module: Target): Promise<[ModuleHost, Link
 
   return [
     await compile(registry.get(module) as ModuleDescriptor),
-    registry
+    registry,
   ];
 }

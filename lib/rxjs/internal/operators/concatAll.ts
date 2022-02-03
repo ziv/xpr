@@ -1,5 +1,5 @@
-import { mergeAll } from './mergeAll.ts';
-import { OperatorFunction, ObservableInput, ObservedValueOf } from '../types.ts';
+import { mergeAll } from "./mergeAll.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
 
 /**
  * Converts a higher-order Observable into a first-order Observable by

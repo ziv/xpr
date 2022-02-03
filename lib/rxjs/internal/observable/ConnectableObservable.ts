@@ -1,10 +1,10 @@
-import { Subject } from '../Subject.ts';
-import { Observable } from '../Observable.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { Subscription } from '../Subscription.ts';
-import { refCount as higherOrderRefCount } from '../operators/refCount.ts';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber.ts';
-import { hasLift } from '../util/lift.ts';
+import { Subject } from "../Subject.ts";
+import { Observable } from "../Observable.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { Subscription } from "../Subscription.ts";
+import { refCount as higherOrderRefCount } from "../operators/refCount.ts";
+import { OperatorSubscriber } from "../operators/OperatorSubscriber.ts";
+import { hasLift } from "../util/lift.ts";
 
 /**
  * @class ConnectableObservable<T>
@@ -81,9 +81,9 @@ export class ConnectableObservable<T> extends Observable<T> {
               this._teardown();
               subject.error(err);
             },
-            () => this._teardown()
-          )
-        )
+            () => this._teardown(),
+          ),
+        ),
       );
 
       if (connection.closed) {

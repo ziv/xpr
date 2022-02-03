@@ -1,8 +1,8 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { Subscription } from '../Subscription.ts';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { Subscription } from "../Subscription.ts";
+import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -61,7 +61,10 @@ import { OperatorSubscriber } from './OperatorSubscriber.ts';
  * the source Observable by the specified `dueTime`, and may drop some values
  * if they occur too frequently.
  */
-export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): MonoTypeOperatorFunction<T> {
+export function debounceTime<T>(
+  dueTime: number,
+  scheduler: SchedulerLike = asyncScheduler,
+): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let activeTask: Subscription | null = null;
     let lastValue: T | null = null;
@@ -117,8 +120,8 @@ export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyn
         () => {
           // Teardown.
           lastValue = activeTask = null;
-        }
-      )
+        },
+      ),
     );
   });
 }

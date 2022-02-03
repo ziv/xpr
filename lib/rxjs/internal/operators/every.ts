@@ -1,20 +1,24 @@
-import { Observable } from '../Observable.ts';
-import { Falsy, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { Falsy, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
-export function every<T>(predicate: BooleanConstructor): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
+export function every<T>(
+  predicate: BooleanConstructor,
+): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function every<T>(
   predicate: BooleanConstructor,
-  thisArg: any
+  thisArg: any,
 ): OperatorFunction<T, Exclude<T, Falsy> extends never ? false : boolean>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
 export function every<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
+  thisArg: A,
 ): OperatorFunction<T, boolean>;
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, boolean>;
+export function every<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+): OperatorFunction<T, boolean>;
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -43,7 +47,7 @@ export function every<T>(predicate: (value: T, index: number, source: Observable
  */
 export function every<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: any
+  thisArg?: any,
 ): OperatorFunction<T, boolean> {
   return operate((source, subscriber) => {
     let index = 0;
@@ -59,8 +63,8 @@ export function every<T>(
         () => {
           subscriber.next(true);
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

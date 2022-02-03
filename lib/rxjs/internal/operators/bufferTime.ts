@@ -1,24 +1,24 @@
-import { Subscription } from '../Subscription.ts';
-import { OperatorFunction, SchedulerLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { arrRemove } from '../util/arrRemove.ts';
-import { asyncScheduler } from '../scheduler/async.ts';
-import { popScheduler } from '../util/args.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { Subscription } from "../Subscription.ts";
+import { OperatorFunction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { arrRemove } from "../util/arrRemove.ts";
+import { asyncScheduler } from "../scheduler/async.ts";
+import { popScheduler } from "../util/args.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
 export function bufferTime<T>(
   bufferTimeSpan: number,
   bufferCreationInterval: number | null | undefined,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, T[]>;
 export function bufferTime<T>(
   bufferTimeSpan: number,
   bufferCreationInterval: number | null | undefined,
   maxBufferSize: number,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, T[]>;
 /* tslint:enable:max-line-length */
 
@@ -160,7 +160,7 @@ export function bufferTime<T>(bufferTimeSpan: number, ...otherArgs: any[]): Oper
       // Pass all errors through to consumer.
       undefined,
       // Clean up
-      () => (bufferRecords = null)
+      () => (bufferRecords = null),
     );
 
     source.subscribe(bufferTimeSubscriber);

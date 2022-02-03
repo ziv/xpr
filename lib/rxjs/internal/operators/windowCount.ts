@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -123,8 +123,8 @@ export function windowCount<T>(windowSize: number, startWindowEvery: number = 0)
         () => {
           starts = null!;
           windows = null!;
-        }
-      )
+        },
+      ),
     );
   });
 }

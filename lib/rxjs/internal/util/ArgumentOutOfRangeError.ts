@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass.ts';
+import { createErrorClass } from "./createErrorClass.ts";
 
 export interface ArgumentOutOfRangeError extends Error {}
 
@@ -24,7 +24,7 @@ export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = createErrorC
   (_super) =>
     function ArgumentOutOfRangeErrorImpl(this: any) {
       _super(this);
-      this.name = 'ArgumentOutOfRangeError';
-      this.message = 'argument out of range';
-    }
+      this.name = "ArgumentOutOfRangeError";
+      this.message = "argument out of range";
+    },
 );

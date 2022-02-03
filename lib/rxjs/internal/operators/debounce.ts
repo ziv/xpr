@@ -1,9 +1,9 @@
-import { Subscriber } from '../Subscriber.ts';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { noop } from '../util/noop.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
+import { Subscriber } from "../Subscriber.ts";
+import { MonoTypeOperatorFunction, ObservableInput } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { noop } from "../util/noop.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -112,8 +112,8 @@ export function debounce<T>(durationSelector: (value: T) => ObservableInput<any>
         () => {
           // Teardown.
           lastValue = durationSubscriber = null;
-        }
-      )
+        },
+      ),
     );
   });
 }

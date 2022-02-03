@@ -1,18 +1,20 @@
-import { switchMap } from './switchMap.ts';
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.ts';
-import { isFunction } from '../util/isFunction.ts';
+import { switchMap } from "./switchMap.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { isFunction } from "../util/isFunction.ts";
 
 /* tslint:disable:max-line-length */
-export function switchMapTo<O extends ObservableInput<unknown>>(observable: O): OperatorFunction<unknown, ObservedValueOf<O>>;
+export function switchMapTo<O extends ObservableInput<unknown>>(
+  observable: O,
+): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<O extends ObservableInput<unknown>>(
   observable: O,
-  resultSelector: undefined
+  resultSelector: undefined,
 ): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
   observable: O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
@@ -58,7 +60,9 @@ export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
  */
 export function switchMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
-  return isFunction(resultSelector) ? switchMap(() => innerObservable, resultSelector) : switchMap(() => innerObservable);
+  return isFunction(resultSelector)
+    ? switchMap(() => innerObservable, resultSelector)
+    : switchMap(() => innerObservable);
 }

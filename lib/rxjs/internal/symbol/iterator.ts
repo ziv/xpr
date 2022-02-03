@@ -1,6 +1,6 @@
 export function getSymbolIterator(): symbol {
-  if (typeof Symbol !== 'function' || !Symbol.iterator) {
-    return '@@iterator' as any;
+  if (typeof Symbol !== "function" || !Symbol.iterator) {
+    return "@@iterator" as any;
   }
 
   return Symbol.iterator;

@@ -1,13 +1,13 @@
-import { OperatorSubscriber } from '../../operators/OperatorSubscriber.ts';
-import { Observable } from '../../Observable.ts';
-import { innerFrom } from '../../observable/innerFrom.ts';
-import { ObservableInput } from '../../types.ts';
+import { OperatorSubscriber } from "../../operators/OperatorSubscriber.ts";
+import { Observable } from "../../Observable.ts";
+import { innerFrom } from "../../observable/innerFrom.ts";
+import { ObservableInput } from "../../types.ts";
 
 export function fromFetch<T>(
   input: string | Request,
   init: RequestInit & {
     selector: (response: Response) => ObservableInput<T>;
-  }
+  },
 ): Observable<T>;
 
 export function fromFetch(input: string | Request, init?: RequestInit): Observable<Response>;
@@ -96,7 +96,7 @@ export function fromFetch<T>(
   input: string | Request,
   initWithSelector: RequestInit & {
     selector?: (response: Response) => ObservableInput<T>;
-  } = {}
+  } = {},
 ): Observable<Response | T> {
   const { selector, ...init } = initWithSelector;
   return new Observable<Response | T>((subscriber) => {
@@ -127,8 +127,8 @@ export function fromFetch<T>(
             controller.abort();
           }
         };
-        outerSignal.addEventListener('abort', outerSignalHandler);
-        subscriber.add(() => outerSignal.removeEventListener('abort', outerSignalHandler));
+        outerSignal.addEventListener("abort", outerSignalHandler);
+        subscriber.add(() => outerSignal.removeEventListener("abort", outerSignalHandler));
       }
     }
 
@@ -160,8 +160,8 @@ export function fromFetch<T>(
                 abortable = false;
                 subscriber.complete();
               },
-              handleError
-            )
+              handleError,
+            ),
           );
         } else {
           abortable = false;

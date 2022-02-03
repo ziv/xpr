@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass.ts';
+import { createErrorClass } from "./createErrorClass.ts";
 
 export interface ObjectUnsubscribedError extends Error {}
 
@@ -23,7 +23,7 @@ export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = createErrorC
   (_super) =>
     function ObjectUnsubscribedErrorImpl(this: any) {
       _super(this);
-      this.name = 'ObjectUnsubscribedError';
-      this.message = 'object unsubscribed';
-    }
+      this.name = "ObjectUnsubscribedError";
+      this.message = "object unsubscribed";
+    },
 );

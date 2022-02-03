@@ -6,9 +6,9 @@ interface IntervalProvider {
   clearInterval: ClearIntervalFunction;
   delegate:
     | {
-        setInterval: SetIntervalFunction;
-        clearInterval: ClearIntervalFunction;
-      }
+      setInterval: SetIntervalFunction;
+      clearInterval: ClearIntervalFunction;
+    }
     | undefined;
 }
 

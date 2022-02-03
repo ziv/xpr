@@ -1,12 +1,12 @@
-import { Operator } from './Operator.ts';
-import { SafeSubscriber, Subscriber } from './Subscriber.ts';
-import { isSubscription, Subscription } from './Subscription.ts';
-import { TeardownLogic, OperatorFunction, Subscribable, Observer } from './types.ts';
-import { observable as Symbol_observable } from './symbol/observable.ts';
-import { pipeFromArray } from './util/pipe.ts';
-import { config } from './config.ts';
-import { isFunction } from './util/isFunction.ts';
-import { errorContext } from './util/errorContext.ts';
+import { Operator } from "./Operator.ts";
+import { SafeSubscriber, Subscriber } from "./Subscriber.ts";
+import { isSubscription, Subscription } from "./Subscription.ts";
+import { Observer, OperatorFunction, Subscribable, TeardownLogic } from "./types.ts";
+import { observable as Symbol_observable } from "./symbol/observable.ts";
+import { pipeFromArray } from "./util/pipe.ts";
+import { config } from "./config.ts";
+import { isFunction } from "./util/isFunction.ts";
+import { errorContext } from "./util/errorContext.ts";
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -74,7 +74,11 @@ export class Observable<T> implements Subscribable<T> {
   subscribe(observer?: Partial<Observer<T>>): Subscription;
   subscribe(next: (value: T) => void): Subscription;
   /** @deprecated Instead of passing separate callback arguments, use an observer argument. Signatures taking separate callback arguments will be removed in v8. Details: https://rxjs.dev/deprecations/subscribe-arguments */
-  subscribe(next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Subscription;
+  subscribe(
+    next?: ((value: T) => void) | null,
+    error?: ((error: any) => void) | null,
+    complete?: (() => void) | null,
+  ): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
    *
@@ -214,25 +218,27 @@ export class Observable<T> implements Subscribable<T> {
   subscribe(
     observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
     error?: ((error: any) => void) | null,
-    complete?: (() => void) | null
+    complete?: (() => void) | null,
   ): Subscription {
-    const subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
+    const subscriber = isSubscriber(observerOrNext)
+      ? observerOrNext
+      : new SafeSubscriber(observerOrNext, error, complete);
 
     errorContext(() => {
       const { operator, source } = this;
       subscriber.add(
         operator
           ? // We're dealing with a subscription in the
-            // operator chain to one of our lifted operators.
+          // operator chain to one of our lifted operators.
             operator.call(subscriber, source)
           : source
           ? // If `source` has a value, but `operator` does not, something that
-            // had intimate knowledge of our API, like our `Subject`, must have
-            // set it. We're going to just call `_subscribe` directly.
+          // had intimate knowledge of our API, like our `Subject`, must have
+          // set it. We're going to just call `_subscribe` directly.
             this._subscribe(subscriber)
           : // In all other cases, we're likely wrapping a user-provided initializer
-            // function, so we need to catch errors and handle them appropriately.
-            this._trySubscribe(subscriber)
+          // function, so we need to catch errors and handle them appropriately.
+            this._trySubscribe(subscriber),
       );
     });
 
@@ -353,14 +359,14 @@ export class Observable<T> implements Subscribable<T> {
     op1: OperatorFunction<T, A>,
     op2: OperatorFunction<A, B>,
     op3: OperatorFunction<B, C>,
-    op4: OperatorFunction<C, D>
+    op4: OperatorFunction<C, D>,
   ): Observable<D>;
   pipe<A, B, C, D, E>(
     op1: OperatorFunction<T, A>,
     op2: OperatorFunction<A, B>,
     op3: OperatorFunction<B, C>,
     op4: OperatorFunction<C, D>,
-    op5: OperatorFunction<D, E>
+    op5: OperatorFunction<D, E>,
   ): Observable<E>;
   pipe<A, B, C, D, E, F>(
     op1: OperatorFunction<T, A>,
@@ -368,7 +374,7 @@ export class Observable<T> implements Subscribable<T> {
     op3: OperatorFunction<B, C>,
     op4: OperatorFunction<C, D>,
     op5: OperatorFunction<D, E>,
-    op6: OperatorFunction<E, F>
+    op6: OperatorFunction<E, F>,
   ): Observable<F>;
   pipe<A, B, C, D, E, F, G>(
     op1: OperatorFunction<T, A>,
@@ -377,7 +383,7 @@ export class Observable<T> implements Subscribable<T> {
     op4: OperatorFunction<C, D>,
     op5: OperatorFunction<D, E>,
     op6: OperatorFunction<E, F>,
-    op7: OperatorFunction<F, G>
+    op7: OperatorFunction<F, G>,
   ): Observable<G>;
   pipe<A, B, C, D, E, F, G, H>(
     op1: OperatorFunction<T, A>,
@@ -387,7 +393,7 @@ export class Observable<T> implements Subscribable<T> {
     op5: OperatorFunction<D, E>,
     op6: OperatorFunction<E, F>,
     op7: OperatorFunction<F, G>,
-    op8: OperatorFunction<G, H>
+    op8: OperatorFunction<G, H>,
   ): Observable<H>;
   pipe<A, B, C, D, E, F, G, H, I>(
     op1: OperatorFunction<T, A>,
@@ -398,7 +404,7 @@ export class Observable<T> implements Subscribable<T> {
     op6: OperatorFunction<E, F>,
     op7: OperatorFunction<F, G>,
     op8: OperatorFunction<G, H>,
-    op9: OperatorFunction<H, I>
+    op9: OperatorFunction<H, I>,
   ): Observable<I>;
   pipe<A, B, C, D, E, F, G, H, I>(
     op1: OperatorFunction<T, A>,
@@ -473,7 +479,7 @@ export class Observable<T> implements Subscribable<T> {
       this.subscribe(
         (x: T) => (value = x),
         (err: any) => reject(err),
-        () => resolve(value)
+        () => resolve(value),
       );
     }) as Promise<T | undefined>;
   }

@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { EMPTY } from '../observable/empty.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { EMPTY } from "../observable/empty.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -50,22 +50,22 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
     ? // If we are taking no values, that's empty.
       () => EMPTY
     : operate((source, subscriber) => {
-        let seen = 0;
-        source.subscribe(
-          new OperatorSubscriber(subscriber, (value) => {
-            // Increment the number of values we have seen,
-            // then check it against the allowed count to see
-            // if we are still letting values through.
-            if (++seen <= count) {
-              subscriber.next(value);
-              // If we have met or passed our allowed count,
-              // we need to complete. We have to do <= here,
-              // because re-entrant code will increment `seen` twice.
-              if (count <= seen) {
-                subscriber.complete();
-              }
+      let seen = 0;
+      source.subscribe(
+        new OperatorSubscriber(subscriber, (value) => {
+          // Increment the number of values we have seen,
+          // then check it against the allowed count to see
+          // if we are still letting values through.
+          if (++seen <= count) {
+            subscriber.next(value);
+            // If we have met or passed our allowed count,
+            // we need to complete. We have to do <= here,
+            // because re-entrant code will increment `seen` twice.
+            if (count <= seen) {
+              subscriber.complete();
             }
-          })
-        );
-      });
+          }
+        }),
+      );
+    });
 }

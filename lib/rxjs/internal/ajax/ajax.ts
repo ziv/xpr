@@ -1,8 +1,8 @@
-import { map } from '../operators/map.ts';
-import { Observable } from '../Observable.ts';
-import { AjaxConfig, AjaxRequest, AjaxDirection, ProgressEventType } from './types.ts';
-import { AjaxResponse } from './AjaxResponse.ts';
-import { AjaxTimeoutError, AjaxError } from './errors.ts';
+import { map } from "../operators/map.ts";
+import { Observable } from "../Observable.ts";
+import { AjaxConfig, AjaxDirection, AjaxRequest, ProgressEventType } from "./types.ts";
+import { AjaxResponse } from "./AjaxResponse.ts";
+import { AjaxError, AjaxTimeoutError } from "./errors.ts";
 
 export interface AjaxCreationMethod {
   /**
@@ -136,23 +136,23 @@ export interface AjaxCreationMethod {
 }
 
 function ajaxGet<T>(url: string, headers?: Record<string, string>): Observable<AjaxResponse<T>> {
-  return ajax({ method: 'GET', url, headers });
+  return ajax({ method: "GET", url, headers });
 }
 
 function ajaxPost<T>(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse<T>> {
-  return ajax({ method: 'POST', url, body, headers });
+  return ajax({ method: "POST", url, body, headers });
 }
 
 function ajaxDelete<T>(url: string, headers?: Record<string, string>): Observable<AjaxResponse<T>> {
-  return ajax({ method: 'DELETE', url, headers });
+  return ajax({ method: "DELETE", url, headers });
 }
 
 function ajaxPut<T>(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse<T>> {
-  return ajax({ method: 'PUT', url, body, headers });
+  return ajax({ method: "PUT", url, body, headers });
 }
 
 function ajaxPatch<T>(url: string, body?: any, headers?: Record<string, string>): Observable<AjaxResponse<T>> {
-  return ajax({ method: 'PATCH', url, body, headers });
+  return ajax({ method: "PATCH", url, body, headers });
 }
 
 const mapResponse = map((x: AjaxResponse<any>) => x.response);
@@ -160,10 +160,10 @@ const mapResponse = map((x: AjaxResponse<any>) => x.response);
 function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observable<T> {
   return mapResponse(
     ajax<T>({
-      method: 'GET',
+      method: "GET",
       url,
       headers,
-    })
+    }),
   );
 }
 
@@ -267,12 +267,11 @@ function ajaxGetJSON<T>(url: string, headers?: Record<string, string>): Observab
  */
 export const ajax: AjaxCreationMethod = (() => {
   const create = <T>(urlOrConfig: string | AjaxConfig) => {
-    const config: AjaxConfig =
-      typeof urlOrConfig === 'string'
-        ? {
-            url: urlOrConfig,
-          }
-        : urlOrConfig;
+    const config: AjaxConfig = typeof urlOrConfig === "string"
+      ? {
+        url: urlOrConfig,
+      }
+      : urlOrConfig;
     return fromAjax<T>(config);
   };
 
@@ -286,11 +285,11 @@ export const ajax: AjaxCreationMethod = (() => {
   return create;
 })();
 
-const UPLOAD = 'upload';
-const DOWNLOAD = 'download';
-const LOADSTART = 'loadstart';
-const PROGRESS = 'progress';
-const LOAD = 'load';
+const UPLOAD = "upload";
+const DOWNLOAD = "download";
+const LOADSTART = "loadstart";
+const PROGRESS = "progress";
+const LOAD = "load";
 
 export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
   return new Observable((destination) => {
@@ -299,9 +298,9 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       async: true,
       crossDomain: false,
       withCredentials: false,
-      method: 'GET',
+      method: "GET",
       timeout: 0,
-      responseType: 'json' as XMLHttpRequestResponseType,
+      responseType: "json" as XMLHttpRequestResponseType,
 
       ...init,
     };
@@ -310,18 +309,18 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
 
     let url = config.url;
     if (!url) {
-      throw new TypeError('url is required');
+      throw new TypeError("url is required");
     }
 
     if (queryParams) {
       let searchParams: URLSearchParams;
-      if (url.includes('?')) {
+      if (url.includes("?")) {
         // If the user has passed a URL with a querystring already in it,
         // we need to combine them. So we're going to split it. There
         // should only be one `?` in a valid URL.
-        const parts = url.split('?');
+        const parts = url.split("?");
         if (2 < parts.length) {
-          throw new TypeError('invalid url');
+          throw new TypeError("invalid url");
         }
         // Add the passed queryParams to the params already in the url provided.
         searchParams = new URLSearchParams(parts[1]);
@@ -331,14 +330,14 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
         // We have to do string concatenation here, because `new URL(url)` does
         // not like relative URLs like `/this` without a base url, which we can't
         // specify, nor can we assume `location` will exist, because of node.
-        url = parts[0] + '?' + searchParams;
+        url = parts[0] + "?" + searchParams;
       } else {
         // There is no pre-existing querystring, so we can just use URLSearchParams
         // to convert the passed queryParams into the proper format and encodings.
         // queryParams is converted to any because the runtime is *much* more permissive than
         // the types are.
         searchParams = new URLSearchParams(queryParams as any);
-        url = url + '?' + searchParams;
+        url = url + "?" + searchParams;
       }
     }
 
@@ -363,15 +362,15 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
     // None of this is necessary, it's only being set because it's "the thing libraries do"
     // Starting back as far as JQuery, and continuing with other libraries such as Angular 1,
     // Axios, et al.
-    if (!crossDomain && !('x-requested-with' in headers)) {
-      headers['x-requested-with'] = 'XMLHttpRequest';
+    if (!crossDomain && !("x-requested-with" in headers)) {
+      headers["x-requested-with"] = "XMLHttpRequest";
     }
 
     // Allow users to provide their XSRF cookie name and the name of a custom header to use to
     // send the cookie.
     const { withCredentials, xsrfCookieName, xsrfHeaderName } = config;
     if ((withCredentials || !crossDomain) && xsrfCookieName && xsrfHeaderName) {
-      const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? '';
+      const xsrfCookie = document?.cookie.match(new RegExp(`(^|;\\s*)(${xsrfCookieName})=([^;]*)`))?.pop() ?? "";
       if (xsrfCookie) {
         headers[xsrfHeaderName] = xsrfCookie;
       }
@@ -421,11 +420,11 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       };
 
       // If the request times out, handle errors appropriately.
-      addErrorEvent('timeout', () => new AjaxTimeoutError(xhr, _request));
+      addErrorEvent("timeout", () => new AjaxTimeoutError(xhr, _request));
 
       // If the request aborts (due to a network disconnection or the like), handle
       // it as an error.
-      addErrorEvent('abort', () => new AjaxError('aborted', xhr, _request));
+      addErrorEvent("abort", () => new AjaxError("aborted", xhr, _request));
 
       /**
        * Creates a response object to emit to the consumer.
@@ -458,7 +457,9 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       }
 
       if (progressSubscriber) {
-        [LOADSTART, PROGRESS].forEach((type) => xhr.upload.addEventListener(type, (e: any) => progressSubscriber?.next?.(e)));
+        [LOADSTART, PROGRESS].forEach((type) =>
+          xhr.upload.addEventListener(type, (e: any) => progressSubscriber?.next?.(e))
+        );
       }
 
       if (includeDownloadProgress) {
@@ -466,11 +467,11 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       }
 
       const emitError = (status?: number) => {
-        const msg = 'ajax error' + (status ? ' ' + status : '');
+        const msg = "ajax error" + (status ? " " + status : "");
         destination.error(new AjaxError(msg, xhr, _request));
       };
 
-      xhr.addEventListener('error', (e) => {
+      xhr.addEventListener("error", (e) => {
         progressSubscriber?.error?.(e);
         emitError();
       });
@@ -515,7 +516,7 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
       xhr.responseType = _request.responseType;
     }
 
-    if ('withCredentials' in xhr) {
+    if ("withCredentials" in xhr) {
       xhr.withCredentials = _request.withCredentials;
     }
 
@@ -553,7 +554,7 @@ export function fromAjax<T>(init: AjaxConfig): Observable<AjaxResponse<T>> {
 function extractContentTypeAndMaybeSerializeBody(body: any, headers: Record<string, string>) {
   if (
     !body ||
-    typeof body === 'string' ||
+    typeof body === "string" ||
     isFormData(body) ||
     isURLSearchParams(body) ||
     isArrayBuffer(body) ||
@@ -572,19 +573,19 @@ function extractContentTypeAndMaybeSerializeBody(body: any, headers: Record<stri
     return body.buffer;
   }
 
-  if (typeof body === 'object') {
+  if (typeof body === "object") {
     // If we have made it here, this is an object, probably a POJO, and we'll try
     // to serialize it for them. If this doesn't work, it will throw, obviously, which
     // is okay. The workaround for users would be to manually set the body to their own
     // serialized string (accounting for circular references or whatever), then set
     // the content-type manually as well.
-    headers['content-type'] = headers['content-type'] ?? 'application/json;charset=utf-8';
+    headers["content-type"] = headers["content-type"] ?? "application/json;charset=utf-8";
     return JSON.stringify(body);
   }
 
   // If we've gotten past everything above, this is something we don't quite know how to
   // handle. Throw an error. This will be caught and emitted from the observable.
-  throw new TypeError('Unknown body type');
+  throw new TypeError("Unknown body type");
 }
 
 const _toString = Object.prototype.toString;
@@ -594,29 +595,29 @@ function toStringCheck(obj: any, name: string): boolean {
 }
 
 function isArrayBuffer(body: any): body is ArrayBuffer {
-  return toStringCheck(body, 'ArrayBuffer');
+  return toStringCheck(body, "ArrayBuffer");
 }
 
 function isFile(body: any): body is File {
-  return toStringCheck(body, 'File');
+  return toStringCheck(body, "File");
 }
 
 function isBlob(body: any): body is Blob {
-  return toStringCheck(body, 'Blob');
+  return toStringCheck(body, "Blob");
 }
 
 function isArrayBufferView(body: any): body is ArrayBufferView {
-  return typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView(body);
+  return typeof ArrayBuffer !== "undefined" && ArrayBuffer.isView(body);
 }
 
 function isFormData(body: any): body is FormData {
-  return typeof FormData !== 'undefined' && body instanceof FormData;
+  return typeof FormData !== "undefined" && body instanceof FormData;
 }
 
 function isURLSearchParams(body: any): body is URLSearchParams {
-  return typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams;
+  return typeof URLSearchParams !== "undefined" && body instanceof URLSearchParams;
 }
 
 function isReadableStream(body: any): body is ReadableStream {
-  return typeof ReadableStream !== 'undefined' && body instanceof ReadableStream;
+  return typeof ReadableStream !== "undefined" && body instanceof ReadableStream;
 }

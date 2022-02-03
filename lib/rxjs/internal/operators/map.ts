@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R>;
 /** @deprecated Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8. */
@@ -56,7 +56,7 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
         // Call the projection function with the appropriate this context,
         // and send the resulting value to the consumer.
         subscriber.next(project.call(thisArg, value, index++));
-      })
+      }),
     );
   });
 }

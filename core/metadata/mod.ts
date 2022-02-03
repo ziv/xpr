@@ -10,9 +10,9 @@ export * from "./consts.ts";
 export {
   addParam,
   getCtrParams,
-  getInjectedParams,
-  setInjectable,
   getInjectable,
+  getInjectedParams,
+  getModuleDefinition,
+  setInjectable,
   setModuleDefinition,
-  getModuleDefinition
 };

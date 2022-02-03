@@ -1,9 +1,9 @@
-import { Subscriber } from '../Subscriber.ts';
-import { ObservableInput, OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { noop } from '../util/noop.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
+import { Subscriber } from "../Subscriber.ts";
+import { ObservableInput, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { noop } from "../util/noop.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -66,7 +66,7 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
       b && subscriber.next(b);
 
       // Get a new closing notifier and subscribe to it.
-      innerFrom(closingSelector()).subscribe((closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, noop)));
+      innerFrom(closingSelector()).subscribe(closingSubscriber = new OperatorSubscriber(subscriber, openBuffer, noop));
     };
 
     // Start the first buffer.
@@ -87,8 +87,8 @@ export function bufferWhen<T>(closingSelector: () => ObservableInput<any>): Oper
         // Pass all errors through to consumer.
         undefined,
         // Release memory on teardown
-        () => (buffer = closingSubscriber = null!)
-      )
+        () => (buffer = closingSubscriber = null!),
+      ),
     );
   });
 }

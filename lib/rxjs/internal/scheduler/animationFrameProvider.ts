@@ -1,4 +1,4 @@
-import { Subscription } from '../Subscription.ts';
+import { Subscription } from "../Subscription.ts";
 
 interface AnimationFrameProvider {
   schedule(callback: FrameRequestCallback): Subscription;
@@ -6,9 +6,9 @@ interface AnimationFrameProvider {
   cancelAnimationFrame: typeof cancelAnimationFrame;
   delegate:
     | {
-        requestAnimationFrame: typeof requestAnimationFrame;
-        cancelAnimationFrame: typeof cancelAnimationFrame;
-      }
+      requestAnimationFrame: typeof requestAnimationFrame;
+      cancelAnimationFrame: typeof cancelAnimationFrame;
+    }
     | undefined;
 }
 

@@ -1,18 +1,18 @@
 /* @prettier */
-import { SchedulerLike } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { bindCallbackInternals } from './bindCallbackInternals.ts';
+import { SchedulerLike } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { bindCallbackInternals } from "./bindCallbackInternals.ts";
 
 export function bindCallback(
   callbackFunc: (...args: any[]) => void,
   resultSelector: (...args: any[]) => any,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): (...args: any[]) => Observable<any>;
 
 // args is the arguments array and we push the callback on the rest tuple since the rest parameter must be last (only item) in a parameter list
 export function bindCallback<A extends readonly unknown[], R extends readonly unknown[]>(
   callbackFunc: (...args: [...A, (...res: R) => void]) => void,
-  schedulerLike?: SchedulerLike
+  schedulerLike?: SchedulerLike,
 ): (...arg: A) => Observable<R extends [] ? void : R extends [any] ? R[0] : R>;
 
 /**
@@ -139,7 +139,7 @@ export function bindCallback<A extends readonly unknown[], R extends readonly un
 export function bindCallback(
   callbackFunc: (...args: [...any[], (...res: any) => void]) => void,
   resultSelector?: ((...args: any[]) => any) | SchedulerLike,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): (...args: any[]) => Observable<unknown> {
   return bindCallbackInternals(false, callbackFunc, resultSelector, scheduler);
 }

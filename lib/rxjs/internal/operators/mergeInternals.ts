@@ -1,9 +1,9 @@
-import { Observable } from '../Observable.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { ObservableInput, SchedulerLike } from '../types.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { ObservableInput, SchedulerLike } from "../types.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * A process embodying the general "merge" strategy. This is used in
@@ -26,7 +26,7 @@ export function mergeInternals<T, R>(
   onBeforeNext?: (innerValue: R) => void,
   expand?: boolean,
   innerSubScheduler?: SchedulerLike,
-  additionalTeardown?: () => void
+  additionalTeardown?: () => void,
 ) {
   // Buffered values, in the event of going over our concurrency limit
   const buffer: T[] = [];
@@ -127,8 +127,8 @@ export function mergeInternals<T, R>(
               subscriber.error(err);
             }
           }
-        }
-      )
+        },
+      ),
     );
   };
 
@@ -138,7 +138,7 @@ export function mergeInternals<T, R>(
       // Outer completed, make a note of it, and check to see if we can complete everything.
       isComplete = true;
       checkComplete();
-    })
+    }),
   );
 
   // Additional teardown (for when the destination is torn down).

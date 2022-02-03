@@ -1,25 +1,25 @@
-import { Subject } from '../Subject.ts';
-import { asyncScheduler } from '../scheduler/async.ts';
-import { Observable } from '../Observable.ts';
-import { Subscription } from '../Subscription.ts';
-import { Observer, OperatorFunction, SchedulerLike } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { arrRemove } from '../util/arrRemove.ts';
-import { popScheduler } from '../util/args.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { Subject } from "../Subject.ts";
+import { asyncScheduler } from "../scheduler/async.ts";
+import { Observable } from "../Observable.ts";
+import { Subscription } from "../Subscription.ts";
+import { Observer, OperatorFunction, SchedulerLike } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { arrRemove } from "../util/arrRemove.ts";
+import { popScheduler } from "../util/args.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 export function windowTime<T>(windowTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(
   windowTimeSpan: number,
   windowCreationInterval: number,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(
   windowTimeSpan: number,
   windowCreationInterval: number | null | void,
   maxWindowSize: number,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, Observable<T>>;
 
 /**
@@ -186,8 +186,8 @@ export function windowTime<T>(windowTimeSpan: number, ...otherArgs: any[]): Oper
         // Complete the windows and the downstream subscriber and clean up.
         () => terminate((consumer) => consumer.complete()),
         // Notify the windows and the downstream subscriber of the error and clean up.
-        (err) => terminate((consumer) => consumer.error(err))
-      )
+        (err) => terminate((consumer) => consumer.error(err)),
+      ),
     );
 
     // Additional teardown. This will be called when the

@@ -1,4 +1,4 @@
-import { TimestampProvider } from '../types.ts';
+import { TimestampProvider } from "../types.ts";
 
 interface PerformanceTimestampProvider extends TimestampProvider {
   delegate: TimestampProvider | undefined;

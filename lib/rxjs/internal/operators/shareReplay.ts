@@ -1,6 +1,6 @@
-import { ReplaySubject } from '../ReplaySubject.ts';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { share } from './share.ts';
+import { ReplaySubject } from "../ReplaySubject.ts";
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { share } from "./share.ts";
 
 export interface ShareReplayConfig {
   bufferSize?: number;
@@ -10,7 +10,11 @@ export interface ShareReplayConfig {
 }
 
 export function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function shareReplay<T>(
+  bufferSize?: number,
+  windowTime?: number,
+  scheduler?: SchedulerLike,
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Share source and replay specified number of emissions on subscription.
@@ -154,11 +158,11 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,
   windowTime?: number,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): MonoTypeOperatorFunction<T> {
   let bufferSize: number;
   let refCount = false;
-  if (configOrBufferSize && typeof configOrBufferSize === 'object') {
+  if (configOrBufferSize && typeof configOrBufferSize === "object") {
     bufferSize = configOrBufferSize.bufferSize ?? Infinity;
     windowTime = configOrBufferSize.windowTime ?? Infinity;
     refCount = !!configOrBufferSize.refCount;

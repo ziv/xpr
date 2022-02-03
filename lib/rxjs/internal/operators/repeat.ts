@@ -1,10 +1,10 @@
-import { Subscription } from '../Subscription.ts';
-import { EMPTY } from '../observable/empty.ts';
-import { operate } from '../util/lift.ts';
-import { MonoTypeOperatorFunction, ObservableInput } from '../types.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { timer } from '../observable/timer.ts';
+import { Subscription } from "../Subscription.ts";
+import { EMPTY } from "../observable/empty.ts";
+import { operate } from "../util/lift.ts";
+import { MonoTypeOperatorFunction, ObservableInput } from "../types.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { timer } from "../observable/timer.ts";
 
 export interface RepeatConfig {
   /**
@@ -115,58 +115,56 @@ export interface RepeatConfig {
  */
 export function repeat<T>(countOrConfig?: number | RepeatConfig): MonoTypeOperatorFunction<T> {
   let count = Infinity;
-  let delay: RepeatConfig['delay'];
+  let delay: RepeatConfig["delay"];
 
   if (countOrConfig != null) {
-    if (typeof countOrConfig === 'object') {
+    if (typeof countOrConfig === "object") {
       ({ count = Infinity, delay } = countOrConfig);
     } else {
       count = countOrConfig;
     }
   }
 
-  return count <= 0
-    ? () => EMPTY
-    : operate((source, subscriber) => {
-        let soFar = 0;
-        let sourceSub: Subscription | null;
+  return count <= 0 ? () => EMPTY : operate((source, subscriber) => {
+    let soFar = 0;
+    let sourceSub: Subscription | null;
 
-        const resubscribe = () => {
-          sourceSub?.unsubscribe();
-          sourceSub = null;
-          if (delay != null) {
-            const notifier = typeof delay === 'number' ? timer(delay) : innerFrom(delay(soFar));
-            const notifierSubscriber = new OperatorSubscriber(subscriber, () => {
-              notifierSubscriber.unsubscribe();
-              subscribeToSource();
-            });
-            notifier.subscribe(notifierSubscriber);
-          } else {
-            subscribeToSource();
-          }
-        };
-
-        const subscribeToSource = () => {
-          let syncUnsub = false;
-          sourceSub = source.subscribe(
-            new OperatorSubscriber(subscriber, undefined, () => {
-              if (++soFar < count) {
-                if (sourceSub) {
-                  resubscribe();
-                } else {
-                  syncUnsub = true;
-                }
-              } else {
-                subscriber.complete();
-              }
-            })
-          );
-
-          if (syncUnsub) {
-            resubscribe();
-          }
-        };
-
+    const resubscribe = () => {
+      sourceSub?.unsubscribe();
+      sourceSub = null;
+      if (delay != null) {
+        const notifier = typeof delay === "number" ? timer(delay) : innerFrom(delay(soFar));
+        const notifierSubscriber = new OperatorSubscriber(subscriber, () => {
+          notifierSubscriber.unsubscribe();
+          subscribeToSource();
+        });
+        notifier.subscribe(notifierSubscriber);
+      } else {
         subscribeToSource();
-      });
+      }
+    };
+
+    const subscribeToSource = () => {
+      let syncUnsub = false;
+      sourceSub = source.subscribe(
+        new OperatorSubscriber(subscriber, undefined, () => {
+          if (++soFar < count) {
+            if (sourceSub) {
+              resubscribe();
+            } else {
+              syncUnsub = true;
+            }
+          } else {
+            subscriber.complete();
+          }
+        }),
+      );
+
+      if (syncUnsub) {
+        resubscribe();
+      }
+    };
+
+    subscribeToSource();
+  });
 }

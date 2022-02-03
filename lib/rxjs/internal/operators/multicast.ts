@@ -1,9 +1,9 @@
-import { Subject } from '../Subject.ts';
-import { Observable } from '../Observable.ts';
-import { ConnectableObservable } from '../observable/ConnectableObservable.ts';
-import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types.ts';
-import { isFunction } from '../util/isFunction.ts';
-import { connect } from './connect.ts';
+import { Subject } from "../Subject.ts";
+import { Observable } from "../Observable.ts";
+import { ConnectableObservable } from "../observable/ConnectableObservable.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction, UnaryFunction } from "../types.ts";
+import { isFunction } from "../util/isFunction.ts";
+import { connect } from "./connect.ts";
 
 /**
  * An operator that creates a {@link ConnectableObservable}, that when connected,
@@ -35,7 +35,7 @@ export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, 
  */
 export function multicast<T, O extends ObservableInput<any>>(
   subject: Subject<T>,
-  selector: (shared: Observable<T>) => O
+  selector: (shared: Observable<T>) => O,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
@@ -70,7 +70,7 @@ export function multicast<T>(subjectFactory: () => Subject<T>): UnaryFunction<Ob
  */
 export function multicast<T, O extends ObservableInput<any>>(
   subjectFactory: () => Subject<T>,
-  selector: (shared: Observable<T>) => O
+  selector: (shared: Observable<T>) => O,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
@@ -81,7 +81,7 @@ export function multicast<T, O extends ObservableInput<any>>(
  */
 export function multicast<T, R>(
   subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-  selector?: (source: Observable<T>) => Observable<R>
+  selector?: (source: Observable<T>) => Observable<R>,
 ): OperatorFunction<T, R> {
   const subjectFactory = isFunction(subjectOrSubjectFactory) ? subjectOrSubjectFactory : () => subjectOrSubjectFactory;
 

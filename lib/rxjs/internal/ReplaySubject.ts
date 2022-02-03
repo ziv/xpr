@@ -1,8 +1,8 @@
-import { Subject } from './Subject.ts';
-import { TimestampProvider } from './types.ts';
-import { Subscriber } from './Subscriber.ts';
-import { Subscription } from './Subscription.ts';
-import { dateTimestampProvider } from './scheduler/dateTimestampProvider.ts';
+import { Subject } from "./Subject.ts";
+import { TimestampProvider } from "./types.ts";
+import { Subscriber } from "./Subscriber.ts";
+import { Subscription } from "./Subscription.ts";
+import { dateTimestampProvider } from "./scheduler/dateTimestampProvider.ts";
 
 /**
  * A variant of {@link Subject} that "replays" old values to new subscribers by emitting them when they first subscribe.
@@ -47,7 +47,7 @@ export class ReplaySubject<T> extends Subject<T> {
   constructor(
     private _bufferSize = Infinity,
     private _windowTime = Infinity,
-    private _timestampProvider: TimestampProvider = dateTimestampProvider
+    private _timestampProvider: TimestampProvider = dateTimestampProvider,
   ) {
     super();
     this._infiniteTimeWindow = _windowTime === Infinity;
@@ -92,7 +92,8 @@ export class ReplaySubject<T> extends Subject<T> {
     // double the size for instances where we're not using an infinite time window
     // because we're storing the values and the timestamps in the same array.
     const adjustedBufferSize = (_infiniteTimeWindow ? 1 : 2) * _bufferSize;
-    _bufferSize < Infinity && adjustedBufferSize < _buffer.length && _buffer.splice(0, _buffer.length - adjustedBufferSize);
+    _bufferSize < Infinity && adjustedBufferSize < _buffer.length &&
+      _buffer.splice(0, _buffer.length - adjustedBufferSize);
 
     // Now, if we're not in an infinite time window, remove all values where the time is
     // older than what is allowed.

@@ -1,20 +1,20 @@
-import { mergeMap } from './mergeMap.ts';
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.ts';
-import { isFunction } from '../util/isFunction.ts';
+import { mergeMap } from "./mergeMap.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { isFunction } from "../util/isFunction.ts";
 
 /* tslint:disable:max-line-length */
 export function concatMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O
+  project: (value: T, index: number) => O,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function concatMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector: undefined
+  resultSelector: undefined,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function concatMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
@@ -78,7 +78,7 @@ export function concatMap<T, R, O extends ObservableInput<any>>(
  */
 export function concatMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
   return isFunction(resultSelector) ? mergeMap(project, resultSelector, 1) : mergeMap(project, 1);
 }

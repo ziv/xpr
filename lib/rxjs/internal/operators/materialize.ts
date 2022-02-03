@@ -1,7 +1,7 @@
-import { Notification } from '../Notification.ts';
-import { OperatorFunction, ObservableNotification } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Notification } from "../Notification.ts";
+import { ObservableNotification, OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -66,8 +66,8 @@ export function materialize<T>(): OperatorFunction<T, Notification<T> & Observab
         (err) => {
           subscriber.next(Notification.createError(err));
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

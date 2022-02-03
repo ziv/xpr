@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { audit } from './audit.ts';
-import { timer } from '../observable/timer.ts';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { audit } from "./audit.ts";
+import { timer } from "../observable/timer.ts";
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

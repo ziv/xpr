@@ -1,4 +1,4 @@
-import { createErrorClass } from './createErrorClass.ts';
+import { createErrorClass } from "./createErrorClass.ts";
 
 export interface SequenceError extends Error {}
 
@@ -22,7 +22,7 @@ export const SequenceError: SequenceErrorCtor = createErrorClass(
   (_super) =>
     function SequenceErrorImpl(this: any, message: string) {
       _super(this);
-      this.name = 'SequenceError';
+      this.name = "SequenceError";
       this.message = message;
-    }
+    },
 );

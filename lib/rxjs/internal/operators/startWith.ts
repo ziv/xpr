@@ -1,7 +1,7 @@
-import { concat } from '../observable/concat.ts';
-import { OperatorFunction, SchedulerLike, ValueFromArray } from '../types.ts';
-import { popScheduler } from '../util/args.ts';
-import { operate } from '../util/lift.ts';
+import { concat } from "../observable/concat.ts";
+import { OperatorFunction, SchedulerLike, ValueFromArray } from "../types.ts";
+import { popScheduler } from "../util/args.ts";
+import { operate } from "../util/lift.ts";
 
 // Devs are more likely to pass null or undefined than they are a scheduler
 // without accompanying values. To make things easier for (naughty) devs who
@@ -15,7 +15,9 @@ export function startWith<T>(value: undefined): OperatorFunction<T, T | undefine
 export function startWith<T, A extends readonly unknown[] = T[]>(
   ...valuesAndScheduler: [...A, SchedulerLike]
 ): OperatorFunction<T, T | ValueFromArray<A>>;
-export function startWith<T, A extends readonly unknown[] = T[]>(...values: A): OperatorFunction<T, T | ValueFromArray<A>>;
+export function startWith<T, A extends readonly unknown[] = T[]>(
+  ...values: A
+): OperatorFunction<T, T | ValueFromArray<A>>;
 
 /**
  * Returns an observable that, at the moment of subscription, will synchronously emit all

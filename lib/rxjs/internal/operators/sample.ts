@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { noop } from '../util/noop.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Observable } from "../Observable.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { noop } from "../util/noop.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -52,7 +52,7 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
       new OperatorSubscriber(subscriber, (value) => {
         hasValue = true;
         lastValue = value;
-      })
+      }),
     );
     notifier.subscribe(
       new OperatorSubscriber(
@@ -65,8 +65,8 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
             subscriber.next(value);
           }
         },
-        noop
-      )
+        noop,
+      ),
     );
   });
 }

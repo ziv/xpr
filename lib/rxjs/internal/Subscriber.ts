@@ -1,12 +1,12 @@
-import { isFunction } from './util/isFunction.ts';
-import { Observer, ObservableNotification } from './types.ts';
-import { isSubscription, Subscription } from './Subscription.ts';
-import { config } from './config.ts';
-import { reportUnhandledError } from './util/reportUnhandledError.ts';
-import { noop } from './util/noop.ts';
-import { nextNotification, errorNotification, COMPLETE_NOTIFICATION } from './NotificationFactories.ts';
-import { timeoutProvider } from './scheduler/timeoutProvider.ts';
-import { captureError } from './util/errorContext.ts';
+import { isFunction } from "./util/isFunction.ts";
+import { ObservableNotification, Observer } from "./types.ts";
+import { isSubscription, Subscription } from "./Subscription.ts";
+import { config } from "./config.ts";
+import { reportUnhandledError } from "./util/reportUnhandledError.ts";
+import { noop } from "./util/noop.ts";
+import { COMPLETE_NOTIFICATION, errorNotification, nextNotification } from "./NotificationFactories.ts";
+import { timeoutProvider } from "./scheduler/timeoutProvider.ts";
+import { captureError } from "./util/errorContext.ts";
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -140,7 +140,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   constructor(
     observerOrNext?: Partial<Observer<T>> | ((value: T) => void) | null,
     error?: ((e?: any) => void) | null,
-    complete?: (() => void) | null
+    complete?: (() => void) | null,
   ) {
     super();
 

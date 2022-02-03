@@ -1,8 +1,7 @@
-import { QueueAction } from './QueueAction.ts';
-import { QueueScheduler } from './QueueScheduler.ts';
+import { QueueAction } from "./QueueAction.ts";
+import { QueueScheduler } from "./QueueScheduler.ts";
 
 /**
- *
  * Queue Scheduler
  *
  * <span class="informal">Put every next task on a queue, instead of executing it immediately</span>

@@ -1,7 +1,7 @@
-import { async } from '../scheduler/async.ts';
-import { isValidDate } from '../util/isDate.ts';
-import { ObservableInput, OperatorFunction, SchedulerLike } from '../types.ts';
-import { timeout } from './timeout.ts';
+import { async } from "../scheduler/async.ts";
+import { isValidDate } from "../util/isDate.ts";
+import { ObservableInput, OperatorFunction, SchedulerLike } from "../types.ts";
+import { timeout } from "./timeout.ts";
 
 /**
  * If the time of the Date object passed arrives before the first value arrives from the source, it will unsubscribe
@@ -17,7 +17,11 @@ import { timeout } from './timeout.ts';
  * @param scheduler The scheduler to use with time-related operations within this operator. Defaults to {@link asyncScheduler}
  * @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(someDate, a$, scheduler)`, use the configuration object `timeout({ first: someDate, with: () => a$, scheduler })`. Will be removed in v8.
  */
-export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
+export function timeoutWith<T, R>(
+  dueBy: Date,
+  switchTo: ObservableInput<R>,
+  scheduler?: SchedulerLike,
+): OperatorFunction<T, T | R>;
 
 /**
  * When the passed timespan elapses before the source emits any given value, it will unsubscribe from the source,
@@ -78,12 +82,16 @@ export function timeoutWith<T, R>(dueBy: Date, switchTo: ObservableInput<R>, sch
  * from the Observable passed as a second parameter.
  * @deprecated Replaced with {@link timeout}. Instead of `timeoutWith(100, a$, scheduler)`, use the configuration object `timeout({ each: 100, with: () => a$, scheduler })`. Will be removed in v8.
  */
-export function timeoutWith<T, R>(waitFor: number, switchTo: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
+export function timeoutWith<T, R>(
+  waitFor: number,
+  switchTo: ObservableInput<R>,
+  scheduler?: SchedulerLike,
+): OperatorFunction<T, T | R>;
 
 export function timeoutWith<T, R>(
   due: number | Date,
   withObservable: ObservableInput<R>,
-  scheduler?: SchedulerLike
+  scheduler?: SchedulerLike,
 ): OperatorFunction<T, T | R> {
   let first: number | Date | undefined;
   let each: number | undefined;
@@ -92,19 +100,19 @@ export function timeoutWith<T, R>(
 
   if (isValidDate(due)) {
     first = due;
-  } else if (typeof due === 'number') {
+  } else if (typeof due === "number") {
     each = due;
   }
 
   if (withObservable) {
     _with = () => withObservable;
   } else {
-    throw new TypeError('No observable provided to switch to');
+    throw new TypeError("No observable provided to switch to");
   }
 
   if (first == null && each == null) {
     // Ensure timeout was provided at runtime.
-    throw new TypeError('No timeout provided.');
+    throw new TypeError("No timeout provided.");
   }
 
   return timeout<T, ObservableInput<R>>({

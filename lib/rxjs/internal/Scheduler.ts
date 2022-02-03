@@ -1,7 +1,7 @@
-import { Action } from './scheduler/Action.ts';
-import { Subscription } from './Subscription.ts';
-import { SchedulerLike, SchedulerAction } from './types.ts';
-import { dateTimestampProvider } from './scheduler/dateTimestampProvider.ts';
+import { Action } from "./scheduler/Action.ts";
+import { Subscription } from "./Subscription.ts";
+import { SchedulerAction, SchedulerLike } from "./types.ts";
+import { dateTimestampProvider } from "./scheduler/dateTimestampProvider.ts";
 
 /**
  * An execution context and a data structure to order tasks and schedule their

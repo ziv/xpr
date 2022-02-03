@@ -1,6 +1,6 @@
-import { Scheduler } from '../Scheduler.ts';
-import { Action } from './Action.ts';
-import { AsyncAction } from './AsyncAction.ts';
+import { Scheduler } from "../Scheduler.ts";
+import { Action } from "./Action.ts";
+import { AsyncAction } from "./AsyncAction.ts";
 
 export class AsyncScheduler extends Scheduler {
   public actions: Array<AsyncAction<any>> = [];

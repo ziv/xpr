@@ -1,10 +1,10 @@
-import { SchedulerLike } from '../types.ts';
-import { Observable } from '../Observable.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { SchedulerLike } from "../types.ts";
+import { Observable } from "../Observable.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 export function scheduleAsyncIterable<T>(input: AsyncIterable<T>, scheduler: SchedulerLike) {
   if (!input) {
-    throw new Error('Iterable cannot be null');
+    throw new Error("Iterable cannot be null");
   }
   return new Observable<T>((subscriber) => {
     executeSchedule(subscriber, scheduler, () => {
@@ -24,7 +24,7 @@ export function scheduleAsyncIterable<T>(input: AsyncIterable<T>, scheduler: Sch
           });
         },
         0,
-        true
+        true,
       );
     });
   });

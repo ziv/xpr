@@ -1,11 +1,11 @@
-import { Operator } from './Operator.ts';
-import { Observable } from './Observable.ts';
-import { Subscriber } from './Subscriber.ts';
-import { Subscription, EMPTY_SUBSCRIPTION } from './Subscription.ts';
-import { Observer, SubscriptionLike, TeardownLogic } from './types.ts';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError.ts';
-import { arrRemove } from './util/arrRemove.ts';
-import { errorContext } from './util/errorContext.ts';
+import { Operator } from "./Operator.ts";
+import { Observable } from "./Observable.ts";
+import { Subscriber } from "./Subscriber.ts";
+import { EMPTY_SUBSCRIPTION, Subscription } from "./Subscription.ts";
+import { Observer, SubscriptionLike, TeardownLogic } from "./types.ts";
+import { ObjectUnsubscribedError } from "./util/ObjectUnsubscribedError.ts";
+import { arrRemove } from "./util/arrRemove.ts";
+import { errorContext } from "./util/errorContext.ts";
 
 /**
  * A Subject is a special type of Observable that allows values to be
@@ -31,7 +31,10 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
    * @nocollapse
    * @deprecated Recommended you do not use. Will be removed at some point in the future. Plans for replacement still under discussion.
    */
-  static create: (...args: any[]) => any = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+  static create: (...args: any[]) => any = <T>(
+    destination: Observer<T>,
+    source: Observable<T>,
+  ): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   };
 
@@ -153,7 +156,7 @@ export class AnonymousSubject<T> extends Subject<T> {
   constructor(
     /** @deprecated Internal implementation detail, do not use directly. Will be made internal in v8. */
     public destination?: Observer<T>,
-    source?: Observable<T>
+    source?: Observable<T>,
   ) {
     super();
     this.source = source;

@@ -1,17 +1,19 @@
-import { Observable } from '../Observable.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { concat } from '../observable/concat.ts';
-import { take } from './take.ts';
-import { ignoreElements } from './ignoreElements.ts';
-import { mapTo } from './mapTo.ts';
-import { mergeMap } from './mergeMap.ts';
+import { Observable } from "../Observable.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { concat } from "../observable/concat.ts";
+import { take } from "./take.ts";
+import { ignoreElements } from "./ignoreElements.ts";
+import { mapTo } from "./mapTo.ts";
+import { mergeMap } from "./mergeMap.ts";
 
 /** @deprecated The `subscriptionDelay` parameter will be removed in v8. */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,
-  subscriptionDelay: Observable<any>
+  subscriptionDelay: Observable<any>,
 ): MonoTypeOperatorFunction<T>;
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(
+  delayDurationSelector: (value: T, index: number) => Observable<any>,
+): MonoTypeOperatorFunction<T>;
 
 /**
  * Delays the emission of items from the source Observable by a given time span
@@ -74,7 +76,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => Observable<any>,
-  subscriptionDelay?: Observable<any>
+  subscriptionDelay?: Observable<any>,
 ): MonoTypeOperatorFunction<T> {
   if (subscriptionDelay) {
     // DEPRECATED PATH

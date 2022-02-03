@@ -1,7 +1,7 @@
-import { Observable } from '../Observable.ts';
-import { asyncScheduler } from '../scheduler/async.ts';
-import { SchedulerLike } from '../types.ts';
-import { timer } from './timer.ts';
+import { Observable } from "../Observable.ts";
+import { asyncScheduler } from "../scheduler/async.ts";
+import { SchedulerLike } from "../types.ts";
+import { timer } from "./timer.ts";
 
 /**
  * Creates an Observable that emits sequential numbers every specified

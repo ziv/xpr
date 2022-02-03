@@ -1,9 +1,15 @@
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { multicast } from './multicast.ts';
-import { ConnectableObservable } from '../observable/ConnectableObservable.ts';
-import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction, ObservableInput, ObservedValueOf } from '../types.ts';
-import { connect } from './connect.ts';
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { multicast } from "./multicast.ts";
+import { ConnectableObservable } from "../observable/ConnectableObservable.ts";
+import {
+  MonoTypeOperatorFunction,
+  ObservableInput,
+  ObservedValueOf,
+  OperatorFunction,
+  UnaryFunction,
+} from "../types.ts";
+import { connect } from "./connect.ts";
 
 /**
  * Returns a connectable observable that, when connected, will multicast
@@ -31,7 +37,9 @@ export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable
  * `publish(selector)` is equivalent to `connect(selector)`.
  * Details: https://rxjs.dev/deprecations/multicasting
  */
-export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export function publish<T, O extends ObservableInput<any>>(
+  selector: (shared: Observable<T>) => O,
+): OperatorFunction<T, ObservedValueOf<O>>;
 
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called

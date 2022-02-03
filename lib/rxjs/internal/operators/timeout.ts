@@ -1,13 +1,19 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction, ObservableInput, ObservedValueOf } from '../types.ts';
-import { isValidDate } from '../util/isDate.ts';
-import { Subscription } from '../Subscription.ts';
-import { operate } from '../util/lift.ts';
-import { Observable } from '../Observable.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { createErrorClass } from '../util/createErrorClass.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { executeSchedule } from '../util/executeSchedule.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import {
+  MonoTypeOperatorFunction,
+  ObservableInput,
+  ObservedValueOf,
+  OperatorFunction,
+  SchedulerLike,
+} from "../types.ts";
+import { isValidDate } from "../util/isDate.ts";
+import { Subscription } from "../Subscription.ts";
+import { operate } from "../util/lift.ts";
+import { Observable } from "../Observable.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { createErrorClass } from "../util/createErrorClass.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { executeSchedule } from "../util/executeSchedule.ts";
 
 export interface TimeoutConfig<T, O extends ObservableInput<unknown> = ObservableInput<T>, M = unknown> {
   /**
@@ -89,10 +95,10 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
   (_super) =>
     function TimeoutErrorImpl(this: any, info: TimeoutInfo<any> | null = null) {
       _super(this);
-      this.message = 'Timeout has occurred';
-      this.name = 'TimeoutError';
+      this.message = "Timeout has occurred";
+      this.name = "TimeoutError";
       this.info = info;
-    }
+    },
 );
 
 /**
@@ -162,7 +168,7 @@ export const TimeoutError: TimeoutErrorCtor = createErrorClass(
  * @param config The configuration for the timeout.
  */
 export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
-  config: TimeoutConfig<T, O, M> & { with: (info: TimeoutInfo<T, M>) => O }
+  config: TimeoutConfig<T, O, M> & { with: (info: TimeoutInfo<T, M>) => O },
 ): OperatorFunction<T, T | ObservedValueOf<O>>;
 
 /**
@@ -255,7 +261,7 @@ export function timeout<T, O extends ObservableInput<unknown>, M = unknown>(
  *   });
  * ```
  */
-export function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, 'with'>): OperatorFunction<T, T>;
+export function timeout<T, M = unknown>(config: Omit<TimeoutConfig<T, any, M>, "with">): OperatorFunction<T, T>;
 
 /**
  * Returns an observable that will error if the source does not push its first value before the specified time passed as a `Date`.
@@ -286,7 +292,6 @@ export function timeout<T>(first: Date, scheduler?: SchedulerLike): MonoTypeOper
 export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 
 /**
- *
  * Errors if Observable does not emit a value in given time span.
  *
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
@@ -300,7 +305,7 @@ export function timeout<T>(each: number, scheduler?: SchedulerLike): MonoTypeOpe
  */
 export function timeout<T, O extends ObservableInput<any>, M>(
   config: number | Date | TimeoutConfig<T, O, M>,
-  schedulerArg?: SchedulerLike
+  schedulerArg?: SchedulerLike,
 ): OperatorFunction<T, T | ObservedValueOf<O>> {
   // Intentionally terse code.
   // If the first argument is a valid `Date`, then we use it as the `first` config.
@@ -309,15 +314,16 @@ export function timeout<T, O extends ObservableInput<any>, M>(
   // we destructure that into what we're going to use, setting important defaults as we do.
   // NOTE: The default for `scheduler` will be the `scheduler` argument if it exists, or
   // it will default to the `asyncScheduler`.
-  const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } = (isValidDate(config)
-    ? { first: config }
-    : typeof config === 'number'
-    ? { each: config }
-    : config) as TimeoutConfig<T, O, M>;
+  const { first, each, with: _with = timeoutErrorFactory, scheduler = schedulerArg ?? asyncScheduler, meta = null! } =
+    (isValidDate(config) ? { first: config } : typeof config === "number" ? { each: config } : config) as TimeoutConfig<
+      T,
+      O,
+      M
+    >;
 
   if (first == null && each == null) {
     // Ensure timeout was provided at runtime.
-    throw new TypeError('No timeout provided.');
+    throw new TypeError("No timeout provided.");
   }
 
   return operate((source, subscriber) => {
@@ -348,13 +354,13 @@ export function timeout<T, O extends ObservableInput<any>, M>(
                 meta,
                 lastValue,
                 seen,
-              })
+              }),
             ).subscribe(subscriber);
           } catch (err) {
             subscriber.error(err);
           }
         },
-        delay
+        delay,
       );
     };
 
@@ -366,7 +372,7 @@ export function timeout<T, O extends ObservableInput<any>, M>(
           timerSubscription?.unsubscribe();
           seen++;
           // Emit
-          subscriber.next((lastValue = value));
+          subscriber.next(lastValue = value);
           // null | undefined are both < 0. Thanks, JavaScript.
           each! > 0 && startTimer(each!);
         },
@@ -379,15 +385,15 @@ export function timeout<T, O extends ObservableInput<any>, M>(
           // Be sure not to hold the last value in memory after unsubscription
           // it could be quite large.
           lastValue = null;
-        }
-      )
+        },
+      ),
     );
 
     // Intentionally terse code.
     // If `first` was provided, and it's a number, then use it.
     // If `first` was provided and it's not a number, it's a Date, and we get the difference between it and "now".
     // If `first` was not provided at all, then our first timer will be the value from `each`.
-    startTimer(first != null ? (typeof first === 'number' ? first : +first - scheduler!.now()) : each!);
+    startTimer(first != null ? (typeof first === "number" ? first : +first - scheduler!.now()) : each!);
   });
 }
 

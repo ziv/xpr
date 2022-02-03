@@ -1,7 +1,7 @@
-import { asyncScheduler } from '../scheduler/async.ts';
-import { defaultThrottleConfig, throttle } from './throttle.ts';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types.ts';
-import { timer } from '../observable/timer.ts';
+import { asyncScheduler } from "../scheduler/async.ts";
+import { defaultThrottleConfig, throttle } from "./throttle.ts";
+import { MonoTypeOperatorFunction, SchedulerLike } from "../types.ts";
+import { timer } from "../observable/timer.ts";
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -55,7 +55,7 @@ import { timer } from '../observable/timer.ts';
 export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
-  config = defaultThrottleConfig
+  config = defaultThrottleConfig,
 ): MonoTypeOperatorFunction<T> {
   const duration$ = timer(duration, scheduler);
   return throttle(() => duration$, config);

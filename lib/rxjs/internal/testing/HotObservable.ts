@@ -1,12 +1,12 @@
-import { Subject } from '../Subject.ts';
-import { Subscriber } from '../Subscriber.ts';
-import { Subscription } from '../Subscription.ts';
-import { Scheduler } from '../Scheduler.ts';
-import { TestMessage } from './TestMessage.ts';
-import { SubscriptionLog } from './SubscriptionLog.ts';
-import { SubscriptionLoggable } from './SubscriptionLoggable.ts';
-import { applyMixins } from '../util/applyMixins.ts';
-import { observeNotification } from '../Notification.ts';
+import { Subject } from "../Subject.ts";
+import { Subscriber } from "../Subscriber.ts";
+import { Subscription } from "../Subscription.ts";
+import { Scheduler } from "../Scheduler.ts";
+import { TestMessage } from "./TestMessage.ts";
+import { SubscriptionLog } from "./SubscriptionLog.ts";
+import { SubscriptionLoggable } from "./SubscriptionLoggable.ts";
+import { applyMixins } from "../util/applyMixins.ts";
+import { observeNotification } from "../Notification.ts";
 
 export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
@@ -29,7 +29,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     subscription.add(
       new Subscription(() => {
         subject.logUnsubscribedFrame(index);
-      })
+      }),
     );
     subscription.add(super._subscribe(subscriber));
     return subscription;

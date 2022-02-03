@@ -1,4 +1,4 @@
-import { Subscriber } from '../Subscriber.ts';
+import { Subscriber } from "../Subscriber.ts";
 
 /**
  * A generic helper for allowing operators to be created with a Subscriber and
@@ -22,7 +22,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     onNext?: (value: T) => void,
     onComplete?: () => void,
     onError?: (err: any) => void,
-    private onFinalize?: () => void
+    private onFinalize?: () => void,
   ) {
     // It's important - for performance reasons - that all of this class's
     // members are initialized and that they are always initialized in the same
@@ -39,38 +39,38 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
     super(destination);
     this._next = onNext
       ? function (this: OperatorSubscriber<T>, value: T) {
-          try {
-            onNext(value);
-          } catch (err) {
-            destination.error(err);
-          }
+        try {
+          onNext(value);
+        } catch (err) {
+          destination.error(err);
         }
+      }
       : super._next;
     this._error = onError
       ? function (this: OperatorSubscriber<T>, err: any) {
-          try {
-            onError(err);
-          } catch (err) {
-            // Send any errors that occur down stream.
-            destination.error(err);
-          } finally {
-            // Ensure teardown.
-            this.unsubscribe();
-          }
+        try {
+          onError(err);
+        } catch (err) {
+          // Send any errors that occur down stream.
+          destination.error(err);
+        } finally {
+          // Ensure teardown.
+          this.unsubscribe();
         }
+      }
       : super._error;
     this._complete = onComplete
       ? function (this: OperatorSubscriber<T>) {
-          try {
-            onComplete();
-          } catch (err) {
-            // Send any errors that occur down stream.
-            destination.error(err);
-          } finally {
-            // Ensure teardown.
-            this.unsubscribe();
-          }
+        try {
+          onComplete();
+        } catch (err) {
+          // Send any errors that occur down stream.
+          destination.error(err);
+        } finally {
+          // Ensure teardown.
+          this.unsubscribe();
         }
+      }
       : super._complete;
   }
 

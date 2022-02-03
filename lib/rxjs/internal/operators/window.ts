@@ -1,9 +1,9 @@
-import { Observable } from '../Observable.ts';
-import { OperatorFunction } from '../types.ts';
-import { Subject } from '../Subject.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
-import { noop } from '../util/noop.ts';
+import { Observable } from "../Observable.ts";
+import { OperatorFunction } from "../types.ts";
+import { Subject } from "../Subject.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
+import { noop } from "../util/noop.ts";
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -68,8 +68,8 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
           windowSubject.complete();
           subscriber.complete();
         },
-        errorHandler
-      )
+        errorHandler,
+      ),
     );
 
     // Subscribe to the window boundaries.
@@ -78,11 +78,11 @@ export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T
         subscriber,
         () => {
           windowSubject.complete();
-          subscriber.next((windowSubject = new Subject()));
+          subscriber.next(windowSubject = new Subject());
         },
         noop,
-        errorHandler
-      )
+        errorHandler,
+      ),
     );
 
     return () => {

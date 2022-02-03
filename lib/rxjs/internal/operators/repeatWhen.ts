@@ -1,10 +1,10 @@
-import { Observable } from '../Observable.ts';
-import { Subject } from '../Subject.ts';
-import { Subscription } from '../Subscription.ts';
+import { Observable } from "../Observable.ts";
+import { Subject } from "../Subject.ts";
+import { Subscription } from "../Subscription.ts";
 
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
@@ -38,7 +38,9 @@ import { OperatorSubscriber } from './OperatorSubscriber.ts';
  * @return A function that returns an Observable that that mirrors the source
  * Observable with the exception of a `complete`.
  */
-export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Observable<any>): MonoTypeOperatorFunction<T> {
+export function repeatWhen<T>(
+  notifier: (notifications: Observable<void>) => Observable<any>,
+): MonoTypeOperatorFunction<T> {
   return operate((source, subscriber) => {
     let innerSub: Subscription | null;
     let syncResub = false;
@@ -77,8 +79,8 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
             () => {
               isNotifierComplete = true;
               checkComplete();
-            }
-          )
+            },
+          ),
         );
       }
       return completions$;
@@ -96,7 +98,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<void>) => Obs
           // line. The thrown error is caught by the _complete handler in this
           // `OperatorSubscriber` and handled appropriately.
           !checkComplete() && getCompletionSubject().next();
-        })
+        }),
       );
 
       if (syncResub) {

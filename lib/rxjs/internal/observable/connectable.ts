@@ -1,8 +1,8 @@
-import { Connectable, ObservableInput, SubjectLike } from '../types.ts';
-import { Subject } from '../Subject.ts';
-import { Subscription } from '../Subscription.ts';
-import { Observable } from '../Observable.ts';
-import { defer } from './defer.ts';
+import { Connectable, ObservableInput, SubjectLike } from "../types.ts";
+import { Subject } from "../Subject.ts";
+import { Subscription } from "../Subscription.ts";
+import { Observable } from "../Observable.ts";
+import { defer } from "./defer.ts";
 
 export interface ConnectableConfig<T> {
   /**
@@ -37,7 +37,10 @@ const DEFAULT_CONFIG: ConnectableConfig<unknown> = {
  * @returns A "connectable" observable, that has a `connect()` method, that you must call to
  * connect the source to all consumers through the subject provided as the connector.
  */
-export function connectable<T>(source: ObservableInput<T>, config: ConnectableConfig<T> = DEFAULT_CONFIG): Connectable<T> {
+export function connectable<T>(
+  source: ObservableInput<T>,
+  config: ConnectableConfig<T> = DEFAULT_CONFIG,
+): Connectable<T> {
   // The subscription representing the connection.
   let connection: Subscription | null = null;
   const { connector, resetOnDisconnect = true } = config;

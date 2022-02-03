@@ -1,12 +1,16 @@
-import { Observable } from '../Observable.ts';
-import { ObservableInputTuple } from '../types.ts';
-import { EMPTY } from './empty.ts';
-import { onErrorResumeNext as onErrorResumeNextWith } from '../operators/onErrorResumeNext.ts';
-import { argsOrArgArray } from '../util/argsOrArgArray.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInputTuple } from "../types.ts";
+import { EMPTY } from "./empty.ts";
+import { onErrorResumeNext as onErrorResumeNextWith } from "../operators/onErrorResumeNext.ts";
+import { argsOrArgArray } from "../util/argsOrArgArray.ts";
 
 /* tslint:disable:max-line-length */
-export function onErrorResumeNext<A extends readonly unknown[]>(sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
-export function onErrorResumeNext<A extends readonly unknown[]>(...sources: [...ObservableInputTuple<A>]): Observable<A[number]>;
+export function onErrorResumeNext<A extends readonly unknown[]>(
+  sources: [...ObservableInputTuple<A>],
+): Observable<A[number]>;
+export function onErrorResumeNext<A extends readonly unknown[]>(
+  ...sources: [...ObservableInputTuple<A>]
+): Observable<A[number]>;
 
 /* tslint:enable:max-line-length */
 

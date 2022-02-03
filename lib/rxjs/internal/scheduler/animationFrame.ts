@@ -1,8 +1,7 @@
-import { AnimationFrameAction } from './AnimationFrameAction.ts';
-import { AnimationFrameScheduler } from './AnimationFrameScheduler.ts';
+import { AnimationFrameAction } from "./AnimationFrameAction.ts";
+import { AnimationFrameScheduler } from "./AnimationFrameScheduler.ts";
 
 /**
- *
  * Animation Frame Scheduler
  *
  * <span class="informal">Perform task when `window.requestAnimationFrame` would fire</span>

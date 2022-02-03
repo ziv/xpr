@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Emits a given value if the source Observable completes without emitting any
@@ -52,8 +52,8 @@ export function defaultIfEmpty<T, R>(defaultValue: R): OperatorFunction<T, T | R
             subscriber.next(defaultValue!);
           }
           subscriber.complete();
-        }
-      )
+        },
+      ),
     );
   });
 }

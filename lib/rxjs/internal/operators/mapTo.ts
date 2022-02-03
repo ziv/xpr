@@ -1,5 +1,5 @@
-import { OperatorFunction } from '../types.ts';
-import { map } from './map.ts';
+import { OperatorFunction } from "../types.ts";
+import { map } from "./map.ts";
 
 export function mapTo<R>(value: R): OperatorFunction<unknown, R>;
 /** @deprecated Do not specify explicit type parameters. Signatures with type parameters that cannot be inferred will be removed in v8. */

@@ -1,5 +1,5 @@
-import { Scheduler } from '../Scheduler.ts';
-import { SubscriptionLog } from './SubscriptionLog.ts';
+import { Scheduler } from "../Scheduler.ts";
+import { SubscriptionLog } from "./SubscriptionLog.ts";
 
 export class SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
@@ -16,7 +16,7 @@ export class SubscriptionLoggable {
     const oldSubscriptionLog = subscriptionLogs[index];
     subscriptionLogs[index] = new SubscriptionLog(
       oldSubscriptionLog.subscribedFrame,
-      this.scheduler.now()
+      this.scheduler.now(),
     );
   }
 }

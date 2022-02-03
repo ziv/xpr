@@ -1,6 +1,6 @@
-import { reduce } from './reduce.ts';
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
+import { reduce } from "./reduce.ts";
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
 
 const arrReducer = (arr: any[], value: any) => (arr.push(value), arr);
 

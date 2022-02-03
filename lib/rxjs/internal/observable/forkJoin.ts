@@ -1,12 +1,12 @@
-import { Observable } from '../Observable.ts';
-import { ObservedValueOf, ObservableInputTuple, ObservableInput } from '../types.ts';
-import { argsArgArrayOrObject } from '../util/argsArgArrayOrObject.ts';
-import { innerFrom } from './innerFrom.ts';
-import { popResultSelector } from '../util/args.ts';
-import { OperatorSubscriber } from '../operators/OperatorSubscriber.ts';
-import { mapOneOrManyArgs } from '../util/mapOneOrManyArgs.ts';
-import { createObject } from '../util/createObject.ts';
-import { AnyCatcher } from '../AnyCatcher.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInput, ObservableInputTuple, ObservedValueOf } from "../types.ts";
+import { argsArgArrayOrObject } from "../util/argsArgArrayOrObject.ts";
+import { innerFrom } from "./innerFrom.ts";
+import { popResultSelector } from "../util/args.ts";
+import { OperatorSubscriber } from "../operators/OperatorSubscriber.ts";
+import { mapOneOrManyArgs } from "../util/mapOneOrManyArgs.ts";
+import { createObject } from "../util/createObject.ts";
+import { AnyCatcher } from "../AnyCatcher.ts";
 
 // forkJoin(any)
 // We put this first because we need to catch cases where the user has supplied
@@ -29,7 +29,7 @@ export function forkJoin(sources: readonly []): Observable<never>;
 export function forkJoin<A extends readonly unknown[]>(sources: readonly [...ObservableInputTuple<A>]): Observable<A>;
 export function forkJoin<A extends readonly unknown[], R>(
   sources: readonly [...ObservableInputTuple<A>],
-  resultSelector: (...values: A) => R
+  resultSelector: (...values: A) => R,
 ): Observable<R>;
 
 // forkJoin(a, b, c)
@@ -43,7 +43,7 @@ export function forkJoin<A extends readonly unknown[], R>(
 // forkJoin({a, b, c})
 export function forkJoin(sourcesObject: { [K in any]: never }): Observable<never>;
 export function forkJoin<T extends Record<string, ObservableInput<any>>>(
-  sourcesObject: T
+  sourcesObject: T,
 ): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /**
@@ -177,8 +177,8 @@ export function forkJoin(...args: any[]): Observable<any> {
               }
               subscriber.complete();
             }
-          }
-        )
+          },
+        ),
       );
     }
   });

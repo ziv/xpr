@@ -1,22 +1,22 @@
-import { Subscriber } from '../Subscriber.ts';
-import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types.ts';
-import { innerFrom } from '../observable/innerFrom.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { Subscriber } from "../Subscriber.ts";
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { innerFrom } from "../observable/innerFrom.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, O extends ObservableInput<any>>(
-  project: (value: T, index: number) => O
+  project: (value: T, index: number) => O,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMap<T, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector: undefined
+  resultSelector: undefined,
 ): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function switchMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
@@ -85,7 +85,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
  */
 export function switchMap<T, R, O extends ObservableInput<any>>(
   project: (value: T, index: number) => O,
-  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
   return operate((source, subscriber) => {
     let innerSubscriber: Subscriber<ObservedValueOf<O>> | null = null;
@@ -107,27 +107,30 @@ export function switchMap<T, R, O extends ObservableInput<any>>(
           const outerIndex = index++;
           // Start the next inner subscription
           innerFrom(project(value, outerIndex)).subscribe(
-            (innerSubscriber = new OperatorSubscriber(
+            innerSubscriber = new OperatorSubscriber(
               subscriber,
               // When we get a new inner value, next it through. Note that this is
               // handling the deprecate result selector here. This is because with this architecture
               // it ends up being smaller than using the map operator.
-              (innerValue) => subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue),
+              (innerValue) =>
+                subscriber.next(
+                  resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue,
+                ),
               () => {
                 // The inner has completed. Null out the inner subcriber to
                 // free up memory and to signal that we have no inner subscription
                 // currently.
                 innerSubscriber = null!;
                 checkComplete();
-              }
-            ))
+              },
+            ),
           );
         },
         () => {
           isComplete = true;
           checkComplete();
-        }
-      )
+        },
+      ),
     );
   });
 }

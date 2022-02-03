@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { scanInternals } from './scanInternals.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { scanInternals } from "./scanInternals.ts";
 
 export function scan<V, A = V>(accumulator: (acc: A | V, value: V, index: number) => A): OperatorFunction<V, V | A>;
 export function scan<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
@@ -85,7 +85,10 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * the accumulator function.
  * @return A function that returns an Observable of the accumulated values.
  */
-export function scan<V, A, S>(accumulator: (acc: V | A | S, value: V, index: number) => A, seed?: S): OperatorFunction<V, V | A> {
+export function scan<V, A, S>(
+  accumulator: (acc: V | A | S, value: V, index: number) => A,
+  seed?: S,
+): OperatorFunction<V, V | A> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site

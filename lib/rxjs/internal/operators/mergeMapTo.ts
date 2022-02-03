@@ -1,17 +1,17 @@
-import { OperatorFunction, ObservedValueOf, ObservableInput } from '../types.ts';
-import { mergeMap } from './mergeMap.ts';
-import { isFunction } from '../util/isFunction.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { mergeMap } from "./mergeMap.ts";
+import { isFunction } from "../util/isFunction.ts";
 
 /* tslint:disable:max-line-length */
 export function mergeMapTo<O extends ObservableInput<unknown>>(
   innerObservable: O,
-  concurrent?: number
+  concurrent?: number,
 ): OperatorFunction<unknown, ObservedValueOf<O>>;
 /** @deprecated The `resultSelector` parameter will be removed in v8. Use an inner `map` instead. Details: https://rxjs.dev/deprecations/resultSelector */
 export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
   resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
-  concurrent?: number
+  concurrent?: number,
 ): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
@@ -57,13 +57,15 @@ export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
  */
 export function mergeMapTo<T, R, O extends ObservableInput<unknown>>(
   innerObservable: O,
-  resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R) | number,
-  concurrent: number = Infinity
+  resultSelector?:
+    | ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R)
+    | number,
+  concurrent: number = Infinity,
 ): OperatorFunction<T, ObservedValueOf<O> | R> {
   if (isFunction(resultSelector)) {
     return mergeMap(() => innerObservable, resultSelector, concurrent);
   }
-  if (typeof resultSelector === 'number') {
+  if (typeof resultSelector === "number") {
     concurrent = resultSelector;
   }
   return mergeMap(() => innerObservable, concurrent);

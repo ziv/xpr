@@ -1,6 +1,6 @@
-import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types.ts';
-import { switchMap } from './switchMap.ts';
-import { operate } from '../util/lift.ts';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from "../types.ts";
+import { switchMap } from "./switchMap.ts";
+import { operate } from "../util/lift.ts";
 
 // TODO: Generate a marble diagram for these docs.
 
@@ -23,7 +23,7 @@ import { operate } from '../util/lift.ts';
  */
 export function switchScan<T, R, O extends ObservableInput<any>>(
   accumulator: (acc: R, value: T, index: number) => O,
-  seed: R
+  seed: R,
 ): OperatorFunction<T, ObservedValueOf<O>> {
   return operate((source, subscriber) => {
     // The state we will keep up to date to pass into our
@@ -39,7 +39,7 @@ export function switchScan<T, R, O extends ObservableInput<any>>(
       (value: T, index) => accumulator(state, value, index),
       // Using the deprecated result selector here as a dirty trick
       // to update our state with the flattened value.
-      (_, innerValue) => ((state = innerValue), innerValue)
+      (_, innerValue) => ((state = innerValue), innerValue),
     )(source).subscribe(subscriber);
 
     return () => {

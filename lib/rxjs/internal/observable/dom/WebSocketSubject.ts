@@ -1,10 +1,10 @@
-import { Subject, AnonymousSubject } from '../../Subject.ts';
-import { Subscriber } from '../../Subscriber.ts';
-import { Observable } from '../../Observable.ts';
-import { Subscription } from '../../Subscription.ts';
-import { Operator } from '../../Operator.ts';
-import { ReplaySubject } from '../../ReplaySubject.ts';
-import { Observer, NextObserver } from '../../types.ts';
+import { AnonymousSubject, Subject } from "../../Subject.ts";
+import { Subscriber } from "../../Subscriber.ts";
+import { Observable } from "../../Observable.ts";
+import { Subscription } from "../../Subscription.ts";
+import { Operator } from "../../Operator.ts";
+import { ReplaySubject } from "../../ReplaySubject.ts";
+import { NextObserver, Observer } from "../../types.ts";
 
 /**
  * WebSocketSubjectConfig is a plain Object that allows us to make our
@@ -140,17 +140,17 @@ export interface WebSocketSubjectConfig<T> {
    */
   WebSocketCtor?: { new (url: string, protocols?: string | string[]): WebSocket };
   /** Sets the `binaryType` property of the underlying WebSocket. */
-  binaryType?: 'blob' | 'arraybuffer';
+  binaryType?: "blob" | "arraybuffer";
 }
 
 const DEFAULT_WEBSOCKET_CONFIG: WebSocketSubjectConfig<any> = {
-  url: '',
+  url: "",
   deserializer: (e: MessageEvent) => JSON.parse(e.data),
   serializer: (value: any) => JSON.stringify(value),
 };
 
 const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
-  'WebSocketSubject.error must be called with an object with an error code, and an optional reason: { code: number, reason: string }';
+  "WebSocketSubject.error must be called with an object with an error code, and an optional reason: { code: number, reason: string }";
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
@@ -172,7 +172,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     } else {
       const config = (this._config = { ...DEFAULT_WEBSOCKET_CONFIG });
       this._output = new Subject<T>();
-      if (typeof urlConfigOrSource === 'string') {
+      if (typeof urlConfigOrSource === "string") {
         config.url = urlConfigOrSource;
       } else {
         for (const key in urlConfigOrSource) {
@@ -185,7 +185,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       if (!config.WebSocketCtor && WebSocket) {
         config.WebSocketCtor = WebSocket;
       } else if (!config.WebSocketCtor) {
-        throw new Error('no WebSocket constructor can be found');
+        throw new Error("no WebSocket constructor can be found");
       }
       this.destination = new ReplaySubject();
     }
@@ -326,7 +326,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
           }
           socket!.close();
           this._resetState();
-        }
+        },
       ) as Subscriber<any>;
 
       if (queue && queue instanceof ReplaySubject) {

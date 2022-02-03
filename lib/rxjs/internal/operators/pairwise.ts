@@ -1,6 +1,6 @@
-import { OperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { OperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of
@@ -55,7 +55,7 @@ export function pairwise<T>(): OperatorFunction<T, [T, T]> {
         prev = value;
         hasPrev && subscriber.next([p, value]);
         hasPrev = true;
-      })
+      }),
     );
   });
 }

@@ -1,8 +1,8 @@
-import { Observable } from '../Observable.ts';
-import { ObservableInputTuple, SchedulerLike } from '../types.ts';
-import { concatAll } from '../operators/concatAll.ts';
-import { popScheduler } from '../util/args.ts';
-import { from } from './from.ts';
+import { Observable } from "../Observable.ts";
+import { ObservableInputTuple, SchedulerLike } from "../types.ts";
+import { concatAll } from "../operators/concatAll.ts";
+import { popScheduler } from "../util/args.ts";
+import { from } from "./from.ts";
 
 export function concat<T extends readonly unknown[]>(...inputs: [...ObservableInputTuple<T>]): Observable<T[number]>;
 export function concat<T extends readonly unknown[]>(

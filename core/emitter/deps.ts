@@ -1,1 +1,1 @@
-export { BehaviorSubject } from "rxjs/internal/BehaviorSubject.ts"
+export { BehaviorSubject } from "rxjs/internal/BehaviorSubject.ts";

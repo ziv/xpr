@@ -1,7 +1,7 @@
-import { Observable } from '../Observable.ts';
-import { AsyncSubject } from '../AsyncSubject.ts';
-import { ConnectableObservable } from '../observable/ConnectableObservable.ts';
-import { UnaryFunction } from '../types.ts';
+import { Observable } from "../Observable.ts";
+import { AsyncSubject } from "../AsyncSubject.ts";
+import { ConnectableObservable } from "../observable/ConnectableObservable.ts";
+import { UnaryFunction } from "../types.ts";
 
 /**
  * Returns a connectable observable sequence that shares a single subscription to the

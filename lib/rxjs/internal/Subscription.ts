@@ -1,7 +1,7 @@
-import { isFunction } from './util/isFunction.ts';
-import { UnsubscriptionError } from './util/UnsubscriptionError.ts';
-import { SubscriptionLike, TeardownLogic, Unsubscribable } from './types.ts';
-import { arrRemove } from './util/arrRemove.ts';
+import { isFunction } from "./util/isFunction.ts";
+import { UnsubscriptionError } from "./util/UnsubscriptionError.ts";
+import { SubscriptionLike, TeardownLogic, Unsubscribable } from "./types.ts";
+import { arrRemove } from "./util/arrRemove.ts";
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -158,7 +158,11 @@ export class Subscription implements SubscriptionLike {
    */
   private _addParent(parent: Subscription) {
     const { _parentage } = this;
-    this._parentage = Array.isArray(_parentage) ? (_parentage.push(parent), _parentage) : _parentage ? [_parentage, parent] : parent;
+    this._parentage = Array.isArray(_parentage)
+      ? (_parentage.push(parent), _parentage)
+      : _parentage
+      ? [_parentage, parent]
+      : parent;
   }
 
   /**
@@ -203,7 +207,7 @@ export const EMPTY_SUBSCRIPTION = Subscription.EMPTY;
 export function isSubscription(value: any): value is Subscription {
   return (
     value instanceof Subscription ||
-    (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe))
+    (value && "closed" in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe))
   );
 }
 

@@ -1,5 +1,5 @@
-import { map } from './map.ts';
-import { OperatorFunction } from '../types.ts';
+import { map } from "./map.ts";
+import { OperatorFunction } from "../types.ts";
 
 /* tslint:disable:max-line-length */
 export function pluck<T, K1 extends keyof T>(k1: K1): OperatorFunction<T, T[K1]>;
@@ -7,13 +7,19 @@ export function pluck<T, K1 extends keyof T, K2 extends keyof T[K1]>(k1: K1, k2:
 export function pluck<T, K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2]>(
   k1: K1,
   k2: K2,
-  k3: K3
+  k3: K3,
 ): OperatorFunction<T, T[K1][K2][K3]>;
-export function pluck<T, K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3]>(
+export function pluck<
+  T,
+  K1 extends keyof T,
+  K2 extends keyof T[K1],
+  K3 extends keyof T[K1][K2],
+  K4 extends keyof T[K1][K2][K3],
+>(
   k1: K1,
   k2: K2,
   k3: K3,
-  k4: K4
+  k4: K4,
 ): OperatorFunction<T, T[K1][K2][K3][K4]>;
 export function pluck<
   T,
@@ -21,7 +27,7 @@ export function pluck<
   K2 extends keyof T[K1],
   K3 extends keyof T[K1][K2],
   K4 extends keyof T[K1][K2][K3],
-  K5 extends keyof T[K1][K2][K3][K4]
+  K5 extends keyof T[K1][K2][K3][K4],
 >(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5): OperatorFunction<T, T[K1][K2][K3][K4][K5]>;
 export function pluck<
   T,
@@ -30,7 +36,7 @@ export function pluck<
   K3 extends keyof T[K1][K2],
   K4 extends keyof T[K1][K2][K3],
   K5 extends keyof T[K1][K2][K3][K4],
-  K6 extends keyof T[K1][K2][K3][K4][K5]
+  K6 extends keyof T[K1][K2][K3][K4][K5],
 >(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5, k6: K6): OperatorFunction<T, T[K1][K2][K3][K4][K5][K6]>;
 export function pluck<
   T,
@@ -39,7 +45,7 @@ export function pluck<
   K3 extends keyof T[K1][K2],
   K4 extends keyof T[K1][K2][K3],
   K5 extends keyof T[K1][K2][K3][K4],
-  K6 extends keyof T[K1][K2][K3][K4][K5]
+  K6 extends keyof T[K1][K2][K3][K4][K5],
 >(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5, k6: K6, ...rest: string[]): OperatorFunction<T, unknown>;
 export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
 /* tslint:enable:max-line-length */
@@ -81,13 +87,13 @@ export function pluck<T>(...properties: string[]): OperatorFunction<T, unknown>;
 export function pluck<T, R>(...properties: Array<string | number | symbol>): OperatorFunction<T, R> {
   const length = properties.length;
   if (length === 0) {
-    throw new Error('list of properties cannot be empty.');
+    throw new Error("list of properties cannot be empty.");
   }
   return map((x) => {
     let currentProp: any = x;
     for (let i = 0; i < length; i++) {
       const p = currentProp?.[properties[i]];
-      if (typeof p !== 'undefined') {
+      if (typeof p !== "undefined") {
         currentProp = p;
       } else {
         return undefined;

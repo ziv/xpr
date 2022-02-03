@@ -1,7 +1,7 @@
-import { EMPTY } from '../observable/empty.ts';
-import { MonoTypeOperatorFunction } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { EMPTY } from "../observable/empty.ts";
+import { MonoTypeOperatorFunction } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Waits for the source to complete, then emits the last N values from the source,
@@ -43,39 +43,37 @@ import { OperatorSubscriber } from './OperatorSubscriber.ts';
  * `count` values emitted by the source Observable.
  */
 export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
-  return count <= 0
-    ? () => EMPTY
-    : operate((source, subscriber) => {
-        // This buffer will hold the values we are going to emit
-        // when the source completes. Since we only want to take the
-        // last N values, we can't emit until we're sure we're not getting
-        // any more values.
-        let buffer: T[] = [];
-        source.subscribe(
-          new OperatorSubscriber(
-            subscriber,
-            (value) => {
-              // Add the most recent value onto the end of our buffer.
-              buffer.push(value);
-              // If our buffer is now larger than the number of values we
-              // want to take, we remove the oldest value from the buffer.
-              count < buffer.length && buffer.shift();
-            },
-            () => {
-              // The source completed, we now know what are last values
-              // are, emit them in the order they were received.
-              for (const value of buffer) {
-                subscriber.next(value);
-              }
-              subscriber.complete();
-            },
-            // Errors are passed through to the consumer
-            undefined,
-            () => {
-              // During teardown release the values in our buffer.
-              buffer = null!;
-            }
-          )
-        );
-      });
+  return count <= 0 ? () => EMPTY : operate((source, subscriber) => {
+    // This buffer will hold the values we are going to emit
+    // when the source completes. Since we only want to take the
+    // last N values, we can't emit until we're sure we're not getting
+    // any more values.
+    let buffer: T[] = [];
+    source.subscribe(
+      new OperatorSubscriber(
+        subscriber,
+        (value) => {
+          // Add the most recent value onto the end of our buffer.
+          buffer.push(value);
+          // If our buffer is now larger than the number of values we
+          // want to take, we remove the oldest value from the buffer.
+          count < buffer.length && buffer.shift();
+        },
+        () => {
+          // The source completed, we now know what are last values
+          // are, emit them in the order they were received.
+          for (const value of buffer) {
+            subscriber.next(value);
+          }
+          subscriber.complete();
+        },
+        // Errors are passed through to the consumer
+        undefined,
+        () => {
+          // During teardown release the values in our buffer.
+          buffer = null!;
+        },
+      ),
+    );
+  });
 }

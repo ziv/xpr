@@ -1,7 +1,7 @@
-import { observeNotification } from '../Notification.ts';
-import { OperatorFunction, ObservableNotification, ValueFromNotification } from '../types.ts';
-import { operate } from '../util/lift.ts';
-import { OperatorSubscriber } from './OperatorSubscriber.ts';
+import { observeNotification } from "../Notification.ts";
+import { ObservableNotification, OperatorFunction, ValueFromNotification } from "../types.ts";
+import { operate } from "../util/lift.ts";
+import { OperatorSubscriber } from "./OperatorSubscriber.ts";
 
 /**
  * Converts an Observable of {@link ObservableNotification} objects into the emissions
@@ -53,6 +53,8 @@ import { OperatorSubscriber } from './OperatorSubscriber.ts';
  */
 export function dematerialize<N extends ObservableNotification<any>>(): OperatorFunction<N, ValueFromNotification<N>> {
   return operate((source, subscriber) => {
-    source.subscribe(new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)));
+    source.subscribe(
+      new OperatorSubscriber(subscriber, (notification) => observeNotification(notification, subscriber)),
+    );
   });
 }

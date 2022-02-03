@@ -1,8 +1,8 @@
 // https://github.com/microsoft/TypeScript/issues/40462#issuecomment-689879308
 /// <reference lib="esnext.asynciterable" />
 
-import { Observable } from './Observable.ts';
-import { Subscription } from './Subscription.ts';
+import { Observable } from "./Observable.ts";
+import { Subscription } from "./Subscription.ts";
 
 /**
  * Note: This will add Symbol.observable globally for all TypeScript users,
@@ -116,7 +116,7 @@ export interface InteropObservable<T> {
  */
 export interface NextNotification<T> {
   /** The kind of notification. Always "N" */
-  kind: 'N';
+  kind: "N";
   /** The value of the notification. */
   value: T;
 }
@@ -127,7 +127,7 @@ export interface NextNotification<T> {
  */
 export interface ErrorNotification {
   /** The kind of notification. Always "E" */
-  kind: 'E';
+  kind: "E";
   error: any;
 }
 
@@ -136,7 +136,7 @@ export interface ErrorNotification {
  * Can be used with {@link dematerialize}.
  */
 export interface CompleteNotification {
-  kind: 'C';
+  kind: "C";
 }
 
 /**
@@ -245,19 +245,22 @@ export type ObservableInputTuple<T> = {
  * Constructs a new tuple with the specified type at the head.
  * If you declare `Cons<A, [B, C]>` you will get back `[A, B, C]`.
  */
-export type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U : never;
+export type Cons<X, Y extends readonly any[]> = ((arg: X, ...rest: Y) => any) extends (...args: infer U) => any ? U
+  : never;
 
 /**
  * Extracts the head of a tuple.
  * If you declare `Head<[A, B, C]>` you will get back `A`.
  */
-export type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U : never;
+export type Head<X extends readonly any[]> = ((...args: X) => any) extends (arg: infer U, ...rest: any[]) => any ? U
+  : never;
 
 /**
  * Extracts the tail of a tuple.
  * If you declare `Tail<[A, B, C]>` you will get back `[B, C]`.
  */
-export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U : never;
+export type Tail<X extends readonly any[]> = ((...args: X) => any) extends (arg: any, ...rest: infer U) => any ? U
+  : never;
 
 /**
  * Extracts the generic value from an Array type.
@@ -269,12 +272,10 @@ export type ValueFromArray<A extends readonly unknown[]> = A extends Array<infer
 /**
  * Gets the value type from an {@link ObservableNotification}, if possible.
  */
-export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
-  ? T extends NextNotification<any>
-    ? T extends { value: infer V }
-      ? V
-      : undefined
-    : never
+export type ValueFromNotification<T> = T extends { kind: "N" | "E" | "C" }
+  ? T extends NextNotification<any> ? T extends { value: infer V } ? V
+  : undefined
+  : never
   : never;
 
 /**
@@ -282,7 +283,7 @@ export type ValueFromNotification<T> = T extends { kind: 'N' | 'E' | 'C' }
  * `NaN` is "falsy" however, it is not and cannot be typed via TypeScript. See
  * comments here: https://github.com/microsoft/TypeScript/issues/28682#issuecomment-707142417
  */
-export type Falsy = null | undefined | false | 0 | -0 | 0n | '';
+export type Falsy = null | undefined | false | 0 | -0 | 0n | "";
 
 export type TruthyTypesOf<T> = T extends Falsy ? never : T;
 
@@ -294,9 +295,9 @@ interface ReadableStreamDefaultReaderLike<T> {
   // The type at the time is `ReadableStreamDefaultReadResult`.
   read(): PromiseLike<
     | {
-        done: false;
-        value: T;
-      }
+      done: false;
+      value: T;
+    }
     | { done: true; value?: undefined }
   >;
   releaseLock(): void;
