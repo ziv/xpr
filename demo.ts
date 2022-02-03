@@ -1,5 +1,5 @@
 import "core/reflection/reflection.ts";
-import { context, Inject, Injectable, Module, ModuleScope } from "core/mod.ts";
+import { Emitter, Inject, Injectable, Module, ModuleScope } from "core/mod.ts";
 
 
 @Injectable({scope: ModuleScope})
@@ -46,10 +46,14 @@ class CModule1 {
 class App {
 }
 
-const [ctx, registry] = await context(App);
-// console.log(ctx);
-console.log(await ctx.get<SizeService>(SizeService));
-const c0 = registry.get(CModule0)?.host;
-const c1 = registry.get(CModule1)?.host;
-console.log(await c0?.get(SizeService));
-console.log(await c1?.get(SizeService));
+
+const e = new Emitter('a');
+console.log(e);
+
+// const [ctx, registry] = await context(App);
+// // console.log(ctx);
+// console.log(await ctx.get<SizeService>(SizeService));
+// const c0 = registry.get(CModule0)?.host;
+// const c1 = registry.get(CModule1)?.host;
+// console.log(await c0?.get(SizeService));
+// console.log(await c1?.get(SizeService));
