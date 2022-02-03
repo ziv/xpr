@@ -1,8 +1,5 @@
-import { Target } from "core/types/metadata.ts";
+import type { FactoryProvider, Func, Resolver, Target } from "core/types/mod.ts";
 import { getCtrParams, getInjectable, getInjectedParams } from "core/metadata/mod.ts";
-import { FactoryProvider } from "core/types/providers.ts";
-import { Resolver } from "core/types/resolver.ts";
-import { Func } from "core/types/reflection.ts";
 
 export default function provider(target: Target): FactoryProvider {
   const ctrParams = getCtrParams(target);

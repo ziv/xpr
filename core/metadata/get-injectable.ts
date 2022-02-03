@@ -1,4 +1,4 @@
-import type { InjectableDescriptor, Target } from "core/types/metadata.ts";
+import type { InjectableDescriptor, Target } from "core/types/mod.ts";
 import { INJECTABLE_DEFINITION } from "./consts.ts";
 
 export default function getInjectable(target: Target): InjectableDescriptor {

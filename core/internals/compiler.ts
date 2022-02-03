@@ -1,12 +1,10 @@
-import type { ModuleDescriptor, ModuleHost, ModuleRegistry } from "core/types/module.ts";
-import type { FactoryProvider } from "core/types/providers.ts";
-import type { Linkage } from "./linker.ts";
+import type { FactoryProvider, Linkage, ModuleDescriptor, ModuleHost, ModuleRegistry } from "core/types/mod.ts";
 import Registry from "./registry.ts";
-import StrictHost from "./strategies/strict-host.ts";
-import LooseHost from "./strategies/loose-host.ts";
 import provider from "./provider.ts";
+import Host from "./host.ts";
 
 const noop = (..._: unknown[]) => undefined;
+
 const assert = (value: unknown, message: string) => {
   if (!value) {
     throw new Error(message);
@@ -82,9 +80,10 @@ export default function compiler(registry: Linkage, options: CompilerOptions = {
 
     // todo should come from factory
     const imported = () => imports.map((i) => (registry.get(i) as ModuleDescriptor).host as ModuleHost);
-    const resolved = options.strict
-      ? new StrictHost(module, internals, externals, imported())
-      : new LooseHost(module, internals, externals, imported());
+    // const resolved = options.strict
+    //   ? new Host(module, internals, externals, imported())
+    //   : new LooseHost(module, internals, externals, imported());
+    const resolved = new Host(module, internals, externals, imported());
 
     registry.set(module, { module, exports, providers, imports, host: resolved });
     return resolved;

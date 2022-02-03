@@ -1,4 +1,4 @@
-import type { InjectedParam, Target } from "core/types/metadata.ts";
+import type { InjectedParam, Target } from "core/types/mod.ts";
 import { PARAMS_DEFINITION } from "./consts.ts";
 
 export default function addParam(target: Target, param: InjectedParam) {

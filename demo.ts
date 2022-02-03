@@ -1,7 +1,6 @@
 import "core/reflection/reflection.ts";
-import { Inject, Injectable, Module } from "core/mod.ts";
-import context from "./core/context.ts";
-import { ModuleScope } from "./core/metadata/consts.ts";
+import { Inject, Injectable, Module, context, ModuleScope } from "core/mod.ts";
+
 
 @Injectable({ scope: ModuleScope })
 class SizeService {
