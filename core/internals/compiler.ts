@@ -1,100 +1,92 @@
-import type { FactoryProvider, ModularDefinition, Target } from "./types.ts";
-import Modular from "./modular.ts";
+import type { ModuleDescriptor, ModuleHost, ModuleRegistry } from "core/types/module.ts";
+import type { FactoryProvider } from "core/types/providers.ts";
+import type { Linkage } from "./linker.ts";
 import Registry from "./registry.ts";
-import { isFactoryProvider } from "./utils.ts";
-import resolver from "./resolver.ts";
-import message from "./message.ts";
-import Emitter from "../emitter/mod.ts";
+import StrictHost from "./strategies/strict-host.ts";
+import LooseHost from "./strategies/loose-host.ts";
+import provider from "./provider.ts";
 
+const noop = (..._: unknown[]) => undefined;
 const assert = (value: unknown, message: string) => {
   if (!value) {
     throw new Error(message);
   }
 };
 
+const isFactoryProvider = (p: unknown): boolean =>
+  !!((p as FactoryProvider).token) && !!((p as FactoryProvider).factory);
+
 export interface CompilerOptions {
   strict?: boolean;
-  emitter?: Emitter;
+  emitter?: (...args: unknown[]) => void;
 }
-export type Compiler = (definition: ModularDefinition) => Promise<Modular>;
 
-export default function compiler(
-  registry: WeakMap<Target, ModularDefinition>,
-  options: CompilerOptions = {},
-): Compiler {
-  return async function compile(
-    { imports, providers, exports, module }: ModularDefinition,
-  ): Promise<Modular> {
-    const emit = (action: string, payload: unknown = undefined) =>
-      // @ts-ignore
-      options.emitter?.next(message([module])(action, payload));
+export type Compiler = (definition: ModuleDescriptor) => Promise<ModuleHost>;
 
-    const bail = (msg: string) => {
-      const error = new Error(msg);
-      // options.emitter?.next(message(module, "error", error));
+export default function compiler(registry: Linkage, options: CompilerOptions = {}): Compiler {
+  const emit = options.emitter ?? noop;
+
+  return async function compile({ imports, providers, exports, module }: ModuleDescriptor): Promise<ModuleHost> {
+    emit({ content: "compile", module });
+
+    const bail = (content: string) => {
+      const error = new Error(content);
+      emit({ module, content, error });
       throw error;
     };
 
     const internal = new Registry(module);
     const external = new Registry(module);
 
-    const internals = [internal];
-    const externals = [external];
+    const internals: ModuleRegistry[] = [internal];
+    const externals: ModuleRegistry[] = [external];
 
-    emit("compiling");
-    for (const im of imports) {
-      emit("import module", { imports: im });
+    for (const im of imports.reverse()) {
+      emit({ content: "import", import: im, module });
       assert(registry.has(im), "module not exists in registry");
-      const defs = registry.get(im) as ModularDefinition;
-      if (!defs.resolved) {
-        defs.resolved = await compile(defs);
+      const defs = registry.get(im) as ModuleDescriptor;
+      if (!defs.host) {
+        defs.host = await compile(defs);
       }
-      emit("registering resolved module exports", {
-        imported: im,
-        resolved: defs.resolved,
-      });
-      internals.push(...defs.resolved.exports);
+      internals.push(...defs.host.exports);
+      emit({ content: "imported", import: im, resolved: defs.host, module });
     }
 
-    for (const pr of providers) {
+    for (const pr of providers.reverse()) {
       if (isFactoryProvider(pr)) {
-        emit("register factory provider", { provider: pr });
+        emit({ content: "register factory provider", provider: pr, module });
         internal.register(pr as FactoryProvider);
       } else if (typeof pr === "function") {
-        emit("register type provider", { provider: pr });
-        internal.register({ token: pr, factory: resolver(pr) });
+        emit({ content: "register type provider", provider: pr, module });
+        internal.register(provider(pr));
       } else {
         bail(`unable to register provider ${String(pr)}`);
       }
     }
 
-    for (const ex of exports) {
+    for (const ex of exports.reverse()) {
       if (registry.has(ex)) {
-        emit("register exported module", { exported: ex });
-        const resolved = registry.get(ex)?.resolved as Modular;
+        emit({ content: "register exported module", exported: ex, module });
+        const resolved = registry.get(ex)?.host as ModuleHost;
         externals.push(...resolved.exports);
       } else if (internal.has(ex)) {
-        emit("register exported type", { exported: ex });
+        emit({ content: "register exported type", exported: ex, module });
         external.register(internal.get(ex) as FactoryProvider);
-      } else if (
-        isFactoryProvider(ex) &&
-        internal.has((ex as FactoryProvider).token)
-      ) {
-        emit("register exported provider", { provider: ex });
-        external.register(
-          internal.get((ex as FactoryProvider).token) as FactoryProvider,
-        );
+      } else if (isFactoryProvider(ex) && internal.has((ex as FactoryProvider).token)) {
+        emit({ content: "register exported provider", provider: ex, module });
+        external.register(internal.get((ex as FactoryProvider).token) as FactoryProvider);
       } else {
         bail(`unable to register exported ${String(ex)}`);
       }
     }
 
-    // const imported = options.strict
-    //   ? undefined
-    //   : imports.map((i) => registry.get(i) as Modular);
+    // todo should come from factory
+    const imported = () => imports.map((i) => (registry.get(i) as ModuleDescriptor).host as ModuleHost);
+    const resolved = options.strict
+      ? new StrictHost(module, internals, externals, imported())
+      : new LooseHost(module, internals, externals, imported());
 
-    const resolved = new Modular(module, { internals, externals });
-    registry.set(module, { module, exports, providers, imports, resolved });
+    registry.set(module, { module, exports, providers, imports, host: resolved });
     return resolved;
   };
 }

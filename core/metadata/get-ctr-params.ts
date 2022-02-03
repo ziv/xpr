@@ -1,4 +1,4 @@
-import type { Target } from "../types/metadata.ts";
+import type { Target } from "core/types/metadata.ts";
 import { TS_PARAMTYPES } from "./consts.ts";
 
 export default function getCtrParams(target: Target): Target[] {

@@ -1,6 +1,6 @@
-import type { Target } from "../types/metadata.ts";
-import type { ModuleDescriptor } from "../types/module.ts";
-import getModuleDefinition from "core/metadata/get-module-definition.ts";
+import type { Target } from "core/types/metadata.ts";
+import type { ModuleDescriptor } from "core/types/module.ts";
+import { getModuleDefinition } from "core/metadata/mod.ts";
 
 export type Linkage = WeakMap<Target, ModuleDescriptor>;
 export type Linker = (target: Target) => Promise<Linkage>;

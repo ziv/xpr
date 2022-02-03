@@ -1,17 +1,15 @@
-import "./core/reflection/reflection.ts";
-import { blue, green } from "https://deno.land/std@0.123.0/fmt/colors.ts";
-import { Inject, Injectable, Module } from "./core/mod.ts";
-import linker from "./core/internals/linker.ts";
-import Emitter, { EmitterMessage } from "./core/emitter/mod.ts";
-import { compiler, ModularDefinition } from "./core/internals/mod.ts";
+import "core/reflection/reflection.ts";
+import { Inject, Injectable, Module } from "core/mod.ts";
+import context from "./core/context.ts";
+import { ModuleScope } from "./core/metadata/consts.ts";
 
-@Injectable()
+@Injectable({ scope: ModuleScope })
 class SizeService {
   constructor(@Inject("size") public i: number) {
   }
 }
 
-const SizeToken = { token: "size", factory: () => 10 };
+const SizeToken = { token: "size", factory: () => 1 };
 
 @Module({
   providers: [
@@ -23,48 +21,38 @@ const SizeToken = { token: "size", factory: () => 10 };
 class SizeModule {
 }
 
-const ConfiguredSizeToken = { token: "size", factory: () => 20 };
+const CToken0 = { token: "size", factory: () => 2 };
 
 @Module({
   imports: [SizeModule],
-  providers: [ConfiguredSizeToken],
-  exports: [SizeModule],
+  providers: [CToken0],
+  exports: [CToken0, SizeModule],
 })
-class ConfiguredServiceModule {
+class CModule0 {
 }
 
+const CToken1 = { token: "size", factory: () => 3 };
+
 @Module({
-  imports: [ConfiguredServiceModule],
+  imports: [SizeModule],
+  providers: [CToken1],
+  exports: [CToken1, SizeModule],
+})
+class CModule1 {
+}
+
+const AppToken = { token: "size", factory: () => 4 };
+@Module({
+  imports: [CModule1, CModule0],
+  providers: [AppToken],
 })
 class App {
 }
 
-const link = linker();
-const registry = await link(App);
-const app = registry.get(App) as ModularDefinition;
-
-const emitter = new Emitter();
-const builder = compiler(registry, { strict: true, emitter });
-// @ts-ignore the function is not recognise
-emitter.subscribe((msg: EmitterMessage) => {
-  if (!msg) {
-    return;
-  }
-  const { context, action, payload } = msg;
-  const name = (context[0] as any).name;
-  console.log(green(action), blue(name));
-});
-
-const m = await builder(app);
-console.log(await m.resolve(SizeService));
-// const emitter = new Emitter();
-// const compiler = context({ emitter });
-// // @ts-ignore
-// emitter.subscribe((msg: { action: string; payload: any; depth: number }) => {
-//   if (!msg) {
-//     return;
-//   }
-//   const depth = " ".repeat(msg.depth);
-//   console.log(depth, blue(msg.action), msg.payload);
-// });
-// await compiler(App);
+const [ctx, registry] = await context(App);
+console.log(ctx);
+console.log(await ctx.get(SizeService));
+const c0 = registry.get(CModule0)?.host;
+const c1 = registry.get(CModule1)?.host;
+console.log(await c0?.get(SizeService));
+console.log(await c1?.get(SizeService));

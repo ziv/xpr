@@ -1,9 +1,9 @@
-import type { Target } from "../types/metadata.ts";
-import type { ModuleDescriptor } from "../types/module.ts";
+import type { Target } from "core/types/metadata.ts";
+import type { ModuleDescriptor } from "core/types/module.ts";
 import { MODULE_DEFINITION } from "./consts.ts";
 
-const defaultDefinition = { imports: [], providers: [], exports: [] };
+const defaultDesc = { imports: [], providers: [], exports: [] };
 
-export default function setModuleDefinition(target: Target, definitions: Partial<ModuleDescriptor>) {
-  Reflect.defineMetadata(MODULE_DEFINITION, { ...defaultDefinition, ...definitions, module: target }, target);
+export default function setModuleDefinition(target: Target, desc: Partial<ModuleDescriptor>) {
+  Reflect.defineMetadata(MODULE_DEFINITION, { ...defaultDesc, ...desc, module: target }, target);
 }

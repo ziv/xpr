@@ -7,7 +7,7 @@ export type Decorator = ClassDecorator | MemberDecorator;
 export type MemberDecorator = <T>(
   target: Target,
   propertyKey: PropertyKey,
-  descriptor?: TypedPropertyDescriptor<T>,
+  descriptor?: TypedPropertyDescriptor<T>
 ) => TypedPropertyDescriptor<T> | void;
 export type MetadataKey = string | symbol;
 export type PropertyKey = string | symbol;
@@ -20,7 +20,7 @@ function decorateProperty(
   decorators: MemberDecorator[],
   target: Target,
   propertyKey: PropertyKey,
-  descriptor?: PropertyDescriptor,
+  descriptor?: PropertyDescriptor
 ): PropertyDescriptor | undefined {
   decorators.reverse().forEach((decorator: MemberDecorator) => {
     descriptor = decorator(target, propertyKey, descriptor) || descriptor;
@@ -31,7 +31,7 @@ function decorateProperty(
 function decorateConstructor(
   decorators: ClassDecorator[],
   // deno-lint-ignore ban-types
-  target: Function,
+  target: Function
   // deno-lint-ignore ban-types
 ): Function {
   decorators.reverse().forEach((decorator: ClassDecorator) => {
@@ -46,7 +46,7 @@ function decorateConstructor(
 export function decorate(
   decorators: ClassDecorator[],
   // deno-lint-ignore ban-types
-  target: Function,
+  target: Function
   // deno-lint-ignore ban-types
 ): Function;
 export function decorate(
@@ -54,13 +54,13 @@ export function decorate(
   // deno-lint-ignore ban-types
   target: object,
   propertyKey?: PropertyKey,
-  attributes?: PropertyDescriptor,
+  attributes?: PropertyDescriptor
 ): PropertyDescriptor | undefined;
 export function decorate(
   decorators: Decorator[],
   target: Target,
   propertyKey?: PropertyKey,
-  attributes?: PropertyDescriptor,
+  attributes?: PropertyDescriptor
   // deno-lint-ignore ban-types
 ): Function | PropertyDescriptor | undefined {
   if (!Array.isArray(decorators) || decorators.length === 0) {
@@ -72,7 +72,7 @@ export function decorate(
       decorators as MemberDecorator[],
       target,
       propertyKey,
-      attributes,
+      attributes
     );
   }
 
@@ -85,7 +85,7 @@ export function decorate(
 
 function getMetadataMap<MetadataValue>(
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): Map<MetadataKey, MetadataValue> | undefined {
   return Metadata.get(target) && Metadata.get(target).get(propertyKey);
 }
@@ -93,7 +93,7 @@ function getMetadataMap<MetadataValue>(
 function ordinaryGetOwnMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): MetadataValue | undefined {
   if (target === undefined) {
     throw new TypeError();
@@ -104,7 +104,7 @@ function ordinaryGetOwnMetadata<MetadataValue>(
 
 function createMetadataMap<MetadataValue>(
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): Map<MetadataKey, MetadataValue> {
   const targetMetadata = Metadata.get(target) ||
     new Map<PropertyKey | undefined, Map<MetadataKey, MetadataValue>>();
@@ -119,7 +119,7 @@ function ordinaryDefineOwnMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   metadataValue: MetadataValue,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): void {
   if (propertyKey && !["string", "symbol"].includes(typeof propertyKey)) {
     throw new TypeError();
@@ -134,29 +134,29 @@ function ordinaryDefineOwnMetadata<MetadataValue>(
 function ordinaryGetMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): MetadataValue | undefined {
   return ordinaryGetOwnMetadata<MetadataValue>(metadataKey, target, propertyKey)
     ? ordinaryGetOwnMetadata<MetadataValue>(metadataKey, target, propertyKey)
     : Object.getPrototypeOf(target)
-    ? ordinaryGetMetadata(
-      metadataKey,
-      Object.getPrototypeOf(target),
-      propertyKey,
-    )
-    : undefined;
+      ? ordinaryGetMetadata(
+        metadataKey,
+        Object.getPrototypeOf(target),
+        propertyKey
+      )
+      : undefined;
 }
 
 export function metadata<MetadataValue>(
   metadataKey: MetadataKey,
-  metadataValue: MetadataValue,
+  metadataValue: MetadataValue
 ) {
   return function decorator(target: Target, propertyKey?: PropertyKey): void {
     ordinaryDefineOwnMetadata<MetadataValue>(
       metadataKey,
       metadataValue,
       target,
-      propertyKey,
+      propertyKey
     );
   };
 }
@@ -164,7 +164,7 @@ export function metadata<MetadataValue>(
 export function getMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): MetadataValue | undefined {
   return ordinaryGetMetadata<MetadataValue>(metadataKey, target, propertyKey);
 }
@@ -172,19 +172,19 @@ export function getMetadata<MetadataValue>(
 export function getOwnMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): MetadataValue | undefined {
   return ordinaryGetOwnMetadata<MetadataValue>(
     metadataKey,
     target,
-    propertyKey,
+    propertyKey
   );
 }
 
 export function hasOwnMetadata(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): boolean {
   return !!ordinaryGetOwnMetadata(metadataKey, target, propertyKey);
 }
@@ -192,7 +192,7 @@ export function hasOwnMetadata(
 export function hasMetadata(
   metadataKey: MetadataKey,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): boolean {
   return !!ordinaryGetMetadata(metadataKey, target, propertyKey);
 }
@@ -201,7 +201,7 @@ export function defineMetadata<MetadataValue>(
   metadataKey: MetadataKey,
   metadataValue: MetadataValue,
   target: Target,
-  propertyKey?: PropertyKey,
+  propertyKey?: PropertyKey
 ): void {
   ordinaryDefineOwnMetadata(metadataKey, metadataValue, target, propertyKey);
 }
@@ -213,7 +213,7 @@ export const Reflection = {
   getOwnMetadata,
   hasMetadata,
   hasOwnMetadata,
-  metadata,
+  metadata
 };
 
 declare global {

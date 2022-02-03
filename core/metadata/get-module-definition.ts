@@ -1,5 +1,5 @@
-import type { Target } from "../types/metadata.ts";
-import type { ModuleDescriptor } from "../types/module.ts";
+import type { Target } from "core/types/metadata.ts";
+import type { ModuleDescriptor } from "core/types/module.ts";
 import { MODULE_DEFINITION } from "./consts.ts";
 
 export default function getModuleDefinition(target: Target): ModuleDescriptor {

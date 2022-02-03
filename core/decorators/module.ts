@@ -1,10 +1,9 @@
-import type { ModularDefinition, Target } from "../internals/mod.ts";
-import setModuleDefinition from "../metadata/set-module-definition.ts";
+import type { Target } from "core/types/metadata.ts";
+import type { ModuleDescriptor } from "core/types/module.ts";
+import { setModuleDefinition } from "core/metadata/mod.ts";
 
-export default function Module(
-  definition: Partial<ModularDefinition> = {},
-): ClassDecorator {
+export default function Module(desc: Partial<ModuleDescriptor> = {}): ClassDecorator {
   return (target: Target) => {
-    setModuleDefinition(target, definition);
+    setModuleDefinition(target, desc);
   };
 }

@@ -1,10 +1,16 @@
 import type { Target } from "./reflection.ts";
-import type { Provider } from "./providers.ts";
+import type { Token } from "./metadata.ts";
+import type { FactoryProvider, Provider } from "./providers.ts";
 import type { Resolver } from "./resolver.ts";
+
+export interface ModuleRegistry extends Map<Token, FactoryProvider> {
+  module: Target;
+}
 
 export interface ModuleHost extends Resolver {
   readonly id: string;
   readonly module: Target;
+  readonly exports: ModuleRegistry[];
 }
 
 export interface ModuleDescriptor {
@@ -12,5 +18,5 @@ export interface ModuleDescriptor {
   imports: Target[];
   providers: Provider[];
   exports: Provider[];
-  resolved?: ModuleHost;
+  host?: ModuleHost;
 }
