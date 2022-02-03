@@ -1,7 +1,5 @@
-import type { Target } from "../types/reflection.ts";
-import type { ModuleDescriptor, ModuleHost } from "../types/module.ts";
-import type { Linkage } from "../internals/linker.ts";
-import { compiler, linker } from "../internals/mod.ts";
+import type { Linkage, ModuleDescriptor, ModuleHost, Target } from "core/types/mod.ts";
+import { compiler, linker } from "core/internals/mod.ts";
 
 export default async function context(module: Target): Promise<[ModuleHost, Linkage]> {
   const register = linker();

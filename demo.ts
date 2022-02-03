@@ -1,8 +1,8 @@
 import "core/reflection/reflection.ts";
-import { Inject, Injectable, Module, context, ModuleScope } from "core/mod.ts";
+import { context, Inject, Injectable, Module, ModuleScope } from "core/mod.ts";
 
 
-@Injectable({ scope: ModuleScope })
+@Injectable({scope: ModuleScope})
 class SizeService {
   constructor(@Inject("size") public i: number) {
   }
@@ -25,7 +25,7 @@ const CToken0 = { token: "size", factory: () => 2 };
 @Module({
   imports: [SizeModule],
   providers: [CToken0],
-  exports: [CToken0, SizeModule],
+  exports: [SizeModule, CToken0],
 })
 class CModule0 {
 }
@@ -40,17 +40,15 @@ const CToken1 = { token: "size", factory: () => 3 };
 class CModule1 {
 }
 
-const AppToken = { token: "size", factory: () => 4 };
 @Module({
-  imports: [CModule1, CModule0],
-  providers: [AppToken],
+  imports: [CModule0, CModule1],
 })
 class App {
 }
 
 const [ctx, registry] = await context(App);
-console.log(ctx);
-console.log(await ctx.get(SizeService));
+// console.log(ctx);
+console.log(await ctx.get<SizeService>(SizeService));
 const c0 = registry.get(CModule0)?.host;
 const c1 = registry.get(CModule1)?.host;
 console.log(await c0?.get(SizeService));
