@@ -1,0 +1,2 @@
+- complete event emitter
+- complete emitting data during resolving
