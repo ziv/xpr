@@ -1,6 +1,5 @@
 {
   "imports": {
-    "core/": "./lib/core/",
-    "common/": "./lib/common/"
+    "xpr/": "./lib/"
   }
 }

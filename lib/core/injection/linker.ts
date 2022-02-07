@@ -1,10 +1,13 @@
-import type { Target } from "common/types/mod.ts";
-import { noop, str } from "common/utils/mod.ts";
+import type { Target } from "./types.ts";
+import { str } from "xpr/common/utils/mod.ts";
 import { getModuleDescriptor } from "./metadata.ts";
 import Host from "./host.ts";
 import Registry from "./registry.ts";
 
-enum LinkerActions {
+export type Emit = { context: string; message: string; payload?: unknown };
+export type Emitter = (e: Emit) => void;
+
+export enum LinkerActions {
   Link = "Link",
   Import = "Import",
   Provide = "Provide",
@@ -13,11 +16,9 @@ enum LinkerActions {
 }
 
 export default function linker(registry = new WeakMap<Target, Host>(),
-                               emitter?: (payload: unknown) => void) {
+                               emitter: Emitter) {
   return async function link(target: Target): Promise<Host> {
-    const emit = emitter
-      ? (message: string, payload?: unknown) => emitter({ context: str(target), message, payload })
-      : noop;
+    const emit = (message: string, payload?: unknown) => emitter({ context: str(target), message, payload });
     const { imports, providers, exports } = getModuleDescriptor(target);
     emit(LinkerActions.Link, { target });
 
@@ -48,6 +49,9 @@ export default function linker(registry = new WeakMap<Target, Host>(),
         throw new Error(`unable to export ${str(exp)}`);
       }
     }
+
+    // insert plugin here
+    // return using factory
 
     const host = new Host(target, imported, provided, exported, emit);
     registry.set(target, host);

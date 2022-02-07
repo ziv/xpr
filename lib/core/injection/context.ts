@@ -1,4 +1,4 @@
-import type { Target, Token } from "common/types/mod.ts";
+import type { Target, Token } from "./types.ts";
 import type Host from "./host.ts";
 import linker from "./linker.ts";
 

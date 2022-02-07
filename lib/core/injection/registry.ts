@@ -1,4 +1,4 @@
-import type { Provider, Target, Token } from "common/types/mod.ts";
+import type { Provider, Target, Token } from "./types.ts";
 import { getInjectable } from "./metadata.ts";
 
 export type Key = Token | Provider;

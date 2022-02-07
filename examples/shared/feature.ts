@@ -1,5 +1,5 @@
-import type { Provider } from "common/types/mod.ts";
-import Module from "core/injection/decorators/module.ts";
+import type { Provider } from "xpr/core/mod.ts";
+import { Module } from "xpr/core/mod.ts";
 
 const p: Provider = {
   token: "size",

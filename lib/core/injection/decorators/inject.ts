@@ -1,4 +1,4 @@
-import { Target, Token } from "common/types/mod.ts";
+import { Target, Token } from "../types.ts";
 import { addParam } from "../metadata.ts";
 
 export default function Inject(token?: Token): ParameterDecorator {

@@ -1,4 +1,4 @@
-import type { InjectedParam, ModuleDescriptor, Provider, Target, Token } from "common/types/mod.ts";
+import type { InjectedParam, ModuleDescriptor, Provider, Target, Token } from "./types.ts";
 
 const def = Reflect.defineMetadata;
 const get = Reflect.getMetadata;

@@ -1,9 +1,9 @@
-import type { Func, Provider, Target, Token } from "common/types/mod.ts";
+import type { Func, Provider, Target, Token } from "./types.ts";
 import type Registry from "./registry.ts";
-import { str } from "common/utils/mod.ts";
+import { str } from "xpr/common/utils/mod.ts";
 import { getCtr, getParams, Scopes } from "./metadata.ts";
 
-type Emit = (message: string, payload?: unknown) => void;
+export type Emitter = (message: string, payload?: unknown) => void;
 
 // todo error handler
 
@@ -26,7 +26,7 @@ export default class Host {
               private readonly imported: Host[],
               private readonly provided: Registry,
               private readonly exported: Registry,
-              private readonly emit: Emit) {
+              private readonly emit: Emitter) {
   }
 
   get id(): string {

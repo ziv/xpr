@@ -1,4 +1,4 @@
-import type { Target } from "core/reflection/reflection.ts";
+import type { Target } from "xpr/core/reflection/reflection.ts";
 
 // internals
 // deno-lint-ignore ban-types
@@ -19,7 +19,6 @@ export interface Provider {
   useType?: Token;
   useFactory?: Func;
 }
-
 
 // module
 export interface ModuleDescriptor {

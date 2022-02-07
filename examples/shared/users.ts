@@ -1,6 +1,5 @@
-import { Database, MongoClient } from "https://deno.land/x/mongo@v0.29.1/mod.ts";
-import Module from "core/injection/decorators/module.ts";
-import Injectable from "core/injection/decorators/injectable.ts";
+import { Database } from "https://deno.land/x/mongo@v0.29.1/mod.ts";
+import { Injectable, Module } from "xpr/core/mod.ts";
 import { DbProvider } from "./providers/db.ts";
 
 @Injectable()
