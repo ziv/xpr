@@ -1,7 +1,6 @@
 {
   "imports": {
-    "core/": "./core/",
-    "common/": "./common/",
-    "rxjs/": "./lib/rxjs/"
+    "core/": "./lib/core/",
+    "common/": "./lib/common/"
   }
 }

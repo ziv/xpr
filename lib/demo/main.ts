@@ -1,4 +1,4 @@
-import "core/reflection/reflection.ts";
+import "lib/corecore/reflection/reflection.ts";
 import { blue, green, red } from "https://deno.land/std@0.125.0/fmt/colors.ts";
 import { Emitter } from "common/emitter/mod.ts";
 import { context } from "common/context/mod.ts";

@@ -7,4 +7,4 @@ deno run
 ```
 ## Core
 
-<img src="core/dependencygraph.svg" width="500">
+<img src="lib/core/dependencygraph.svg" width="500">
