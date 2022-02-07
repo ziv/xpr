@@ -4,7 +4,7 @@ import type { FactoryProvider, Provider } from "./providers.ts";
 import type { Resolver } from "./resolver.ts";
 
 export interface ModuleRegistry extends Map<Token, FactoryProvider> {
-  module: Target;
+  readonly module: Target;
 }
 
 export interface ModuleHost extends Resolver {

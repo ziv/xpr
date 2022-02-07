@@ -1,28 +1,26 @@
 import type { Linkage, Linker, ModuleDescriptor, ModuleHost, Target } from "core/types/mod.ts";
-import type { Emitter } from "core/emitter/mod.ts";
 import { compiler, linker } from "core/internals/mod.ts";
-import { noop } from "common/utils/mod.ts";
+import { Emitter } from "common/emitter/mod.ts";
 
 export interface ContextOptions {
-  emitter: Emitter;
-  linker: Linker;
-  strict: boolean;
+  emitter?: Emitter;
+  linker?: Linker;
 }
 
-export default async function context(module: Target, options: Partial<ContextOptions> = {}): Promise<[ModuleHost, Linkage]> {
-  const register = options.linker ?? linker();
-  const emitter = options.emitter
-    ? (event: string, payload?: unknown) => options.emitter?.next({ event, payload })
-    : noop;
+export default async function context(module: Target, options: ContextOptions): Promise<[ModuleHost, Linkage, Emitter]> {
+  // defaults
+  const link = options.linker ?? linker();
+  const emitter = options.emitter ?? new Emitter();
 
-  const registry = await register(module);
-  emitter("registry", { registry });
+  // local emitter
+  const emit = (action: string, payload?: unknown) => emitter.emit("context", { action, payload });
 
-  const compile = compiler(registry, { emitter });
+  const registry = link(module);
+  const descriptor = registry.get(module) as ModuleDescriptor;
+  emit("registry", { descriptor });
 
+  const ctx = await compiler({ registry, emitter })(descriptor);
+  emit("compiled", ctx);
 
-  return [
-    await compile(registry.get(module) as ModuleDescriptor),
-    registry
-  ];
+  return [ctx, registry, emitter];
 }

@@ -5,16 +5,18 @@ import type {
   ResolvedProvider,
   ResolverResponse,
   Target,
-  Token,
+  Token
 } from "core/types/mod.ts";
 import { ModuleScope, NoScope } from "core/metadata/mod.ts";
+import { Emitter } from "common/emitter/mod.ts";
 
 export default class Host implements ModuleHost {
   constructor(
     public readonly module: Target,
+    public readonly imported: ModuleHost[],
     public readonly internals: ModuleRegistry[],
     public readonly externals: ModuleRegistry[],
-    public readonly imported: ModuleHost[],
+    public readonly emitter: Emitter
   ) {
   }
 
@@ -24,6 +26,10 @@ export default class Host implements ModuleHost {
 
   get exports() {
     return this.externals;
+  }
+
+  select(module: Target) {
+    return this.imported.find(m => m.module === module);
   }
 
   async get<T = unknown>(token: Token): Promise<T> {

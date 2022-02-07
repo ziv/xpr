@@ -1,4 +1,4 @@
-import addParam from "./add-param.ts";
+import addParam from "./add_param.ts";
 import getCtrParams from "./get-ctr-params.ts";
 import getInjectable from "./get-injectable.ts";
 import getInjectedParams from "./get-injected-params.ts";

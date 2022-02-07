@@ -1,9 +1,8 @@
 import type { FactoryProvider, Linkage, ModuleDescriptor, ModuleHost, ModuleRegistry } from "core/types/mod.ts";
+import type { Emitter } from "common/emitter/mod.ts";
 import Registry from "./registry.ts";
 import provider from "./provider.ts";
 import Host from "./host.ts";
-
-const noop = (..._: unknown[]) => undefined;
 
 const assert = (value: unknown, message: string) => {
   if (!value) {
@@ -15,13 +14,15 @@ const isFactoryProvider = (p: unknown): boolean =>
   !!((p as FactoryProvider).token) && !!((p as FactoryProvider).factory);
 
 export interface CompilerOptions {
-  emitter?: (event: string, payload?: unknown) => void;
+  registry: Linkage;
+  emitter: Emitter;
 }
 
 export type Compiler = (definition: ModuleDescriptor) => Promise<ModuleHost>;
 
-export default function compiler(registry: Linkage, options: CompilerOptions = {}): Compiler {
-  const emit = options.emitter ?? noop;
+export default function compiler({ registry, emitter }: CompilerOptions): Compiler {
+  // "compiler" context emitter
+  const emit = (action: string, payload?: unknown) => emitter.emit("compiler", { action, payload });
 
   return async function compile({ imports, providers, exports, module }: ModuleDescriptor): Promise<ModuleHost> {
     emit("compile", { module });
@@ -37,6 +38,7 @@ export default function compiler(registry: Linkage, options: CompilerOptions = {
 
     const internals: ModuleRegistry[] = [internal];
     const externals: ModuleRegistry[] = [external];
+    const imported = [];
 
     for (const im of imports.reverse()) {
       emit("import", { import: im, module });
@@ -46,6 +48,7 @@ export default function compiler(registry: Linkage, options: CompilerOptions = {
         defs.host = await compile(defs);
       }
       internals.push(...defs.host.exports);
+      imported.push(defs.host as ModuleHost);
       emit("imported", { import: im, resolved: defs.host, module });
     }
 
@@ -77,11 +80,8 @@ export default function compiler(registry: Linkage, options: CompilerOptions = {
       }
     }
 
-    // todo should come from factory
-    const imported = imports.map((i) => (registry.get(i) as ModuleDescriptor).host as ModuleHost);
-    const resolved = new Host(module, internals, externals, imported);
-
-    registry.set(module, { module, exports, providers, imports, host: resolved });
-    return resolved;
+    const host = new Host(module, imported, internals, externals, emitter);
+    registry.set(module, { module, exports, providers, imports, host });
+    return host;
   };
 }
