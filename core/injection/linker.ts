@@ -4,8 +4,8 @@ import { getModuleDescriptor } from "./metadata.ts";
 import Host from "./host.ts";
 import Registry from "./registry.ts";
 
-export type Emit = { context: string; message: string; payload?: unknown };
-export type Emitter = (e: Emit) => void;
+export type EmitterMessage = { context: string; message: string; payload?: unknown };
+export type Emitter = (e: EmitterMessage) => void;
 
 export enum LinkerActions {
   Link = "Link",
