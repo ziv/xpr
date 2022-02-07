@@ -1,8 +1,8 @@
 import type { InjectableDescriptor, Target } from "core/types/metadata.ts";
-import { setInjectable } from "core/metadata/mod.ts";
+import { DefaultScope, INJECTABLE_DEFINITION } from "core/metadata/mod.ts";
 
 export default function Injectable(desc: Partial<InjectableDescriptor> = {}): ClassDecorator {
   return (target: Target) => {
-    setInjectable(target, desc);
+    Reflect.defineMetadata(INJECTABLE_DEFINITION, { scope: DefaultScope, ...desc }, target);
   };
 }
