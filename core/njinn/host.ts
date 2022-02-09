@@ -1,4 +1,4 @@
-import type { Func, Provider, Target, Token } from "./types.ts";
+import type { Func, ModuleRef, Provider, Target, Token } from "./types.ts";
 import type Registry from "./registry.ts";
 import { str } from "xpr/common/utils/mod.ts";
 import { getCtr, getParams, Scopes } from "./metadata.ts";
@@ -14,19 +14,20 @@ export enum HostActions {
   SearchForProviderIn = "SearchForProviderIn",
   ProviderFound = "ProviderFound",
   ProvidedFrom = "ProvidedFrom",
-  InvalidProvider = "InvalidProvider"
+  InvalidProvider = "InvalidProvider",
 }
 
-export default class Host {
+export default class Host implements ModuleRef {
   private static readonly global = new Map<Token, unknown>();
   private readonly cache = new Map<Token, unknown>();
 
-
-  constructor(private readonly module: Target,
-              private readonly imported: Host[],
-              private readonly provided: Registry,
-              private readonly exported: Registry,
-              private readonly emit: Emitter) {
+  constructor(
+    protected readonly module: Target,
+    protected readonly imported: ModuleRef[],
+    protected readonly provided: Registry,
+    protected readonly exported: Registry,
+    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log({ message, payload }),
+  ) {
   }
 
   get id(): string {
@@ -37,7 +38,12 @@ export default class Host {
     return this.exported;
   }
 
+  get provides(): Registry {
+    return this.provided;
+  }
+
   async resolve<T = unknown>(target: Token): Promise<T> {
+    console.log("resolve", target);
     this.emit(HostActions.Resolve, target);
 
     // is this target already cached?
@@ -69,14 +75,18 @@ export default class Host {
     return value;
   }
 
-
   private provider(target: Token): Provider {
     // the search for provider
-    for (const mdl of [this, ...this.imported]) {
+    this.emit(HostActions.SearchForProviderIn, { target, module: this.id });
+    if (this.provided.has(target)) {
+      this.emit(HostActions.ProviderFound, { target, module: this.id });
+      return this.provides.get(target) as Provider;
+    }
+    for (const mdl of this.imported) {
       this.emit(HostActions.SearchForProviderIn, { target, module: mdl.id });
       if (mdl.exports.has(target)) {
         this.emit(HostActions.ProviderFound, { target, module: mdl.id });
-        return mdl.provided.get(target) as Provider;
+        return mdl.provides.get(target) as Provider;
       }
     }
     throw new Error(`unable to find provider for ${str(target)}`);
@@ -104,7 +114,7 @@ export default class Host {
         }
       }
       // resolve dependencies
-      const args: unknown[] = await Promise.all(ctr.map(type => this.resolve(type)));
+      const args: unknown[] = await Promise.all(ctr.map((type) => this.resolve(type)));
       // construct object
       return Reflect.construct(target as Func, args);
     }

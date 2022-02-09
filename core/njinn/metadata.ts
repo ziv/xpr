@@ -6,22 +6,21 @@ const get = Reflect.getMetadata;
 export enum Scopes {
   Default = "Default",
   Module = "Module",
-  None = "None"
+  None = "None",
 }
 
 export enum Keys {
   Ctr = "design:paramtypes",
   Module = "xpr:modules",
   Params = "xpr:params",
-  Injectable = "xpr:injectable"
+  Injectable = "xpr:injectable",
 }
-
 
 export function setModuleMetadata(target: Target, desc: Partial<ModuleDescriptor>) {
   def(Keys.Module, { ...{ imports: [], providers: [], exports: [] }, ...desc }, target);
 }
 
-export function setInjectable(target: Target, scope?: symbol) {
+export function setInjectable(target: Target, scope?: string) {
   def(Keys.Injectable, { scope: scope ?? Scopes.Default, useType: target, token: target }, target);
 }
 

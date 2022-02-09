@@ -1,5 +1,6 @@
 {
   "imports": {
+    "xpr/reflect": "./core/reflection/reflection.ts",
     "xpr/": "./"
   }
 }

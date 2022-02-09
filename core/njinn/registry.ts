@@ -1,5 +1,6 @@
 import type { Provider, Target, Token } from "./types.ts";
 import { getInjectable } from "./metadata.ts";
+import { isCallable } from "./utils.ts";
 
 export type Key = Token | Provider;
 
@@ -19,7 +20,7 @@ export default class Registry extends Map<Token, Provider> {
   }
 
   register(provider: Key) {
-    const p = (typeof provider === "function") ? getInjectable(provider) : provider as Provider;
+    const p = isCallable(provider) ? getInjectable(provider) : provider as Provider;
     this.set(p.token, p);
     return this;
   }
