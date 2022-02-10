@@ -1,8 +1,8 @@
 import "xpr/reflect";
+import { assert, assertEquals } from "xpr/testing/mod.ts";
 import Registry from "./registry.ts";
-import { assert, assertEquals } from "../../testing/mod.ts";
 import { Scopes } from "./metadata.ts";
-import Injectable from "../decorators/injectable.ts";
+import { Injectable } from "./decorators.ts";
 
 @Injectable()
 class Test {

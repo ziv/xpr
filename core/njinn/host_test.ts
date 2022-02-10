@@ -1,10 +1,8 @@
 import "xpr/reflect";
-import type { Func, ModuleRef, Target } from "./types.ts";
+import type { ModuleRef, Target } from "./types.ts";
 import linker from "./linker.ts";
-import { str } from "xpr/common/utils/mod.ts";
-import { assert, assertThrows } from "xpr/testing/mod.ts";
-import { AllModules, BadExportModule, ModuleTest } from "xpr/testing/nginn_testing.ts";
-import { isCallable } from "./utils.ts";
+import { assert } from "xpr/testing/mod.ts";
+import { ModuleTest } from "xpr/testing/nginn_testing.ts";
 import Host from "./host.ts";
 
 const setup = (): Host => {

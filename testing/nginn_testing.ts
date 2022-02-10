@@ -1,5 +1,4 @@
-import Injectable from "xpr/core/decorators/injectable.ts";
-import Module from "xpr/core/decorators/module.ts";
+import { Module, Injectable } from "../core/njinn/decorators.ts";
 
 @Injectable()
 export class ServiceA {
@@ -7,7 +6,7 @@ export class ServiceA {
 
 @Module({
   providers: [ServiceA],
-  exports: [ServiceA],
+  exports: [ServiceA]
 })
 export class ModuleAA {
 }
@@ -18,7 +17,7 @@ export class ModuleAB {
 
 @Module({
   imports: [ModuleAA, ModuleAB],
-  exports: [ModuleAA],
+  exports: [ModuleAA]
 })
 export class ModuleA {
 }
@@ -33,15 +32,16 @@ export class ModuleC {
 
 @Module({
   imports: [ModuleA, ModuleB, ModuleC],
-  exports: [ModuleAA],
+  exports: [ModuleAA]
 })
 export class ModuleTest {
 }
 
 @Module({
   imports: [ModuleA],
-  exports: [ModuleB],
+  exports: [ModuleB]
 })
-export class BadExportModule {}
+export class BadExportModule {
+}
 
 export const AllModules = [ModuleAA, ModuleAB, ModuleA, ModuleC, ModuleB, ModuleTest];
