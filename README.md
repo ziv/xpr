@@ -2,7 +2,10 @@
 
 where (e)dreams comes to die.
 
+in progress...
 
-## Core
-<img src="core/dependencygraph.svg" width="500">
+## Examples
 
+```shell
+./run-example.sh --help
+```

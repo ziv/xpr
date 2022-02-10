@@ -1,7 +1,6 @@
 {
   "imports": {
-    "core/": "./core/",
-    "common/": "./common/",
-    "rxjs/": "./lib/rxjs/"
+    "xpr/reflect": "./core/reflection/reflection.ts",
+    "xpr/": "./"
   }
 }

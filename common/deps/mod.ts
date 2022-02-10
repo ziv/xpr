@@ -1,0 +1,17 @@
+export {
+  blue,
+  bold,
+  brightBlack,
+  brightBlue,
+  brightCyan,
+  brightGreen,
+  brightMagenta,
+  brightRed,
+  brightWhite,
+  brightYellow,
+  green,
+  magenta,
+  red,
+  white,
+  yellow,
+} from "https://deno.land/std@0.125.0/fmt/colors.ts";
