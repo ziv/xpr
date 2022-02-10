@@ -5,7 +5,6 @@ import Module from "../decorators/module.ts";
 import { assertEquals } from "../../testing/mod.ts";
 import { getCtr, getInjectable, getModuleDescriptor, getParams, Scopes } from "./metadata.ts";
 
-
 Deno.test("should return default module descriptor", () => {
   const descriptor = { imports: [], providers: [], exports: [] };
 
@@ -72,7 +71,7 @@ Deno.test("should return injected params 0", () => {
     }
   }
 
-  const expected = [ { index: 0, value: "number" } ];
+  const expected = [{ index: 0, value: "number" }];
   assertEquals(getParams(InjectableTest), expected);
 });
 
@@ -83,7 +82,6 @@ Deno.test("should return injected params 1", () => {
     }
   }
 
-  const expected = [ { index: 1, value: "string" } ];
+  const expected = [{ index: 1, value: "string" }];
   assertEquals(getParams(InjectableTest), expected);
 });
-

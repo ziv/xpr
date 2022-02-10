@@ -28,7 +28,7 @@ export default class Host implements ModuleRef {
     protected readonly imported: ModuleRef[],
     protected readonly provided: Registry,
     protected readonly exported: Registry,
-    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log(message, { payload })
+    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log(message, { payload }),
   ) {
   }
 

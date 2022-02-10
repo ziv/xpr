@@ -1,17 +1,11 @@
 import "xpr/reflect";
 import type { Func, ModuleRef, Target } from "./types.ts";
-import type { LinkerRegistry } from "./linker.ts";
 import linker from "./linker.ts";
 import { str } from "xpr/common/utils/mod.ts";
 import { assert, assertThrows } from "xpr/testing/mod.ts";
 import { AllModules, BadExportModule, ModuleTest } from "xpr/testing/nginn_testing.ts";
 import { isCallable } from "./utils.ts";
 import Host from "./host.ts";
-
-
-let func: Func;
-let registry: LinkerRegistry;
-let host: Host;
 
 const setup = (): [Func, WeakMap<Target, ModuleRef>] => {
   const registry = new WeakMap<Target, ModuleRef>();
@@ -26,8 +20,7 @@ Deno.test("should create host", () => {
 
 Deno.test("should return host", () => {
   const [link] = setup();
-  host = link(ModuleTest);
-  assert(host instanceof Host);
+  assert(link(ModuleTest) instanceof Host);
 });
 
 Deno.test("should fail for bad export", () => {
@@ -35,8 +28,10 @@ Deno.test("should fail for bad export", () => {
   assertThrows(() => link(BadExportModule));
 });
 
-AllModules.forEach(m => Deno.test(`module ${str(m)} should be registered`, () => {
-  const [link, registry] = setup();
-  host = link(ModuleTest);
-  assert(registry.has(m));
-}));
+AllModules.forEach((m) =>
+  Deno.test(`module ${str(m)} should be registered`, () => {
+    const [link, registry] = setup();
+    link(ModuleTest);
+    assert(registry.has(m));
+  })
+);
