@@ -1,11 +1,11 @@
-import { assert } from "../testing/mod.ts";
+import { assert } from "../../testing/mod.ts";
 import { isCallable } from "./utils.ts";
 
 function foo() {
 }
 
 type List = unknown[];
-const valid: List = [foo, () => false, Date];
+const valid: List = [foo, () => false, Date, console.log];
 const invalid: List = ["string", 12, {}, true, null];
 
 valid.forEach((callable) => Deno.test("should pass", () => assert(isCallable(callable))));

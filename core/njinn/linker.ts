@@ -1,19 +1,10 @@
 import type { ModuleRef, Target } from "./types.ts";
 import { str } from "xpr/common/utils/mod.ts";
 import Registry from "./registry.ts";
-import { getModuleDescriptor } from "./metadata.ts";
 import Host from "./host.ts";
-
-export type EmitterMessage = { context: string; message: string; payload?: unknown };
-export type Emitter = (e: EmitterMessage) => void;
+import { getModuleDescriptor } from "./metadata.ts";
 
 export type LinkerRegistry = WeakMap<Target, ModuleRef>;
-export type LinkerDescriptor = { target: Target; imported: ModuleRef[]; provided: Registry; exported: Registry };
-export type LinkerFactory<T extends ModuleRef = ModuleRef> = (
-  desc: LinkerDescriptor,
-  options: LinkerOptions,
-) => Promise<T> | T;
-
 export type LinkerOptions = { registry?: LinkerRegistry };
 
 export default function linker(options: LinkerOptions) {
@@ -38,7 +29,7 @@ export default function linker(options: LinkerOptions) {
     const exported = new Registry(target);
     for (const exp of exports.reverse()) {
       if (registry.has(exp)) {
-        [...(registry.get(exp) as ModuleRef).exports.values()].forEach(exported.register);
+        [...(registry.get(exp) as ModuleRef).exports.values()].forEach(exported.register.bind(exported));
       } else if (provided.exists(exp)) {
         exported.register(provided.fetch(exp));
       } else {

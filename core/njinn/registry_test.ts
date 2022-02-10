@@ -1,6 +1,6 @@
 import "xpr/reflect";
 import Registry from "./registry.ts";
-import { assert, assertEquals } from "../testing/mod.ts";
+import { assert, assertEquals } from "../../testing/mod.ts";
 import { Scopes } from "./metadata.ts";
 import Injectable from "../decorators/injectable.ts";
 

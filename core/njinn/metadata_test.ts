@@ -2,7 +2,7 @@ import "xpr/reflect";
 import Injectable from "../decorators/injectable.ts";
 import Inject from "../decorators/inject.ts";
 import Module from "../decorators/module.ts";
-import { assertEquals } from "../testing/mod.ts";
+import { assertEquals } from "../../testing/mod.ts";
 import { getCtr, getInjectable, getModuleDescriptor, getParams, Scopes } from "./metadata.ts";
 
 
@@ -53,6 +53,16 @@ Deno.test("should return ctr params", () => {
 
   const expected = [Number, String];
   assertEquals(getCtr(InjectableTest), expected);
+});
+
+Deno.test("should return empty ctr params", () => {
+  @Injectable()
+  class InjectableTest {
+    constructor() {
+    }
+  }
+
+  assertEquals(getCtr(InjectableTest), []);
 });
 
 Deno.test("should return injected params 0", () => {

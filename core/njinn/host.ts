@@ -18,7 +18,9 @@ export enum HostActions {
 }
 
 export default class Host implements ModuleRef {
+  // singleton cache (default)
   private static readonly global = new Map<Token, unknown>();
+  // modular cache
   private readonly cache = new Map<Token, unknown>();
 
   constructor(
@@ -26,7 +28,7 @@ export default class Host implements ModuleRef {
     protected readonly imported: ModuleRef[],
     protected readonly provided: Registry,
     protected readonly exported: Registry,
-    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log({ message, payload }),
+    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log(message, { payload })
   ) {
   }
 
@@ -43,10 +45,9 @@ export default class Host implements ModuleRef {
   }
 
   async resolve<T = unknown>(target: Token): Promise<T> {
-    console.log("resolve", target);
     this.emit(HostActions.Resolve, target);
 
-    // is this target already cached?
+    // is this target already cached? ✌️
     if (this.cache.has(target)) {
       this.emit(HostActions.FoundInCache, { target });
       return this.cache.get(target) as T;
@@ -57,7 +58,10 @@ export default class Host implements ModuleRef {
       return Host.global.get(target) as T;
     }
 
+    // the search for provider ⛑
     const provider = this.provider(target);
+
+    // creation
     const value = await this.value<T>(provider, target);
     const scope = provider.scope ?? Scopes.Default;
 
@@ -69,14 +73,13 @@ export default class Host implements ModuleRef {
         this.cache.set(target, value);
         break;
       case Scopes.None:
-        // create new for each resolving
+        // create new instance for each resolving
         break;
     }
     return value;
   }
 
   private provider(target: Token): Provider {
-    // the search for provider
     this.emit(HostActions.SearchForProviderIn, { target, module: this.id });
     if (this.provided.has(target)) {
       this.emit(HostActions.ProviderFound, { target, module: this.id });
