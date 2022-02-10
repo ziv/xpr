@@ -1,9 +1,7 @@
 import "xpr/reflect";
-import Injectable from "../decorators/injectable.ts";
-import Inject from "../decorators/inject.ts";
-import Module from "../decorators/module.ts";
-import { assertEquals } from "../../testing/mod.ts";
+import { assertEquals } from "xpr/testing/mod.ts";
 import { getCtr, getInjectable, getModuleDescriptor, getParams, Scopes } from "./metadata.ts";
+import { Inject, Injectable, Module } from "./decorators.ts";
 
 Deno.test("should return default module descriptor", () => {
   const descriptor = { imports: [], providers: [], exports: [] };
@@ -46,7 +44,7 @@ Deno.test("should return given injectable", () => {
 Deno.test("should return ctr params", () => {
   @Injectable()
   class InjectableTest {
-    constructor(n: number, s: string) {
+    constructor(_n: number, _s: string) {
     }
   }
 
@@ -67,7 +65,7 @@ Deno.test("should return empty ctr params", () => {
 Deno.test("should return injected params 0", () => {
   @Injectable()
   class InjectableTest {
-    constructor(@Inject("number") n: number, s: string) {
+    constructor(@Inject("number") _n: number, _s: string) {
     }
   }
 
@@ -78,7 +76,7 @@ Deno.test("should return injected params 0", () => {
 Deno.test("should return injected params 1", () => {
   @Injectable()
   class InjectableTest {
-    constructor(n: number, @Inject("string") s: string) {
+    constructor(_n: number, @Inject("string") _s: string) {
     }
   }
 
