@@ -1,20 +1,41 @@
-import { InjectableDescriptor, ModuleDescriptor, Target, Token } from "./types.ts";
-import { addParam, setInjectable, setModuleMetadata } from "./metadata.ts";
+import {
+  InjectableMetaDescriptor,
+  InjectedMetaParam,
+  ModuleMetaDescriptor,
+  Target,
+  Token,
+  TypeProvider
+} from "./types.ts";
+import { define, merge, Meta, Scopes } from "./metadata.ts";
 
-export function Injectable(desc: Partial<InjectableDescriptor> = {}): ClassDecorator {
+export function Module(desc: Partial<ModuleMetaDescriptor> = {}): ClassDecorator {
   return (target: Target) => {
-    setInjectable(target, desc.scope);
+    define<ModuleMetaDescriptor>(Meta.Module, {
+      ...{ imports: [], providers: [], exports: [] },
+      ...desc
+    }, target);
+    define<TypeProvider>(Meta.Injectable, {
+      scope: Scopes.Default,
+      token: target,
+      useType: target
+    }, target);
   };
 }
 
-export function Inject(token?: Token): ParameterDecorator {
-  return (target: Target, _: string | symbol, parameterIndex: number) => {
-    addParam(target, parameterIndex, token ?? target);
-  };
-}
-
-export function Module(desc: Partial<ModuleDescriptor> = {}): ClassDecorator {
+export function Injectable(desc: Partial<InjectableMetaDescriptor> = {}): ClassDecorator {
   return (target: Target) => {
-    setModuleMetadata(target, desc);
+    define<TypeProvider>(Meta.Injectable, {
+      scope: desc.scope ?? Scopes.Default,
+      token: target,
+      useType: target
+    }, target);
   };
 }
+
+export function Inject(token: Token): ParameterDecorator {
+  return (target: Target, _: string | symbol, index: number) => {
+    merge<InjectedMetaParam>(Meta.Params, { value: token, index }, target);
+  };
+}
+
+

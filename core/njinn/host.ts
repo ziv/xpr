@@ -1,7 +1,8 @@
 import type { Func, ModuleRef, Provider, Target, Token } from "./types.ts";
+import { InjectedMetaParam } from "./types.ts";
 import type Registry from "./registry.ts";
 import { str } from "xpr/common/utils/mod.ts";
-import { getCtr, getParams, Scopes } from "./metadata.ts";
+import { Meta, read, Scopes } from "./metadata.ts";
 
 export type Emitter = (message: string, payload?: unknown) => void;
 
@@ -17,10 +18,24 @@ export enum HostActions {
   InvalidProvider = "InvalidProvider",
 }
 
+export interface HostOptions {
+  readonly imported: ModuleRef[];
+  readonly provided: Registry;
+  readonly exported: Registry;
+  readonly emit: Emitter;
+}
+
 export default class Host implements ModuleRef {
-  // singleton cache (default)
+  /**
+   * Static (singleton/global) cache
+   * @private
+   */
   private static readonly global = new Map<Token, unknown>();
-  // modular cache
+
+  /**
+   * Module cache
+   * @private
+   */
   private readonly cache = new Map<Token, unknown>();
 
   constructor(
@@ -28,12 +43,20 @@ export default class Host implements ModuleRef {
     protected readonly imported: ModuleRef[],
     protected readonly provided: Registry,
     protected readonly exported: Registry,
-    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log(message, { payload }),
+    protected readonly emit: Emitter = (message: string, payload?: unknown) => console.log(message, { payload })
   ) {
+  }
+
+  get ref(): Target {
+    return this.module;
   }
 
   get id(): string {
     return str(this.module);
+  }
+
+  get imports(): ModuleRef[] {
+    return this.imported;
   }
 
   get exports(): Registry {
@@ -47,22 +70,23 @@ export default class Host implements ModuleRef {
   async resolve<T = unknown>(target: Token): Promise<T> {
     this.emit(HostActions.Resolve, target);
 
-    // is this target already cached? ✌️
+    // is this target already cached (locally)?
     if (this.cache.has(target)) {
       this.emit(HostActions.FoundInCache, { target });
       return this.cache.get(target) as T;
     }
 
+    // is this target already cached (globally)?
     if (Host.global.has(target)) {
       this.emit(HostActions.FoundInGlobalCache, { target });
       return Host.global.get(target) as T;
     }
 
-    // the search for provider ⛑
+    // the search for provider
     const provider = this.provider(target);
 
-    // creation
-    const value = await this.value<T>(provider, target);
+    // the creation
+    const value = await this.value<T>(provider, target as Target);
     const scope = provider.scope ?? Scopes.Default;
 
     switch (scope) {
@@ -95,7 +119,7 @@ export default class Host implements ModuleRef {
     throw new Error(`unable to find provider for ${str(target)}`);
   }
 
-  private async value<T>(provider: Provider, target: Token): Promise<T> {
+  private async value<T>(provider: Provider, target: Target): Promise<T> {
     this.emit(HostActions.ProvidedFrom, { module: this.id, provider });
 
     if (provider.useValue) {
@@ -108,12 +132,12 @@ export default class Host implements ModuleRef {
 
     if (provider.useType) {
       // constructor arguments
-      const ctr: Target[] = getCtr(target as Target);
+      const ctr: Token[] = read<Target[]>(Meta.Ctr, target, []);
       if (ctr.length) {
         // replace with injected tokens
-        const injected = getParams(target as Target);
+        const injected = read<InjectedMetaParam[]>(Meta.Params, target, []);
         for (const { index, value } of injected) {
-          ctr[index] = value as Target;
+          ctr[index] = value;
         }
       }
       // resolve dependencies

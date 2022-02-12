@@ -1,16 +1,18 @@
-import type { ModuleRef, Target } from "./types.ts";
-import { str } from "xpr/common/utils/mod.ts";
+import type { ModuleMetaDescriptor, ModuleRef, Target } from "./types.ts";
+import { str } from "jinn/common/utils/mod.ts";
+import { Meta, read } from "./metadata.ts";
 import Registry from "./registry.ts";
 import Host from "./host.ts";
-import { getModuleDescriptor } from "./metadata.ts";
 
 export type LinkerRegistry = WeakMap<Target, ModuleRef>;
 export type LinkerOptions = { registry?: LinkerRegistry };
 
+export const linkerRegistry = () => new WeakMap<Target, ModuleRef>();
+
 export default function linker(options: LinkerOptions) {
-  const { registry = new WeakMap<Target, ModuleRef>() } = options;
+  const { registry = linkerRegistry() } = options;
   return function link(target: Target): Host {
-    const { imports, providers, exports } = getModuleDescriptor(target);
+    const { imports, providers, exports } = read<ModuleMetaDescriptor>(Meta.Module, target);
 
     // link the imported :)
     const imported: ModuleRef[] = [];
@@ -21,15 +23,18 @@ export default function linker(options: LinkerOptions) {
 
     // register the providers!
     const provided = new Registry(target);
+    provided.register(target);
     for (const provider of providers.reverse()) {
       provided.register(provider);
     }
 
     // now some exports...
     const exported = new Registry(target);
+    exported.register(provided.fetch(target));
+    const register = exported.register.bind(exported);
     for (const exp of exports.reverse()) {
       if (registry.has(exp)) {
-        [...(registry.get(exp) as ModuleRef).exports.values()].forEach(exported.register.bind(exported));
+        [...(registry.get(exp) as ModuleRef).exports.values()].forEach(register);
       } else if (provided.exists(exp)) {
         exported.register(provided.fetch(exp));
       } else {

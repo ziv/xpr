@@ -1,5 +1,5 @@
 import { assert } from "../../testing/mod.ts";
-import { isCallable } from "./utils.ts";
+import isCallable from "./is-callable.ts";
 
 function foo() {
 }

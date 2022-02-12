@@ -1,4 +1,4 @@
-import type { Target } from "xpr/core/reflection/reflection.ts";
+import type { Target } from "../reflection/reflection.ts";
 import type Registry from "./registry.ts";
 
 // internals
@@ -8,29 +8,36 @@ export type Func<TFunction = Function> = TFunction;
 // injection
 export type { Target };
 export type Token = Target | symbol | string;
-export type InjectedParam = { index: number; value: Token };
-export type InjectableDescriptor = { scope: string };
+export type InjectedMetaParam = { index: number; value: Token };
+export type InjectableMetaDescriptor = { scope: string };
 
 // providers
-export interface Provider {
-  token: Token;
-  scope?: symbol;
-  useValue?: unknown;
-  useType?: Token;
-  useFactory?: Func;
-}
+export type Providable = { token: Token; scope?: string };
+export type ValueProvider = Providable & { useValue: unknown };
+export type TypeProvider = Providable & { useType: Token };
+export type FactoryProvider = Providable & { useFactory: Func };
+export type Provider = ValueProvider & TypeProvider & FactoryProvider;
+
 
 // module
-export interface ModuleDescriptor {
+export interface ModuleMetaDescriptor {
   imports: Target[];
   providers: (Target | Provider)[];
   exports: (Target | Provider)[];
+
   [key: string]: unknown;
 }
 
 export interface ModuleRef {
   get id(): string;
+
+  get ref(): Target;
+
+  get imports(): ModuleRef[];
+
   get exports(): Registry;
+
   get provides(): Registry;
+
   resolve<T = unknown>(target: Token): Promise<T>;
 }

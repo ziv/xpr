@@ -1,4 +1,4 @@
-import { Module } from "xpr/core/mod.ts";
+import { Module } from "xpr/core/njinn/decorators.ts";
 import DbProvider from "./providers/db.ts";
 import UsersService from "./users-service.ts";
 

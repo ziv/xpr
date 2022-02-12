@@ -1,4 +1,5 @@
 import noop from "./noop.ts";
 import str from "./str.ts";
+import isCallable from "./is-callable.ts";
 
-export { noop, str };
+export { isCallable, noop, str };

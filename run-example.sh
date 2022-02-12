@@ -31,7 +31,7 @@ if [ "$1" = "--help" ]; then
 fi
 
 if exists_in_list "$examples_list" "$1"; then
-    deno run --allow-net --allow-read --import-map import_map.json examples/"$1".ts
+    deno run --allow-net --allow-read --import-map import_map.json _examples/"$1".ts
 else
     echo "Example $1 not found"
     usage 2

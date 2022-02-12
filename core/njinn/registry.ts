@@ -1,6 +1,6 @@
 import type { Provider, Target, Token } from "./types.ts";
-import { getInjectable } from "./metadata.ts";
-import { isCallable } from "./utils.ts";
+import { isCallable } from "jinn/common/utils/mod.ts";
+import { Meta, read } from "./metadata.ts";
 
 export type Key = Token | Provider;
 
@@ -11,17 +11,17 @@ export default class Registry extends Map<Token, Provider> {
     super();
   }
 
-  fetch(token: Key): Provider {
-    return this.get(norm(token)) as Provider;
+  fetch(key: Key): Provider {
+    return this.get(norm(key)) as Provider;
   }
 
-  exists(token: Key): boolean {
-    return this.has(norm(token));
+  exists(key: Key): boolean {
+    return this.has(norm(key));
   }
 
-  register(provider: Key) {
-    const p = isCallable(provider) ? getInjectable(provider) : provider as Provider;
-    this.set(p.token, p);
+  register(key: Key) {
+    const provider = isCallable(key) ? read<Provider>(Meta.Injectable, key) : key as Provider;
+    this.set(provider.token, provider);
     return this;
   }
 }
