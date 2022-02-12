@@ -1,11 +1,5 @@
 import "jinn/reflect";
-import type {
-  InjectableMetaDescriptor,
-  InjectedMetaParam,
-  ModuleMetaDescriptor,
-  Provider,
-  TypeProvider
-} from "./types.ts";
+import type { InjectedMetaParam, ModuleMetaDescriptor, TypeProvider } from "./types.ts";
 import { assertEquals } from "jinn/testing/mod.ts";
 import { Meta, read, Scopes } from "./metadata.ts";
 import { Inject, Injectable, Module } from "./decorators.ts";
@@ -18,12 +12,12 @@ Deno.test("should set default module meta descriptor", () => {
   assertEquals(read<ModuleMetaDescriptor>(Meta.Module, TestModule), {
     imports: [],
     exports: [],
-    providers: []
+    providers: [],
   });
   assertEquals(read<TypeProvider>(Meta.Injectable, TestModule), {
     scope: Scopes.Default,
     token: TestModule,
-    useType: TestModule
+    useType: TestModule,
   });
 });
 
@@ -38,10 +32,9 @@ Deno.test("should set module meta descriptor", () => {
   assertEquals(read<TypeProvider>(Meta.Injectable, TestModule), {
     scope: Scopes.Default,
     token: TestModule,
-    useType: TestModule
+    useType: TestModule,
   });
 });
-
 
 Deno.test("should set default injectable meta descriptor", () => {
   @Injectable()
@@ -51,7 +44,7 @@ Deno.test("should set default injectable meta descriptor", () => {
   assertEquals(read<TypeProvider>(Meta.Injectable, TestInject), {
     scope: Scopes.Default,
     token: TestInject,
-    useType: TestInject
+    useType: TestInject,
   });
 });
 
@@ -63,7 +56,7 @@ Deno.test("should set injectable meta descriptor", () => {
   assertEquals(read<TypeProvider>(Meta.Injectable, TestInject), {
     scope: Scopes.None,
     token: TestInject,
-    useType: TestInject
+    useType: TestInject,
   });
 });
 

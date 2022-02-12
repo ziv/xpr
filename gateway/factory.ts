@@ -1,6 +1,5 @@
-import type { ModuleRef, LinkerRegistry } from "jinn/core/njinn/mod.ts";
+import type { LinkerRegistry, ModuleRef } from "jinn/core/njinn/mod.ts";
 import moduleRef from "jinn/core/it/module-ref.ts";
-
 
 export interface GatewayFactoryOptions {
   host: ModuleRef;

@@ -1,12 +1,11 @@
 import { Controller, Get, Middleware } from "../../gateway/decorators.ts";
 
 @Middleware(Date)
-@Controller('app')
+@Controller("app")
 export class AppController {
-
   @Middleware(Date)
-  @Get('hello')
+  @Get("hello")
   sayHello() {
-    return 'hello';
+    return "hello";
   }
 }

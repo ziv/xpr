@@ -18,7 +18,6 @@ export type TypeProvider = Providable & { useType: Token };
 export type FactoryProvider = Providable & { useFactory: Func };
 export type Provider = ValueProvider & TypeProvider & FactoryProvider;
 
-
 // module
 export interface ModuleMetaDescriptor {
   imports: Target[];

@@ -25,4 +25,3 @@ export function define<T = unknown, K extends string = Meta>(key: K, value: T, t
 export function read<T = unknown>(key: Meta, target: Target, defaultValue?: T): T {
   return (Reflect.getMetadata(key, target) ?? defaultValue) as T;
 }
-

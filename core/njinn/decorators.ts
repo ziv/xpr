@@ -4,7 +4,7 @@ import {
   ModuleMetaDescriptor,
   Target,
   Token,
-  TypeProvider
+  TypeProvider,
 } from "./types.ts";
 import { define, merge, Meta, Scopes } from "./metadata.ts";
 
@@ -12,12 +12,12 @@ export function Module(desc: Partial<ModuleMetaDescriptor> = {}): ClassDecorator
   return (target: Target) => {
     define<ModuleMetaDescriptor>(Meta.Module, {
       ...{ imports: [], providers: [], exports: [] },
-      ...desc
+      ...desc,
     }, target);
     define<TypeProvider>(Meta.Injectable, {
       scope: Scopes.Default,
       token: target,
-      useType: target
+      useType: target,
     }, target);
   };
 }
@@ -27,7 +27,7 @@ export function Injectable(desc: Partial<InjectableMetaDescriptor> = {}): ClassD
     define<TypeProvider>(Meta.Injectable, {
       scope: desc.scope ?? Scopes.Default,
       token: target,
-      useType: target
+      useType: target,
     }, target);
   };
 }
@@ -37,5 +37,3 @@ export function Inject(token: Token): ParameterDecorator {
     merge<InjectedMetaParam>(Meta.Params, { value: token, index }, target);
   };
 }
-
-

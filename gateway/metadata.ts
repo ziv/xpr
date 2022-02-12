@@ -1,13 +1,13 @@
 export enum GateMeta {
   Controller = "xpr:controller",
   Methods = "xpr:methods",
-  Middlewares = "xpr:middlewares"
+  Middlewares = "xpr:middlewares",
 }
 
 export enum Keys {
   Controller = "xpr:controller",
   Methods = "xpr:methods",
-  Middlewares = "xpr:middlewares"
+  Middlewares = "xpr:middlewares",
 }
 
 // const DefaultMethodDescriptor: MethodDescriptor = {

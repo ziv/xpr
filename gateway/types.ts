@@ -22,5 +22,4 @@ export interface ControllerDescriptor {
 }
 
 export interface ControllerStructure {
-
 }
