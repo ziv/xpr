@@ -4,7 +4,7 @@ import {
   ModuleMetaDescriptor,
   Target,
   Token,
-  TypeProvider,
+  TypeProvider
 } from "./types.ts";
 import { define, merge, Meta, Scopes } from "./metadata.ts";
 

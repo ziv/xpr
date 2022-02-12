@@ -1,5 +1,5 @@
-import "xpr/reflect";
-import { assert, assertEquals } from "xpr/testing/mod.ts";
+import "jinn/reflect";
+import { assert, assertEquals } from "jinn/testing/mod.ts";
 import Registry from "./registry.ts";
 import { Scopes } from "./metadata.ts";
 import { Injectable } from "./decorators.ts";
