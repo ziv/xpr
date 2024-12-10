@@ -6,4 +6,6 @@ Created with love by _"under the hood"_ course students.
 
 ## Course Content
 
-1. [Workspace](./course/01-workspace.md)
+| Lesson                                | Branch                                         |
+|---------------------------------------|------------------------------------------------|
+| [Workspace](./course/01-workspace.md) | [ex001](https://github.com/ziv/xpr/tree/ex001) |
