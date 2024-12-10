@@ -1,0 +1,7 @@
+{
+  "name": "@xpr/jinn",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
