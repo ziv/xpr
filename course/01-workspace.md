@@ -2,6 +2,6 @@
 
 ## Requirements
 
-* [ ] Deno installed
-* [ ] Bun installed
-* [ ] NodeJS installed
+* [x] Deno installed
+* [x] Bun installed
+* [x] NodeJS installed
